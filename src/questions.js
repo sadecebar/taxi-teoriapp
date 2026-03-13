@@ -1,5 +1,4 @@
 export const QUESTIONS = [
- [
   {
     "id": 1,
     "delprov": 2,
@@ -689,5 +688,4 @@ export const QUESTIONS = [
     "image": null,
     "explanation": "Prisinformationen på taxibilar ska vara läsbar utifrån om man står minst två meter från sidan på fordonet. Detta är ett krav enligt taxitrafiklagen för att kunder ska kunna ta del av priset."
   }
-]
 ];
