@@ -14,6 +14,9 @@ function Logo({ size = 42 }) {
 
 
 // ─── FRÅGOR ──────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+
+];
 
 const DELPROV_CONFIG = {
   1: { name:"Delprov 1", sub:"Säkerhet & beteende", total:70, countedQ:65, passMark:48, time:50 },
