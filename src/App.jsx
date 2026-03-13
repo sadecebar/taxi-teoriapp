@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabase.js";
+import { QUESTIONS } from './questions.js';
 
 function Logo({ size = 42 }) {
   return (
@@ -13,13 +14,6 @@ function Logo({ size = 42 }) {
 
 
 // ─── FRÅGOR ──────────────────────────────────────────────────────────────────
-const QUESTIONS = [
-  { id:1, delprov:2, question:"Behöver bilen du ska övningsköra med privat vara utrustad med något speciellt?", options:["Ja, extra innerbackspeglar","Nej","Ja, dubbelkommando","Ja, extra backspeglar"], correct:2, explanation:"Vid privat övningskörning måste fordonet ha dubbelkommando – en extra bromspedal på passagerarsidan så att handledaren kan bromsa om det behövs." },
-  { id:2, delprov:2, question:"Finns det några speciella regler för ett följe av barn med ledare?", options:["Nej","Ja, du får inte bryta följet, även om du har grönt ljus vid ett övergångsställe"], correct:1, explanation:"Enligt trafikförordningen ska ett följe av barn med ledare behandlas som en grupp gående. Du får inte köra igenom och bryta följet, ens vid grönt ljus." },
-  { id:3, delprov:2, question:"Vad är den högsta tillåtna hastigheten på motorväg i Sverige om inget annat anges?", options:["100 km/h","110 km/h","120 km/h","130 km/h"], correct:2, explanation:"Enligt trafikförordningen (1998:1276) är bashastigheten på motorväg 120 km/h om inget annat anges med vägmärke." },
-  { id:4, delprov:1, question:"Hur lång är den lagstadgade minimivilan per dygn för en yrkesförare inom taxitrafik?", options:["8 timmar","9 timmar","11 timmar","12 timmar"], correct:2, explanation:"Enligt EU-förordning 561/2006 ska den dagliga minimivilan vara minst 11 sammanhängande timmar. Under vissa förutsättningar kan den reduceras till 9 timmar, men aldrig mer än 3 gånger per vecka." },
-  { id:5, delprov:1, question:"Vilken minimiålder krävs för att beviljas taxiförarlegitimation?", options:["18 år","19 år","20 år","21 år"], correct:3, explanation:"Enligt Transportstyrelsens föreskrifter (TSFS 2021:119) måste du ha fyllt 21 år för att få taxiförarlegitimation beviljad, trots att du kan göra teoriprovet från 18 år." },
-];
 
 const DELPROV_CONFIG = {
   1: { name:"Delprov 1", sub:"Säkerhet & beteende", total:70, countedQ:65, passMark:48, time:50 },
