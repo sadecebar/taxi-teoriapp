@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabase.js";
-import { QUESTIONS } from './questions.js';
+import { QUESTIONS as importedQuestions } from "./questions.js";
 
 function Logo({ size = 42 }) {
   return (
