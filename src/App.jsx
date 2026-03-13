@@ -2,26 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { supabase } from "./supabase.js";
 
 function Logo({ size = 42 }) {
-  const r = Math.round(size * 0.22);
   return (
-    <svg width={size} height={size} viewBox="0 0 100 100" style={{display:"block",borderRadius:r,flexShrink:0}}>
-      <defs>
-        <linearGradient id="lBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#242424"/><stop offset="100%" stopColor="#0e0e0e"/></linearGradient>
-        <linearGradient id="lGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#e8c96a"/><stop offset="100%" stopColor="#9a7820"/></linearGradient>
-        <linearGradient id="lSilver" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#ffffff"/><stop offset="50%" stopColor="#cccccc"/><stop offset="100%" stopColor="#888"/></linearGradient>
-        <linearGradient id="lBorder" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#c9a84c" stopOpacity="0.9"/><stop offset="100%" stopColor="#c9a84c" stopOpacity="0.1"/></linearGradient>
-      </defs>
-      <rect width="100" height="100" rx="22" fill="url(#lBg)"/>
-      <rect x="1.5" y="1.5" width="97" height="97" rx="21" fill="none" stroke="url(#lBorder)" strokeWidth="1.5"/>
-      <rect x="30" y="6" width="40" height="14" rx="4" fill="url(#lGold)"/>
-      <text x="50" y="16.5" textAnchor="middle" fontFamily="Arial Black,sans-serif" fontSize="8.5" fontWeight="900" fill="#111" letterSpacing="1.5">TAXI</text>
-      <rect x="18" y="22" width="64" height="14" rx="5" fill="url(#lSilver)"/>
-      <rect x="41" y="22" width="18" height="56" rx="5" fill="url(#lSilver)"/>
-      {[0,1,2,3,4,5,6,7,8,9,10,11].map(i => (
-        <rect key={i} x={4+i*8} y="82" width="8" height="8" fill={i%2===0?"url(#lGold)":"#2a2a2a"}/>
-      ))}
-      <rect x="4" y="90" width="92" height="2" rx="1" fill="url(#lGold)" opacity="0.25"/>
-    </svg>
+    <img
+      src={import.meta.env.BASE_URL + 'icon-180.png'}
+      alt="Taxi Teori"
+      style={{width:size,height:size,borderRadius:Math.round(size*0.22),display:"block",flexShrink:0,objectFit:"cover"}}
+    />
   );
 }
 
