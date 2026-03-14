@@ -56,8 +56,10 @@ export default function App() {
   const [timeLeft,    setTimeLeft]   = useState(null);
   const [flashIdx,    setFlashIdx]   = useState(0);
   const [flipped,     setFlipped]    = useState(false);
+  const [flashcards,  setFlashcards] = useState([]);
   const [result,      setResult]     = useState(null);
   const [statsLoaded, setStatsLoaded] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("alla");
   const [stats,       setStats]      = useState(() =>
     Object.fromEntries(QUESTIONS.map(q => [q.id, { c:0, w:0 }]))
   );
@@ -163,8 +165,10 @@ export default function App() {
   const startQuiz = (m) => {
     clearTimeout(timer.current);
     if (QUESTIONS.length === 0) return;
-    let qs = [...getQs(m)].sort(() => Math.random()-0.5);
-    if (m==="quick") qs = qs.slice(0,15);
+    let qs = [...getQs(m)].sort(() => Math.random() - 0.5);
+    if (m === "quick") qs = qs.slice(0, 15);
+    if (m === 1) qs = qs.slice(0, 70);
+    if (m === 2) qs = qs.slice(0, 50);
     const t = (m===1||m===2) ? DELPROV_CONFIG[m].time*60 : null;
     setMode(m); setQuiz({questions:qs,current:0,answers:[],answered:null});
     setTimeLeft(t); setResult(null); setView("quiz");
@@ -172,6 +176,9 @@ export default function App() {
 
   const [shakeBtn,   setShakeBtn]   = useState(null);
   const [popupQ,     setPopupQ]     = useState(null); // question object for result popup
+  const [statsQuestion, setStatsQuestion] = useState(null);
+  const [statsSelected, setStatsSelected] = useState(null);
+  const [statsAnswered, setStatsAnswered] = useState(false);
 
   const answer = (i) => {
     if (quiz.answered !== null) return;
@@ -208,6 +215,21 @@ export default function App() {
   const corr     = Object.values(stats).reduce((a,b)=>a+b.c,0);
   const acc      = tot>0?Math.round(corr/tot*100):0;
   const mastered = Object.values(stats).filter(s=>s.c>=2&&s.w===0).length;
+
+  const getQuestionStatus = (q) => {
+  const s = stats[q.id] || { c: 0, w: 0 };
+  const att = s.c + s.w;
+
+  if (att === 0) return "ej övad";
+  if (s.c >= 2 && s.c > s.w) return "behärskad";
+  if (s.c > s.w) return "på väg";
+  return "öva mer";
+};
+
+  const filteredQuestions =
+  statusFilter === "alla"
+    ? QUESTIONS
+    : QUESTIONS.filter(q => getQuestionStatus(q) === statusFilter);
 
   const goldGrad = `linear-gradient(135deg,${C.goldLight},${C.goldDark})`;
   const card     = { background:C.surface, border:`1px solid ${C.border}`, borderRadius:"12px" };
@@ -327,7 +349,18 @@ export default function App() {
 
             {/* Flashcards */}
             <Label c={C.muted}>🃏 Flashcards</Label>
-            <button onClick={()=>{setFlashIdx(0);setFlipped(false);setView("flashcard");}} style={{
+            <button 
+            onClick={() => {
+              const randomFive = [...QUESTIONS]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 5);
+
+              setFlashcards(randomFive);
+              setFlashIdx(0);
+              setFlipped(false);
+              setView("flashcard");
+            }} 
+            style={{
               ...card,width:"100%",padding:"16px",cursor:"pointer",
               display:"flex",alignItems:"center",gap:"14px",marginBottom:"26px",transition:"all 0.18s"
             }}
@@ -568,7 +601,7 @@ export default function App() {
 
         {/* ════ FLASHCARD ════ */}
         {view==="flashcard"&&(()=>{
-          const qs=QUESTIONS;
+          const qs = flashcards;
           if(qs.length===0) return(
             <div style={{textAlign:"center",paddingTop:"60px"}}>
               <div style={{fontSize:"48px",marginBottom:"12px"}}>📭</div>
@@ -621,10 +654,27 @@ export default function App() {
               </div>
 
               <div style={{display:"flex",gap:"8px"}}>
-                <button onClick={()=>{setFlashIdx(i=>Math.max(0,i-1));setFlipped(false);}}
-                  disabled={flashIdx===0} style={{flex:1,padding:"12px",background:"transparent",
-                    border:`1px solid ${C.border}`,borderRadius:"10px",
-                    color:flashIdx===0?C.faint:C.muted,cursor:flashIdx===0?"default":"pointer",fontSize:"18px"}}>←</button>
+                <button onClick={() => {
+                  if (flashIdx === qs.length - 1) {
+                    setView("home");
+                  } else {
+                    setFlashIdx(i => Math.min(qs.length - 1, i + 1));
+                    setFlipped(false);
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  padding: "12px",
+                  background: "transparent",
+                  border: `1px solid ${flashIdx === qs.length - 1 ? C.borderGold : C.border}`,
+                  borderRadius: "10px",
+                  color: flashIdx === qs.length - 1 ? C.gold : C.muted,
+                  cursor: "pointer",
+                  fontSize: flashIdx === qs.length - 1 ? "12px" : "18px"
+                }}
+              >
+                {flashIdx === qs.length - 1 ? "Klar" : "→"}
+                </button>
                 <button onClick={()=>setFlipped(f=>!f)} style={{flex:2,padding:"12px",
                   background:"rgba(201,168,76,0.09)",border:`1px solid ${C.borderGold}`,
                   borderRadius:"10px",color:C.gold,cursor:"pointer",fontSize:"12px",fontWeight:"700"}}>
@@ -640,40 +690,289 @@ export default function App() {
         })()}
 
         {/* ════ STATS ════ */}
-        {view==="stats"&&(
-          <div>
-            <h2 style={{fontSize:"20px",fontWeight:"700",color:C.silver,marginBottom:"18px"}}>📊 Din statistik</h2>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"20px"}}>
-              {[[`${acc}%`,"Träffsäkerhet",C.gold],[tot,"Totala svar",C.silver],[corr,"Rätt svar","#8fcc8f"],[`${mastered}/${QUESTIONS.length}`,"Behärskade","#b8a0d0"]].map(([v,l,c])=>(
-                <div key={l} style={{...card,padding:"15px",textAlign:"center"}}>
-                  <div style={{fontSize:"26px",fontWeight:"700",color:c}}>{v}</div>
-                  <div style={{fontSize:"10px",color:C.muted,marginTop:"3px"}}>{l}</div>
-                </div>
-              ))}
-            </div>
-            <Label c={C.muted}>Frågor per status</Label>
-            {QUESTIONS.length===0
-              ?<p style={{color:C.muted,fontSize:"13px"}}>Inga frågor inlagda än.</p>
-              :<div style={{display:"flex",flexDirection:"column",gap:"5px"}}>
-                {QUESTIONS.map(q=>{
-                  const s=stats[q.id]||{c:0,w:0};
-                  const att=s.c+s.w;
-                  const status=att===0?"ej övad":s.c>=2&&s.w===0?"behärskad":s.c>s.w?"på väg":"öva mer";
-                  const col={behärskad:"#8fcc8f","på väg":C.gold,"öva mer":C.red,"ej övad":C.faint}[status];
-                  return(
-                    <div key={q.id} style={{display:"flex",alignItems:"center",gap:"8px",
-                      padding:"9px 12px",...card,borderRadius:"8px"}}>
-                      <span style={{width:"6px",height:"6px",borderRadius:"50%",background:col,flexShrink:0}}/>
-                      <span style={{flex:1,fontSize:"11px",color:C.textSoft}}>{q.question.substring(0,56)}...</span>
-                      <span style={{fontSize:"10px",color:col,whiteSpace:"nowrap"}}>{status}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            }
-          </div>
-        )}
-      </main>
+  {view==="stats"&&(
+  <div>
+    <h2 style={{fontSize:"20px",fontWeight:"700",color:C.silver,marginBottom:"18px"}}>📊 Din statistik</h2>
+
+    <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:"8px",marginBottom:"20px"}}>
+      {[[`${acc}%`,"Träffsäkerhet",C.gold],[tot,"Totala svar",C.silver],[corr,"Rätt svar","#8fcc8f"],[`${mastered}/${QUESTIONS.length}`,"Behärskade","#b8a0d0"]].map(([v,l,c])=>(
+        <div key={l} style={{...card,padding:"15px",textAlign:"center"}}>
+          <div style={{fontSize:"26px",fontWeight:"700",color:c}}>{v}</div>
+          <div style={{fontSize:"10px",color:C.muted,marginTop:"3px"}}>{l}</div>
+        </div>
+      ))}
+    </div>
+
+    <Label c={C.muted}>Frågor per status</Label>
+
+    <div style={{display:"flex",gap:"8px",flexWrap:"wrap",marginBottom:"14px"}}>
+      {["alla", "ej övad", "öva mer", "på väg", "behärskad"].map(f => (
+        <button
+          key={f}
+          onClick={() => setStatusFilter(f)}
+          style={{
+            padding:"8px 12px",
+            borderRadius:"8px",
+            border:`1px solid ${statusFilter === f ? C.borderGold : C.border}`,
+            background:statusFilter === f ? "rgba(201,168,76,0.12)" : "transparent",
+            color:statusFilter === f ? C.gold : C.muted,
+            cursor:"pointer",
+            fontSize:"12px"
+          }}
+        >
+          {f}
+        </button>
+      ))}
+    </div>
+
+    <p style={{ color: C.gold, fontSize: "12px", marginBottom: "10px" }}>
+      Filter: {statusFilter} | Antal: {filteredQuestions.length}
+    </p>
+
+    {statsQuestion && (
+      <p style={{ color: C.muted, fontSize: "12px", marginBottom: "10px" }}>
+        Vald fråga: {statsQuestion.id}
+      </p>
+    )}
+
+    {QUESTIONS.length === 0 ? (
+      <p style={{ color: C.muted, fontSize: "13px" }}>Inga frågor inlagda än.</p>
+    ) : (
+      <div key={statusFilter} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+        {filteredQuestions.map((q) => {
+          const status = getQuestionStatus(q);
+          const col = {
+            "behärskad": "#8fcc8f",
+            "på väg": C.gold,
+            "öva mer": C.red,
+            "ej övad": C.faint,
+          }[status];
+
+          return (
+            <button
+              key={q.id}
+              type="button"
+              onClick={() => {
+                console.log("Klickad fråga:", q.id);
+                setStatsSelected(null);
+                setStatsAnswered(false);
+                setStatsQuestion(q);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "9px 12px",
+                ...card,
+                borderRadius: "8px",
+                width: "100%",
+                cursor: "pointer",
+                textAlign: "left",
+                fontFamily: "inherit",
+                appearance: "none",
+                WebkitAppearance: "none",
+              }}
+            >
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: col,
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ flex: 1, fontSize: "11px", color: C.textSoft }}>
+                {q.question.substring(0, 56)}...
+              </span>
+              <span style={{ fontSize: "10px", color: col, whiteSpace: "nowrap" }}>
+                {status}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    )}
+
+    {statsQuestion && (
+      <div
+        onClick={() => setStatsQuestion(null)}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.75)",
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "center",
+          zIndex: 100,
+          backdropFilter: "blur(4px)",
+          animation: "fadeIn 0.2s ease both"
+        }}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            background: "#1a1a1a",
+            borderRadius: "20px 20px 0 0",
+            border: `1px solid ${C.borderGold}`,
+            borderBottom: "none",
+            padding: "24px 20px 40px",
+            width: "100%",
+            maxWidth: "660px",
+            animation: "slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1) both"
+          }}
+        >
+          <div
+            style={{
+              width: "40px",
+              height: "4px",
+              background: C.border,
+              borderRadius: "2px",
+              margin: "0 auto 20px",
+            }}
+          />
+
+          {statsQuestion.image && (
+            <img
+              src={statsQuestion.image}
+              alt=""
+              style={{
+                width: "100%",
+                borderRadius: "10px",
+                marginBottom: "14px",
+                border: `1px solid ${C.border}`
+              }}
+            />
+          )}
+
+          <p
+            style={{
+    fontSize: "16px",
+    fontWeight: "600",
+    color: C.text,
+    lineHeight: "1.65",
+    marginBottom: "16px"
+  }}
+>
+  {statsQuestion.question}
+</p>
+
+<div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
+  {statsQuestion.options.map((opt, i) => {
+    const isCorrect = i === statsQuestion.correct;
+    const isChosen = i === statsSelected;
+
+  let bg = C.surface;
+  let border = `1px solid ${C.border}`;
+  let col = C.textSoft;
+
+  if (statsAnswered) {
+    if (isCorrect) {
+      bg = C.greenBg;
+      border = `1px solid ${C.green}`;
+      col = "#8fcc8f";
+    } else if (isChosen) {
+      bg = C.redBg;
+      border = `1px solid ${C.red}`;
+      col = "#cc8080";
+    }
+  } else if (isChosen) {
+    bg = "rgba(201,168,76,0.10)";
+    border = `1px solid ${C.gold}`;
+    col = C.goldLight;
+  }
+
+  return (
+    <button
+      key={i}
+      type="button"
+      onClick={() => {
+          if (statsAnswered) return;
+
+  const ok = i === statsQuestion.correct;
+  const currentStat = stats[statsQuestion.id] || { c: 0, w: 0 };
+  const newC = currentStat.c + (ok ? 1 : 0);
+  const newW = currentStat.w + (ok ? 0 : 1);
+
+  setStatsSelected(i);
+  setStatsAnswered(true);
+
+  setStats((prev) => ({
+    ...prev,
+    [statsQuestion.id]: { c: newC, w: newW }
+  }));
+
+  saveStat(statsQuestion.id, newC, newW);
+      }}
+      style={{
+        background: bg,
+        border,
+        borderRadius: "10px",
+        padding: "13px 15px",
+        color: col,
+        fontSize: "14px",
+        textAlign: "left",
+        cursor: statsAnswered ? "default" : "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        fontFamily: "inherit",
+        width: "100%"
+      }}
+    >
+      <span
+        style={{
+          width: "24px",
+          height: "24px",
+          borderRadius: "50%",
+          background: "rgba(255,255,255,0.05)",
+          border: `1px solid ${C.border}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "11px",
+          fontWeight: "700",
+          flexShrink: 0,
+          color: C.silverDim
+        }}
+      >
+        {["A", "B", "C", "D"][i]}
+      </span>
+      {opt}
+    </button>
+     );
+    })}
+</div>
+
+{statsAnswered && (
+  <p style={{ color: C.textSoft, fontSize: "13px", marginBottom: "16px" }}>
+    {statsQuestion.explanation}
+  </p>
+)}
+
+<button
+  onClick={() => setStatsQuestion(null)}
+  style={{
+    ...btnGold,
+    width: "100%",
+    padding: "13px",
+    fontSize: "14px",
+    marginTop: "8px"
+  }}
+>
+  Stäng
+          </button>
+        </div>
+      </div>
+    )}
+
+    <style>{`
+      @keyframes fadeIn  { from{opacity:0} to{opacity:1} }
+      @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+    `}</style>
+  </div>
+)}
+     </main>
     </div>
   );
 }
