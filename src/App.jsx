@@ -610,14 +610,6 @@ function ScoreBar({ score, total, passMark }) {
   );
 }
 
-/** Subtle fixed version badge */
-function AppVersion() {
-  return (
-    <div className="app-version">
-      v{APP_VERSION}
-    </div>
-  );
-}
 
 // ─── Shared style presets ─────────────────────────────────────────────────────
 const card    = { background: C.surface, border: `1px solid ${C.border}`, borderRadius: "16px" };
@@ -1089,6 +1081,14 @@ export default function App() {
               </div>
               <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
             </button>
+
+            {/* Version — home screen only */}
+            <div style={{
+              textAlign: "center", marginTop: "24px",
+              fontSize: "11px", color: C.muted, opacity: 0.45, letterSpacing: "0.3px",
+            }}>
+              v{APP_VERSION}
+            </div>
           </div>
         )}
 
@@ -1645,8 +1645,6 @@ export default function App() {
         </nav>
       )}
 
-      {/* ── VERSION ─────────────────────────────────────────────────────── */}
-      <AppVersion />
     </div>
   );
 }
