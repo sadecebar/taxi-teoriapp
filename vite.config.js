@@ -1,4 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'fs'
 
-export default defineConfig({ plugins: [react()], base: '/taxi-teoriapp/' })
+const pkg = JSON.parse(readFileSync('./package.json', 'utf8'))
+
+export default defineConfig({
+  plugins: [react()],
+  base: '/taxi-teoriapp/',
+  define: {
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(pkg.version),
+  },
+})

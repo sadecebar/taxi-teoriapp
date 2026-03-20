@@ -9,13 +9,10 @@ import { SAKERHET_1 } from "./sakerhet-1.js";
 import { SAKERHET_2 } from "./sakerhet-2.js";
 import { SAKERHET_3 } from "./sakerhet-3.js";
 
-import { KARTFRAGOR_1 } from "./kartfragor-1.js";
-
 export const DELPROV_1_QUESTIONS = [
   ...SAKERHET_1,
   ...SAKERHET_2,
   ...SAKERHET_3,
-  ...KARTFRAGOR_1,
 ];
 
 export const DELPROV_2_QUESTIONS = [
