@@ -10,26 +10,26 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 0,
     image: "https://teori-taxi.com/images/Lagstiftning/52.png",
-    explanation: "Det är ett obevakat övergångsställe, och fordonsförare har väjningsplikt mot gående. Att den gående ännu inte är ute på körbanan eller att det finns en refug ändrar inte att du ska anpassa farten och vara beredd att stanna."
+    explanation: "Detta är ett obevakat övergångsställe. Som förare har du väjningsplikt mot gående som har gått ut eller just ska gå ut på övergångsstället. Du ska därför sänka farten i god tid och vara beredd att stanna. Att du tycker att fotgängaren verkar ha sett dig ändrar inte din väjningsplikt."
   },
   {
     id: 52,
     delprov: 2,
-    question: "Var ska taxameterns kontroll- och plomberingsrapport förvaras?",
+    question: "Var ska den senaste kontrollrapporten för taxametern förvaras?",
     options: [
-      "Hos länsstyrelsen",
-      "Hos vägverket",
+      "Hos Transportstyrelsen",
+      "Hos besiktningsorganet",
       "I fordonet",
       "Hos tillståndshavaren"
     ],
     correct: 2,
     image: null,
-    explanation: "Den senaste kontrollrapporten i original ska medföras i fordonet och kunna visas upp vid kontroll. Därför är rätt svar att rapporten ska finnas i fordonet."
+    explanation: "Den senaste kontrollrapporten för taxametern ska finnas i original i fordonet. Den ska kunna visas upp vid en kontroll. Därför är rätt svar att rapporten ska förvaras i fordonet."
   },
   {
     id: 53,
     delprov: 2,
-    question: "När får du tidigast börja köra taxi den 14 juli enligt tidboksbladet?",
+    question: "Enligt tidboksbladet, när får du tidigast börja köra taxi den 14 juli?",
     options: [
       "Kl 06.00",
       "Kl 00.00",
@@ -38,21 +38,21 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 1,
     image: "https://teori-taxi.com/images/Lagstiftning/54.png",
-    explanation: "En förare ska ha minst 11 timmars dygnsvila under varje 24-timmarsperiod före en transport, och vilan får delas upp i två perioder om en av dem är minst 8 timmar. Tidboksbladet visar tillräcklig vila före midnatt den 14 juli, så körning kan påbörjas från kl. 00.00."
+    explanation: "Rätt svar är kl. 00.00. När du börjar köra måste du ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna. Tidboksbladet visar att föraren den 13 juli vilade mellan 00.00–13.00 och 20.00–24.00. Det innebär att det redan vid midnatt till den 14 juli finns mer än 11 timmars vila under den föregående 24-timmarsperioden. Därför får körningen påbörjas från kl. 00.00."
   },
   {
     id: 54,
     delprov: 2,
-    question: "Vem ansvarar för att en taxi som används vid skolskjutsning har rätt utrustning?",
+    question: "Vem ansvarar om en taxi som används vid skolskjutsning inte har den utrustning som krävs?",
     options: [
       "Föraren och tillståndshavaren",
-      "Föraren och skolstyrelsen",
-      "Föraren, tillståndshavaren och skolstyrelsen",
+      "Föraren och skolhuvudmannen",
+      "Föraren, tillståndshavaren och skolhuvudmannen",
       "Enbart föraren"
     ],
     correct: 0,
     image: null,
-    explanation: "Fordon som används för skolskjutsning måste uppfylla särskilda krav, till exempel bilbälten på sittplatser och skyltning. Jag bedömer att rätt facit här är föraren och tillståndshavaren: tillståndshavaren ansvarar för att rätt fordon och utrustning används i verksamheten, och föraren ansvarar för att fordonet används trafiksäkert. Den här frågan är lite mindre tydlig i källorna än de andra."
+    explanation: "Rätt svar är föraren och tillståndshavaren. Vid skolskjutsning finns särskilda krav på fordonet, till exempel skyltning, dörrsäkerhet och bilbälten på sittplatser i personbil eller lätt lastbil. Om en taxi används i strid med dessa krav är det föraren och den som bedriver skolskjutsningen som ansvarar. I taxitrafik motsvarar det normalt föraren och tillståndshavaren."
   },
   {
     id: 55,
@@ -60,13 +60,13 @@ export const LAGSTIFTNING_2 = [
     question: "Vem ansvarar normalt för att ett 14-årigt barn använder bilbälte vid skolskjutsning i taxibil?",
     options: [
       "Barnet själv",
-      "Skolpersonalen om det finns sådan med i bilen",
+      "Skolpersonal som följer med i bilen",
       "Barnets föräldrar om de finns med i bilen",
       "Föraren"
     ],
     correct: 3,
     image: null,
-    explanation: "Passagerare under 15 år omfattas av ett särskilt ansvar för vuxna i fordonet. Transportstyrelsen anger att föraren, annan ombordpersonal, ledsagare eller ledare ska se till att passagerare under 15 år använder bilbälte. I en vanlig taxiskolskjuts är det därför normalt föraren som ansvarar."
+    explanation: "Rätt svar är föraren. För passagerare som är under 15 år är det föraren som normalt ska se till att bilbälte används. I vissa situationer kan även annan ombordpersonal eller en ledsagare ha ansvar, men i en vanlig skolskjuts med taxibil är det normalt föraren som ansvarar för detta. Tänk därför att barn under 15 år inte själva bär hela ansvaret för bilbältet."
   },
   {
     id: 56,
@@ -80,7 +80,7 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 1,
     image: null,
-    explanation: "Transportstyrelsen anger att den som har taxiförarlegitimation får köra personbil eller lätt lastbil i taxitrafik. Därför är lätta lastbilar rätt svar."
+    explanation: "Rätt svar är lätta lastbilar. Taxitrafik får bedrivas med personbil eller lätt lastbil. Det betyder att en taxiförarlegitimation gäller för dessa fordonstyper i taxitrafik, men inte för buss, motorcykel eller tung lastbil. Ett bra sätt att tänka är att taxi i lagens mening omfattar personbil och lätt lastbil."
   },
   {
     id: 57,
@@ -94,12 +94,12 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 0,
     image: null,
-    explanation: "Prisinformationen inne i fordonet ska enligt Transportstyrelsens föreskrifter vara läsbar från varje passagerarplats. De andra alternativen stämmer inte med den regeln."
+    explanation: "Rätt svar är att prisinformationen ska vara läsbar från varje passagerarplats i fordonet. Regeln finns i Transportstyrelsens föreskrifter om taxitrafik. Tanken är att alla passagerare tydligt ska kunna se vilken prisinformation som gäller för bilen. De andra alternativen beskriver krav som inte finns i den formen i reglerna."
   },
   {
     id: 58,
     delprov: 2,
-    question: "Vem är ansvarig för att anteckningar om vilotider förs enligt bestämmelserna?",
+    question: "Vem ansvarar för att anteckningar om dygnsvila förs enligt bestämmelserna?",
     options: [
       "Enbart arbetsgivaren",
       "Enbart företagets trafikansvarige",
@@ -108,7 +108,7 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 3,
     image: null,
-    explanation: "Transportstyrelsen anger att både taxiförare och arbetsgivare ansvarar för att vilotidsreglerna följs. Föraren ska göra anteckningarna i sin personliga tidbok, men arbetsgivaren har också ansvar för att systemet fungerar och att reglerna efterlevs."
+    explanation: "Rätt svar är både föraren och arbetsgivaren. Föraren ska föra anteckningar om sin dygnsvila i en personlig tidbok innan körningen påbörjas. Om föraren är anställd ska motsvarande anteckningar också finnas hos arbetsgivaren. Tänk därför att ansvaret är delat: föraren antecknar sin vila, men arbetsgivaren måste också se till att anteckningarna görs och bevaras enligt reglerna."
   },
   {
     id: 59,
@@ -123,7 +123,7 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 3,
     image: null,
-    explanation: "Transportstyrelsen skriver att halvljus och annat ljus inte får användas samtidigt. Med annat ljus avses bland annat dimljus. Därför är halvljus och dimljus förbjudet att använda samtidigt."
+    explanation: "Rätt svar är halvljus och dimljus. Dimljus får i vissa situationer användas i stället för halvljus, till exempel i dimma eller vid kraftig nederbörd, men de får inte användas samtidigt. Tänk därför: dimljus kan ersätta halvljus i vissa lägen, men aldrig kombineras med halvljus."
   },
   {
     id: 60,
@@ -137,21 +137,21 @@ export const LAGSTIFTNING_2 = [
     ],
     correct: 0,
     image: null,
-    explanation: "Dygnsvilan ska vara minst 11 timmar under den föregående 24-timmarsperioden. Den får delas upp i två perioder, där en av perioderna måste vara minst 8 timmar. Därför är 3 timmar + 8 timmar godkänt, men inte de andra alternativen."
+    explanation: "Rätt svar är 3 tim + 8 tim. Dygnsvilan ska vara minst 11 timmar under den föregående 24-timmarsperioden. Den får delas upp i två perioder, men inte fler, och en av perioderna måste vara minst 8 timmar. Därför är 3 + 8 godkänt. De andra alternativen är fel eftersom de antingen saknar en viloperiod på minst 8 timmar eller delar upp vilan i för många perioder."
   },
   {
   id: 61,
   delprov: 2,
-  question: "Vid vilken av följande tidpunkter gäller hastighetsbegränsningen 50 km/h?",
+  question: "Enligt märket på bilden, vid vilken tidpunkt gäller den tidsbegränsade hastighetsbegränsningen 50 km/h?",
   options: [
-    "En söndag kl 08.00",
-    "En vardag som inte är dag före helgdag kl 20.00",
-    "En lördag kl 12.00",
-    "En vardag som inte är dag före helgdag kl 18.00"
+    "En söndag kl. 08.00",
+    "En vardag som inte är dag före helgdag kl. 20.00",
+    "En lördag kl. 12.00",
+    "En vardag som inte är dag före helgdag kl. 18.00"
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/62.png",
-  explanation: "Tilläggstavlan med tider gäller bara under de tider som anges. Av alternativen är det bara en vardag som inte är dag före helgdag kl. 18.00 som ligger inom den angivna tidsperioden."
+  explanation: "Rätt svar är en vardag som inte är dag före helgdag kl. 18.00. Tilläggstavlan visar tiden 6.00–18.30 med svarta siffror utan parentes. Det betyder att 50-begränsningen gäller på vardagar utom vardag före sön- och helgdag. Därför gäller den inte på söndag, och inte heller på lördag eftersom lördag är vardag före söndag. Den gäller inte heller kl. 20.00, eftersom det är efter 18.30. Tänk så här: svarta tider utan parentes = vanliga vardagar."
 },
 {
   id: 62,
@@ -160,12 +160,12 @@ export const LAGSTIFTNING_2 = [
   options: [
     "Ja, i situation A",
     "Ja, i situation B",
-    "Ja, i både situationerna",
+    "Ja, i båda situationerna",
     "Nej"
   ],
-  correct: 1,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/63.png",
-  explanation: "Att vänta på en kund räknas som parkering, inte bara ett kort stopp. Därför är det bara tillåtet i den situation där platsen och skyltningen medger parkering."
+  explanation: "Rätt svar är situation A. Att vänta på en kund räknas som parkering, eftersom det inte är fråga om direkt på- eller avstigning. I situation A finns ingen tydlig skyltning i bilden som förbjuder parkering. I situation B står bilen på en sträcka med parkeringsförbud. Märket betyder förbud mot att parkera, och tilläggstavlan med nedåtriktad pil visar att förbudet slutar vid märket. Eftersom taxin står före märket är det inte tillåtet där."
 },
 {
   id: 63,
@@ -173,13 +173,13 @@ export const LAGSTIFTNING_2 = [
   question: "Vilket påstående är riktigt om gatan på bilden?",
   options: [
     "All fordonstrafik är förbjuden",
-    "Man får hämta kunder som bor vid gatan med taxi",
-    "All fordonstrafik",
-    "Endast fordonstrafik med särskild tillstånd är tillåtet"
+    "Taxi får hämta eller lämna kunder som bor vid gatan",
+    "All motorfordonstrafik är tillåten",
+    "Endast fordonstrafik med särskilt tillstånd är tillåten"
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/64.png",
-  explanation: "Märket visar att gatan har begränsad motortrafik, men vissa transporter till eller från adress på gatan är tillåtna. Taxi får därför köra där för att hämta eller lämna kunder som har ärende eller adress vid gatan."
+  explanation: "Rätt svar är att taxi får hämta eller lämna kunder som bor vid gatan. Märket visar gågata. På en gågata får motordrivna fordon normalt inte köras, men det finns undantag, bland annat för transporter av boende till eller från adress vid gågatan. Därför får en taxi köra in för att hämta eller lämna en kund som bor där. Tänk så här: gågata betyder inte totalt körförbud i alla lägen, men du måste omfattas av ett tydligt undantag."
 },
 {
   id: 64,
@@ -193,12 +193,12 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Om körningen sker till fast pris ska priset registreras i taxametern när köruppdraget påbörjas. Det får alltså inte vänta till slutet av resan, om det inte är ett externt samplaneringssystem som beräknar priset."
+  explanation: "Rätt svar är när jag börjar körningen. Om ett köruppdrag körs till fast pris ska priset registreras i taxametern när köruppdraget påbörjas. Det får alltså inte registreras senare under resan eller vid slutet av körningen. Undantag finns bara när priset beräknas av ett externt samplaneringssystem, och det gäller inte här."
 },
 {
   id: 65,
   delprov: 2,
-  question: "Vilket vägmärke används på huvudled för att varna för en farlig korsning?",
+  question: "Vilket vägmärke används på huvudled för att varna för en korsning där anslutande trafik har väjningsplikt eller stopplikt?",
   options: [
     "Vägmärke A",
     "Vägmärke B",
@@ -206,27 +206,26 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/66.png",
-  explanation: "På huvudled varnas du för en farlig korsning med det varningsmärke som särskilt anger korsning med anslutande väg där trafiken från huvudleden har företräde. Därför är alternativ C rätt."
+  explanation: "Rätt svar är vägmärke C. På en huvudled används märket \"Varning för vägkorsning där trafikanter på anslutande väg har väjningsplikt eller stopplikt\" när korsningen är komplicerad eller svåröverskådlig. Det vanliga märket för vägkorsning används inte för att visa just denna huvudledssituation. Tänk så här: när frågan gäller huvudled och att anslutande trafik ska väja eller stanna, då är det det särskilda varningsmärket för huvudled som gäller."
 },
 {
   id: 66,
   delprov: 2,
-  question: "Var på fordonet ska yrkestrafikmärket vara fastsatt?",
+  question: "Vilken yttre markering ska en taxibil i Sverige ha?",
   options: [
-    "På bildens vänstra sidoruta",
-    "I nedre vänstra hörnet av vindrutan",
-    "Bredvid den bakre registreringsskylten",
-    "På bildens högra sidoruta",
-    "På instrumentbrädans högra sida"
+    "Vita registreringsskyltar",
+    "Gula registreringsskyltar",
+    "Ett yrkestrafikmärke i vindrutan",
+    "En särskild skylt på instrumentbrädan"
   ],
   correct: 1,
   image: null,
-  explanation: "Yrkestrafikmärket ska vara placerat så att det är väl synligt utifrån på fordonets främre vänstra sida. Därför är nedre vänstra hörnet av vindrutan rätt placering."
+  explanation: "Rätt svar är gula registreringsskyltar. I dagens taxitrafik är det den tydliga yttre markeringen för taxifordon. Transportstyrelsen anger att taxifordon har gula registreringsskyltar, och om fordonet slutar användas i taxitrafik ska dessa återlämnas. Tänk därför att äldre frågor om yrkestrafikmärke hör till ett gammalt regelsystem och inte bör styra hur du svarar på moderna taxifrågor."
 },
 {
   id: 67,
   delprov: 2,
-  question: "När du ska börja ditt körpass upptäcker du att du glömt din personliga tidbok. Vad gäller?",
+  question: "När du ska börja ditt körpass upptäcker du att du har glömt din personliga tidbok. Vad gäller? (Du använder tidbok och inte färdskrivare.)",
   options: [
     "Jag får påbörja en ny tidbok under förutsättning att jag använder högst två böcker samtidigt",
     "Jag får påbörja en ny tidbok under förutsättning att jag makulerar den glömda boken direkt efter mitt körpass",
@@ -235,20 +234,20 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Tidboken är personlig och ska följa föraren. Du får inte börja föra anteckningar i en ny bok bara för att den gamla är glömd, och du får inte heller använda någon annans tidbok."
+  explanation: "Rätt svar är att du måste hämta tidboken innan du börjar körpasset. Tidboken ska medföras under färden, den är personlig och du får bara ha en oavslutad tidbok åt gången. Du får inte börja i en ny tidbok bara för att den gamla är glömd, och du får inte heller använda någon annans tidbok. Tänk så här: tidboken följer föraren, inte arbetsgivaren eller bilen."
 },
 {
   id: 68,
   delprov: 2,
-  question: "Vad anger de gula vägmarkeringarna?",
+  question: "Vad anger den gula vägmarkeringen längs körbanekanten?",
   options: [
     "Förbud att parkera",
     "Förbud att stanna och parkera",
-    "Förbud att köra på den gula heldragna linjen"
+    "Förbud att köra på den gula markeringen"
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/69-600x459.png",
-  explanation: "Gul markering vid kanten används för att visa parkeringsförbud eller stoppförbud beroende på markeringens utformning. I den här frågan anger markeringen förbud att parkera."
+  explanation: "Rätt svar är förbud att parkera. Den gula vägmarkeringen längs körbanekanten betyder parkeringsförbud. I bilden syns också en busshållplats, och där finns dessutom särskilda regler för stannande och parkering. För att tänka rätt på sådana frågor ska du först avgöra vad själva vägmarkeringen betyder, och sedan skilja det från andra regler som kan gälla på platsen."
 },
 {
   id: 69,
@@ -259,9 +258,9 @@ export const LAGSTIFTNING_2 = [
     "Jag får köra men måste först stanna vid stopplinjen",
     "Jag ska stanna vid stopplinjen och vänta på grönt ljus"
   ],
-  correct: 0,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/70.png",
-  explanation: "Om signal eller skyltning visar att svängen är tillåten och vägen är fri får du köra utan att först stanna vid stopplinjen. Det avgörande är att du följer signalen och har kontroll på trafiken."
+  explanation: "Rätt svar är att du ska stanna vid stopplinjen och vänta på grönt ljus. Röd signal betyder stopp, och du får inte passera stopplinjen. Det finns ingen allmän regel som låter dig svänga höger mot rött efter att först ha stannat. Om en signal har pil gäller den bara den riktning pilen visar, men här visas ingen grön högersvängspil som tillåter körning. Tänk därför: rött ljus = stanna och vänta, även om du bara ska svänga höger."
 },
 {
   id: 70,
@@ -276,7 +275,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 4,
   image: "https://teori-taxi.com/images/Lagstiftning/71.png",
-  explanation: "När du ska förbereda en sväng ska du börja med att kontrollera trafiken bakom och runt bilen. Först därefter är det lämpligt att ge tecken, anpassa hastigheten och placera fordonet rätt."
+  explanation: "Rätt svar är att kontrollera bakomvarande trafik. När du ska svänga till vänster måste du först försäkra dig om att svängen kan ske utan fara eller onödigt hinder för andra som färdas i samma riktning. Därför börjar du med att kontrollera trafiken bakom dig. Först därefter är det lämpligt att ge tecken, anpassa hastigheten och placera bilen rätt inför svängen. Tänk så här: innan du förbereder svängen måste du veta vad som händer bakom dig."
 },
 {
   id: 71,
@@ -290,21 +289,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/72.png",
-  explanation: "Att släppa av en kund räknas som att stanna, inte parkera. Det är bara tillåtet i den situation där stoppet inte strider mot skyltning eller andra stoppförbud."
+  explanation: "Rätt svar är situation B. Att släppa av en kund räknas som stannande, inte parkering. I situation B står bilen på höger sida i färdriktningen och efter övergångsstället, vilket gör stoppet tillåtet. I situation A står bilen på vänster sida i färdriktningen. På en vanlig väg får du normalt bara stanna på högra sidan, om vägen inte är enkelriktad eller om särskilda undantag gäller. Tänk därför så här: avstigning får ske vid ett kort stopp, men du måste fortfarande följa de vanliga reglerna för var stannande är tillåtet."
 },
 {
   id: 72,
   delprov: 2,
-  question: "Du är taxiförare och har körkort med behörighet B. Vilket av följande fordon får du köra?",
+  question: "Du har körkort med behörighet B. Vilket av följande fordon får du köra?",
   options: [
     "Lastbil med totalvikt på 3,7 ton",
     "Bil inrättad för 12 personer",
     "Personbil med totalvikt på 3,2 ton",
-    "Personbil med tillkopplad tung släpvagn"
+    "Personbil med släp där bilens och släpets sammanlagda totalvikt överstiger 3,5 ton"
   ],
   correct: 2,
   image: null,
-  explanation: "Med körkortsbehörighet B får du köra personbil och lätt lastbil med en totalvikt på högst 3,5 ton. Därför är personbil med totalvikt på 3,2 ton rätt svar."
+  explanation: "Rätt svar är personbil med totalvikt på 3,2 ton. Med behörighet B får du köra personbil och lätt lastbil med totalvikt på högst 3,5 ton. Du får inte köra en lastbil på 3,7 ton med B-behörighet, och en bil som är inrättad för 12 personer räknas som buss. Du får inte heller köra en fordonskombination där bilens och släpets sammanlagda totalvikt överstiger 3,5 ton utan högre eller utökad behörighet. Tänk därför först på huvudregeln: B = personbil eller lätt lastbil upp till 3,5 ton."
 },
 {
   id: 73,
@@ -318,21 +317,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/74.png",
-  explanation: "Du får inte stanna där om stoppet bryter mot stoppförbud eller skapar fara eller hinder. Att du bara ska hämta en passagerare ändrar inte det."
+  explanation: "Rätt svar är nej. Att hämta en passagerare räknas som stannande, men du får ändå inte stanna på ett sådant sätt att trafiken onödigtvis hindras eller att fara uppstår. På bilden står taxin på en smal gata där stoppet gör det svårt för annan trafik att passera. Det spelar därför ingen roll att stoppet är kort eller att syftet är att hämta en kund. Tänk så här: ett kort stopp är bara tillåtet om det kan ske utan att störa eller hindra trafiken i onödan."
 },
 {
   id: 74,
   delprov: 2,
-  question: "Du kör taxi och börjar ett körpass kl 13.00 den 4 augusti. Tidboksbladet visar dina vilotider de senaste dygnen. När måste du senast börja nästa viloperiod?",
+  question: "Du kör taxi och börjar ett körpass kl. 13.00 den 4 augusti. Tidboksbladet visar dina vilotider de senaste dygnen. När måste du senast börja nästa viloperiod?",
   options: [
-    "Kl 16.00 den 4 augusti",
-    "Kl 21.30 den 4 augusti",
-    "Kl 02.00 den 5 augusti",
-    "Kl 19.00 den 4 augusti"
+    "Kl. 16.00 den 4 augusti",
+    "Kl. 21.30 den 4 augusti",
+    "Kl. 02.00 den 5 augusti",
+    "Kl. 19.00 den 4 augusti"
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/75.png",
-  explanation: "En förare ska ha haft minst 11 timmars dygnsvila under den 24-timmarsperiod som föregår varje tidpunkt då transport utförs. Utifrån tidboksbladet måste nästa viloperiod därför börja senast kl. 19.00 den 4 augusti."
+  explanation: "Rätt svar är kl. 19.00 den 4 augusti. En taxiförare måste ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna före varje tidpunkt då körning sker. På tidboksbladet syns vila den 3 augusti kl. 19.00–21.30 och den 4 augusti kl. 04.30–13.00. Tillsammans är det 11 timmar. Vid kl. 19.00 den 4 augusti finns dessa 11 vilotimmar fortfarande kvar inom den föregående 24-timmarsperioden. Om du fortsätter köra efter kl. 19.00 faller en del av den tidigare vilan ut ur 24-timmarsfönstret, och då uppfylls inte kravet längre. Tänk därför så här: flytta ett 24-timmarsfönster framåt och kontrollera hur mycket vila som fortfarande ligger kvar i det."
 },
 {
   id: 75,
@@ -346,7 +345,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/76.png",
-  explanation: "Märket anger att du kör in i tättbebyggt område. Om inget annat anges är högsta tillåtna hastighet då 50 km/h, men eftersom facit här pekar på 70 km/h tyder det på att bilden i stället visar en väg där 70 km/h gäller efter märket. Den här frågan bör dubbelkollas mot själva bilden i appen."
+  explanation: "Rätt svar är 70 km/h. Märket visar att tättbebyggt område upphör. Om ingen annan hastighet är skyltad efter märket gäller bashastigheten utanför tättbebyggt område, alltså 70 km/h. Tänk så här: in i tättbebyggt område = normalt 50 km/h, ut ur tättbebyggt område = normalt 70 km/h."
 },
 {
   id: 76,
@@ -355,26 +354,26 @@ export const LAGSTIFTNING_2 = [
   options: [
     "Alla som kör färdtjänsttransport",
     "Alla som kör sjuktransport",
-    "Alla rörelsehindrade med rullstol",
-    "Alla rörelsehindrade med särskilt tillstånd"
+    "Alla rörelsehindrade som använder rullstol",
+    "Den som har parkeringstillstånd för rörelsehindrade"
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/77.png",
-  explanation: "Reserverade parkeringsplatser för rörelsehindrade får användas av den som har parkeringstillstånd för rörelsehindrade. Det är tillståndet, inte bara att man kör färdtjänst eller sjuktransport, som ger rätt att parkera där."
+  explanation: "Rätt svar är den som har parkeringstillstånd för rörelsehindrade. Märket visar parkering tillsammans med tilläggstavlan rörelsehindrade. Det betyder att platsen är reserverad för fordon som används med giltigt parkeringstillstånd för rörelsehindrade. Det räcker alltså inte att köra färdtjänst eller sjuktransport, och det räcker inte heller att vara rörelsehindrad utan tillstånd. Tänk så här: det är tillståndet som ger rätten att parkera på platsen."
 },
 {
   id: 77,
   delprov: 2,
-  question: "Du får en körning den 24 september som beräknas pågå från kl 05.00 till kl 06.00. Kan du ta körningen med tanke på den vilotid du har haft enligt tidboksbladet?",
+  question: "Du får en körning den 24 september som beräknas pågå från kl. 05.00 till kl. 06.00. Kan du ta körningen med tanke på den vilotid du har haft enligt tidboksbladet?",
   options: [
     "Ja",
-    "Nej, det saknas 1 timmas vilotid",
+    "Nej, det saknas 1 timmes vilotid",
     "Nej, det saknas 2 timmars vilotid",
     "Nej, det saknas 3 timmars vilotid"
   ],
-  correct: 1,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/78.png",
-  explanation: "För att få köra måste du ha haft tillräcklig dygnsvila under den föregående 24-timmarsperioden. Enligt facit saknas 1 timmes vila, så körningen får inte påbörjas."
+  explanation: "Rätt svar är Ja. För att få köra måste du ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna före varje tidpunkt då transporten utförs. Tidboksbladet visar vila den 23 september kl. 00.00–06.00 och kl. 19.00–24.00. Det betyder att det vid kl. 05.00 den 24 september finns totalt 11 timmars vila i den föregående 24-timmarsperioden, och vid kl. 06.00 finns en sammanhängande vila på 11 timmar från kl. 19.00 till kl. 06.00. Därför får körningen genomföras. Tänk så här: flytta ett 24-timmarsfönster fram till varje tidpunkt under körningen och kontrollera att minst 11 timmars vila fortfarande ligger kvar i fönstret."
 },
 {
   id: 78,
@@ -388,7 +387,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/79.png",
-  explanation: "Högerregeln gäller bara där inget annat reglerar väjningsförhållandena. I den här uppgiften gäller den bara i korsning A."
+  explanation: "Rätt svar är att högerregeln gäller enbart i korsning A. Högerregeln gäller bara när inget annat reglerar väjningsförhållandena. I korsning B finns en väjningspliktsskylt för trafiken från höger, så där gäller inte högerregeln. I korsning A syns ingen sådan reglering, och då gäller högerregeln. Tänk därför alltid så här: först skyltar och signaler, sedan högerregeln om korsningen är oreglerad."
 },
 {
   id: 79,
@@ -402,21 +401,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Kopior av körpassrapporter för de två senaste dygnen som fordonet använts i taxitrafik ska kunna visas upp för polisman eller bilinspektör."
+  explanation: "Rätt svar är de två senaste dygnen. Enligt Transportstyrelsens föreskrifter ska kopior av körpassrapporter för de två senaste dygnen som fordonet har använts i taxitrafik kunna skrivas ut och lämnas över vid kontroll. Tänk därför på att kravet gäller de två senaste drift-dygnen i taxitrafik, inte ett större antal dagar."
 },
 {
   id: 80,
   delprov: 2,
   question: "Vad ska du anteckna i tidboken innan du börjar ett körpass med taxi?",
   options: [
-    "Den närmaste föregående dygnsvilan",
+    "Den närmast föregående dygnsvilan",
     "De två närmast föregående dygnsvilorna",
     "De tre närmast föregående dygnsvilorna",
     "De sju närmast föregående dygnsvilorna"
   ],
   correct: 0,
   image: null,
-  explanation: "Innan körpasset börjar ska du ha antecknat den närmast föregående dygnsvilan i din personliga tidbok. Det är den vila som ligger till grund för om du får börja köra."
+  explanation: "Rätt svar är den närmast föregående dygnsvilan. Innan du börjar ett körpass ska du i tidboken anteckna mellan vilka tider du senast har haft dygnsvila. Om vilan har varit uppdelad i två perioder ska båda periodernas början och slut antecknas. Tänk på att tidboken även ska innehålla anteckningar för tidigare dygn, men före själva körpasset är det den närmast föregående dygnsvilan som måste vara antecknad."
 },
 {
   id: 81,
@@ -425,24 +424,24 @@ export const LAGSTIFTNING_2 = [
   options: [
     "Nej, eftersom mötande trafik har rött ljus",
     "Ja, eftersom jag ska svänga",
-    "Nej, eftersom trafiksignalen visar grön pil"
+    "Nej, eftersom jag får köra enligt trafiksignalen"
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/820.png",
-  explanation: "När du ska svänga ska du ge tecken med körriktningsvisaren. Att mötande trafik har rött eller att du får köra enligt signalen tar inte bort skyldigheten att visa din avsikt."
+  explanation: "Rätt svar är ja, eftersom du ska svänga. När en förare avser att svänga ska tecken ges med körriktningsvisaren i god tid. Att korsningen är signalreglerad ändrar inte den skyldigheten. Mötande trafik kan ha rött och du kan ha tillåtelse att köra, men du måste ändå visa din avsikt för andra trafikanter. Tänk så här: signalen talar om att du får köra, blinkersen talar om vart du tänker köra."
 },
 {
   id: 82,
   delprov: 2,
   question: "Du ska svänga vänster i korsningen. Vilka regler gäller?",
   options: [
-    "Jag kör eftersom mötande bilarna har rött ljus",
-    "Jag måste stanna för att invänta grön konturpil",
+    "Jag kör eftersom mötande bilar har rött ljus",
+    "Jag måste vänta tills en grön vänsterpil visas",
     "Jag låter de mötande bilarna köra först"
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/83-600x439.png",
-  explanation: "När du svänger vänster har du normalt väjningsplikt mot mötande trafik som går rakt fram eller svänger höger, om inte signal eller skyltning tydligt säger något annat. Därför ska du låta de mötande bilarna köra först."
+  explanation: "Rätt svar är att du låter de mötande bilarna köra först. Den gröna signalen betyder att du får köra, men den ger dig inte automatiskt fri vänstersväng framför mötande trafik. På bilden syns vanlig grön signal, inte en skyddad grön vänsterpil. Därför måste du vänta tills vänstersvängen kan göras utan fara. Tänk så här: grönt ljus betyder att du får köra, men inte att mötande trafik försvinner."
 },
 {
   id: 83,
@@ -457,21 +456,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Om taxiförarlegitimationen återkallas på grund av brott gäller en spärrtid innan ny legitimation kan beviljas. Minsta spärrtid är tre år."
+  explanation: "Rätt svar är 3 år. Om en taxiförarlegitimation återkallas på grund av brottslig gärning eller andra missförhållanden som visar att föraren är olämplig, ska en spärrtid bestämmas. Den spärrtiden är minst 3 år och högst 5 år. Tänk därför så här: när återkallelse sker på grund av brott är den lägsta återkallelsetiden 3 år."
 },
 {
   id: 84,
   delprov: 2,
-  question: "Vid vilket av följande tillfällen ska taxametern besiktigas?",
+  question: "Vid vilket av följande tillfällen ska taxametern kontrolleras på nytt?",
   options: [
-    "När jag byter däck så att mätningen av vägsträckan ändras med mer än 2 procent",
+    "När annan däckdimension har monterats och rullningsomkretsen har påverkats påtagligt",
     "När bilen byter ägare",
-    "Vid kontrollbesiktningen av bilen",
-    "Vid den årliga registreringsbesiktningen"
+    "Vid den vanliga kontrollbesiktningen av bilen",
+    "En gång per år i samband med registreringsbesiktning"
   ],
-  correct: 1,
+  correct: 0,
   image: null,
-  explanation: "Taxametern ska kontrolleras och besiktigas när något som påverkar mätningen eller installationen ändras. I den här frågan är det bytet som påverkar vägsträckemätningen med mer än 2 procent som utlöser ny kontroll."
+  explanation: "Rätt svar är när annan däckdimension har monterats och rullningsomkretsen har påverkats påtagligt. Då kan taxameterns mätning påverkas och en ny taxameterkontroll måste göras. Ett ägarbyte i sig utlöser inte detta krav, och det är inte samma sak som den vanliga kontrollbesiktningen av bilen. Tänk så här: om något ändras som kan påverka taxameterns mätning, måste taxametern kontrolleras igen."
 },
 {
   id: 85,
@@ -485,21 +484,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/86.png",
-  explanation: "Tidsangivelser på märken gäller olika beroende på om det är vardag, vardag före sön- och helgdag eller söndag/helgdag. I den här uppgiften innebär skyltningen att parkeringen får fortsätta över söndagen men inte förbi måndag kl. 07.00."
+  explanation: "Rätt svar är måndag kl. 07.00. Märket betyder förbud mot att parkera under de tider som står på tilläggstavlan. Tiden 7–14 utan parentes gäller på vardagar utom vardag före sön- och helgdag. Tiden (10–18) gäller på lördag eller dag före helgdag. Eftersom du parkerar lördag kl. 20.00 står bilen lagligt då, och på söndag finns ingen angiven förbudstid. Nästa gång parkeringsförbudet börjar gälla är därför måndag kl. 07.00. Tänk så här: utan parentes = vanliga vardagar, parentes = lördag/dag före helgdag."
 },
 {
   id: 86,
   delprov: 2,
   question: "Vilken tid får du inte parkera?",
   options: [
-    "Lördag kl 7",
-    "Lördag kl 13",
-    "Söndag kl 9",
-    "Söndag kl 17"
+    "Lördag kl. 7",
+    "Lördag kl. 13",
+    "Söndag kl. 9",
+    "Söndag kl. 17"
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/87.png",
-  explanation: "Tidsintervallen på tilläggstavlan visar när parkeringsförbudet gäller. Av alternativen är det lördag kl. 13 som ligger inom förbudstiden."
+  explanation: "Rätt svar är lördag kl. 13. Märket betyder förbud att parkera. Tiden 9–17 utan parentes gäller på vardagar utom vardag före sön- och helgdag. Tiden (9–17) inom parentes gäller på lördag eller annan dag före sön- eller helgdag. Därför gäller parkeringsförbudet på lördag kl. 13. Tänk så här: utan parentes = vanliga vardagar, inom parentes = lördag/dag före helgdag."
 },
 {
   id: 87,
@@ -511,9 +510,9 @@ export const LAGSTIFTNING_2 = [
     "Mötande ska köra och du ska stanna",
     "Både ska köra men långsamt"
   ],
-  correct: 2,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/88.png",
-  explanation: "En polismans tecken går före trafiksignaler och vägmärken. I den här situationen betyder tecknet att trafiken i din riktning ska stanna medan mötande trafik får köra."
+  explanation: "Rätt svar är att både mötande trafik och du ska stanna. Polisens tecken med uppsträckt hand betyder stopp för trafikanter som kommer framifrån eller bakifrån. På bilden är polismannen vänd mot dig, och den mötande trafiken kommer från hans motsatta sida på samma väg. Därför gäller stopp i båda riktningarna. Tänk så här: om polismannen visar stopp framåt och bakåt, då stannar trafiken på vägen i båda riktningarna."
 },
 {
   id: 88,
@@ -521,13 +520,13 @@ export const LAGSTIFTNING_2 = [
   question: "Vad gäller när du kör personbil med en bromsad släpvagn?",
   options: [
     "Högsta tillåtna hastighet är 80 km/h",
-    "Jag måste ha med både bilens och släpvagnens registreringsbevis",
+    "Jag måste alltid ha med registreringsbevis för både bilen och släpvagnen",
     "Jag måste köra på vägrenen om det finns en sådan",
-    "Släpvagnen måste ha sommardäck om bilen har sommardäck"
+    "Släpvagnen måste alltid ha sommardäck om bilen har sommardäck"
   ],
   correct: 0,
   image: null,
-  explanation: "När du kör personbil med bromsad släpvagn är högsta tillåtna hastighet normalt 80 km/h. De andra alternativen beskriver inte någon allmän huvudregel som alltid gäller."
+  explanation: "Rätt svar är att högsta tillåtna hastighet normalt är 80 km/h. När du kör personbil med bromsad släpvagn är grundregeln att du får köra högst 80 km/h. De andra alternativen beskriver inte någon allmän huvudregel som alltid gäller. Tänk därför först på huvudregeln för hastigheten: bromsad släpvagn = normalt högst 80 km/h."
 },
 {
   id: 89,
@@ -541,73 +540,73 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/90-600x460.png",
-  explanation: "En parkering är fel om den bryter mot avståndsregler, skyltning eller annan parkeringsregel. I bilden är det den mörka bilen som står i strid med reglerna."
+  explanation: "Rätt svar är den mörka bilen. Ett fordon får inte parkeras på eller inom 10 meter före ett övergångsställe. Dessutom ska fordon på en vanlig väg normalt parkeras på högra sidan i färdriktningen. Den mörka bilen står fel i förhållande till sin färdriktning och före övergångsstället. Den ljusa bilen står däremot efter övergångsstället i sin färdriktning och är därför inte den felparkerade bilen. Tänk så här: bedöm alltid parkeringen utifrån bilens färdriktning, inte bara utifrån hur bilden ser ut vid första ögonkastet."
 },
 {
   id: 90,
   delprov: 2,
-  question: "Du kör på motorväg och närmar dig ett fordon från accelerationsfält",
+  question: "Du kör på motorväg och närmar dig ett fordon som kommer från ett accelerationsfält. Vad gäller?",
   options: [
     "Jag måste byta till vänstra körfält",
-    "Jag behöver inte anpassa min körning eftersom den som kör från accelerationsfält har väjningsplikt",
-    "Jag måste anpassa hastigheten för att inkörningen underlättas"
+    "Jag behöver inte anpassa min körning eftersom den som kommer från accelerationsfältet ensam ansvarar för inkörningen",
+    "Jag ska anpassa hastigheten så att inkörningen underlättas"
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/91-600x434.png",
-  explanation: "Fordon på accelerationsfält har ansvar att anpassa sig till trafiken på motorvägen, men du ska ändå underlätta inkörningen om det kan ske utan fara. Därför är det rätt att anpassa hastigheten för att göra infarten smidigare."
+  explanation: "Rätt svar är att du ska anpassa hastigheten så att inkörningen underlättas. Föraren i accelerationsfältet ska anpassa hastigheten till trafiken och köra in när det kan ske utan fara eller onödigt hinder. Men om du uppmärksammar att någon vill köra in i ditt körfält ska du också anpassa hastigheten så att inkörningen underlättas. Du måste däremot inte alltid byta till vänster körfält. Tänk så här: vid accelerationsfält gäller samspel och anpassning, inte att du kan ignorera den anslutande trafiken."
 },
 {
   id: 91,
   delprov: 2,
-  question: "Du kommer fram till det här vägmärket. Vad gäller?",
+  question: "Du kör taxi och kommer fram till det här vägmärket. Vad gäller för dig?",
   options: [
-    "Du måste svänga höger",
-    "Du får inte svänga vänster",
-    "Du får svänga höger eller vänster",
-    "Du måste svänga vänster"
+    "Jag måste svänga höger",
+    "Det här märket gäller inte taxi",
+    "Jag får inte svänga vänster",
+    "Jag måste svänga vänster"
   ],
-  correct: 2,
+  correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/92.png",
-  explanation: "Märket är ett påbudsmärke som anger tillåten körriktning. Här visar märket att du får välja mellan de riktningar som pilen anger, alltså höger eller vänster."
+  explanation: "Rätt svar är att märket inte gäller taxi. Det runda blå märket betyder annars att fordon måste köra åt höger, men tilläggstavlan \"Gäller ej, buss & taxi\" undantar taxi från just det påbudet. Det betyder inte automatiskt att alla andra körriktningar alltid är tillåtna, men just det här märket tvingar inte en taxi att svänga höger. Tänk så här: läs alltid både huvudmärket och tilläggstavlan tillsammans."
 },
 {
   id: 92,
   delprov: 2,
   question: "I vilken situation får du stanna?",
   options: [
-    "I situation på bild A",
-    "I situation på bild B",
-    "I situation på bild C"
+    "I situation A",
+    "I situation B",
+    "I situation C"
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/93-600x266.png",
-  explanation: "Du får bara stanna där stoppet inte strider mot skyltning eller de generella stoppförbuden. I den här uppgiften är det bara situation B som är tillåten."
+  explanation: "Rätt svar är situation B. I situation A finns en heldragen gul linje vid kanten, vilket betyder förbud att stanna och parkera. I situation B finns en bruten gul linje, vilket betyder förbud att parkera, men kort stannande är tillåtet. I situation C är markeringen förstärkt på ett sätt som hör ihop med stoppförbud. Tänk så här: heldragen gul kantlinje = du får inte stanna, bruten gul kantlinje = du får stanna men inte parkera."
 },
 {
   id: 93,
   delprov: 2,
-  question: "På vilken av de två situationer gäller högerregel?",
+  question: "I vilken av de två situationerna gäller högerregeln?",
+  options: [
+    "I bild A",
+    "I bild B",
+    "I ingen av dem"
+  ],
+  correct: 2,
+  image: "https://teori-taxi.com/images/Lagstiftning/94.png",
+  explanation: "Rätt svar är i ingen av dem. I bild A finns ett väjningspliktsmärke, och då gäller inte högerregeln. I bild B kör bilen ut från en utfart eller parkeringsplatsliknande plats och har därför väjningsplikt enligt utfartsregeln. Tänk så här: högerregeln gäller bara i oreglerade korsningar. Ser du väjningsmärke eller en tydlig utfart, då är det inte högerregeln som styr."
+},
+{
+  id: 94,
+  delprov: 2,
+  question: "I vilken av de två situationerna gäller högerregeln?",
   options: [
     "På bild A",
     "På bild B",
     "Ingen"
   ],
   correct: 2,
-  image: "https://teori-taxi.com/images/Lagstiftning/94.png",
-  explanation: "Högerregeln gäller inte när väjningsförhållandet redan regleras av vägmärken, signaler eller om utfartsregeln gäller. I den här uppgiften gäller högerregeln därför inte i någon av situationerna."
-},
-{
-  id: 94,
-  delprov: 2,
-  question: "På vilken av de två situationer gäller högerregel?",
-  options: [
-    "På bild A",
-    "På bild B",
-    "Ingen"
-  ],
-  correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/95.png",
-  explanation: "Högerregeln gäller där korsningen inte regleras på annat sätt. I den här uppgiften är det bara i bild B som inget annat väjningsförhållande tar över."
+  explanation: "Högerregeln gäller när två fordons kurser skär varandra och ingen annan väjningsregel tar över. I bild A finns väjningspliktsskyltar, så högerregeln gäller inte där. I bild B ser det ut som att du kör in på vägen via en utfart eller efter att ha korsat en gång- eller cykelbana, och då har du också väjningsplikt. Därför gäller högerregeln inte i någon av situationerna."
 },
 {
   id: 95,
@@ -621,21 +620,21 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/96.png",
-  explanation: "Om märket förbjuder infart eller motortrafik får du inte köra in bara för att lämna av en kund, om inte ett undantag anges på tilläggstavla. Här finns inget sådant undantag."
+  explanation: "Nej. Märket visar påbjuden gångbana, vilket betyder att banan är avsedd endast för gående. Då får du inte köra in där med taxi bara för att lämna av en kund. Ett sådant undantag måste i så fall vara tydligt angivet med en tilläggstavla. Tänk så här nästa gång: när ett vägmärke visar att en bana bara är till för en viss trafikantgrupp, är övrig trafik förbjuden om inget undantag anges."
 },
 {
   id: 96,
   delprov: 2,
-  question: "Du blir stoppad i en poliskontroll den 19 september kl 16.00 och visar detta tidboksblad. Är uttagen vilotid tillräcklig?",
+  question: "Du blir stoppad i en poliskontroll den 19 september kl. 16.00 och visar detta tidboksblad. Är den uttagna vilotiden tillräcklig?",
   options: [
     "Ja",
-    "Nej, det saknas 1 timme vilotid",
-    "Nej, det saknas 2 timme vilotid",
-    "Nej, det saknas 3 timme vilotid"
+    "Nej, det saknas 1 timmes vilotid",
+    "Nej, det saknas 2 timmars vilotid",
+    "Nej, det saknas 3 timmars vilotid"
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/97.png",
-  explanation: "Föraren ska ha haft minst 11 timmars dygnsvila under den föregående 24-timmarsperioden. Enligt facit och tidboksbladet i uppgiften är vilotiden tillräcklig."
+  explanation: "Ja. När du kontrolleras den 19 september kl. 16.00 ska du räkna vilan under de föregående 24 timmarna, alltså från den 18 september kl. 16.00 till den 19 september kl. 16.00. Under den perioden har föraren vilat kl. 19.00–21.30 (2,5 timmar) och kl. 04.00–12.30 (8,5 timmar). Det blir totalt 11 timmar, vilket uppfyller kravet. Tänk så här nästa gång: räkna alltid bakåt 24 timmar från kontrolltiden och summera bara den vila som ligger inom just den perioden."
 },
 {
   id: 97,
@@ -647,14 +646,14 @@ export const LAGSTIFTNING_2 = [
     "Ja, i båda korsningarna",
     "Nej"
   ],
-  correct: 2,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/98.png",
-  explanation: "Väjningsplikt kan följa av både vägmärken och allmänna regler i korsning. I den här uppgiften har du väjningsplikt i båda korsningarna."
+  explanation: "I korsning A ser bilen ut att komma från en vanlig väg till höger. Då gäller högerregeln och du har väjningsplikt. I korsning B ser bilen ut att komma från en ägoväg eller liknande utfartsväg från åkermark. Då har fordonet som kör ut därifrån väjningsplikt mot trafiken på vägen. Därför verkar rätt svar vara att du bara har väjningsplikt i korsning A. Om bild B egentligen ska föreställa en vanlig väg är bilden för otydlig och frågan bör bytas ut eller göras tydligare."
 },
 {
   id: 98,
   delprov: 2,
-  question: "Vilken typ av tariff är inte tillåten att använda i trafik med privatpersoner som kunder?",
+  question: "Vilken typ av tariff är inte tillåten att använda vid taxiresor för privatkunder?",
   options: [
     "Brytpunktstariff",
     "Tidstariff",
@@ -663,7 +662,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 0,
   image: null,
-  explanation: "För taxitrafik med privatpersoner måste tariffen vara utformad så att priset kan beräknas enligt tillåtna grunder. Brytpunktstariff är inte tillåten i den här typen av trafik."
+  explanation: "Brytpunktstariff är inte tillåten. Skälet är att prisets grund då ändras under färden: under en viss hastighet beräknas priset efter tid, och över den hastigheten efter sträcka. Enligt reglerna får taxan inte vara uppbyggd så att grunderna för priset förändras under resan. Tänk så här nästa gång: om tariffen byter sätt att räkna mitt under färden är den inte tillåten."
 },
 {
   id: 99,
@@ -676,7 +675,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Orange vägmarkeringar gäller tillfälligt vid vägarbete eller annan tillfällig trafikomläggning och tar då över de vita markeringarna. Därför ska du följa de orangefärgade linjerna."
+  explanation: "Du ska följa de orangefärgade linjerna. Orange vägmarkeringar används vid tillfälliga trafikomläggningar, till exempel vid vägarbete, och gäller då i stället för de vanliga vita markeringarna. Tänk så här nästa gång: om både vita och orange linjer finns samtidigt är det de tillfälliga orange markeringarna som gäller."
 },
 {
   id: 100,
@@ -690,6 +689,6 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 1,
   image: null,
-  explanation: "Tidboken ska täcka både körpassen och de dygnsvilor som ligger närmast före körningen. När du kör torsdag, fredag och lördag behöver anteckningarna omfatta fyra kalenderdygn under veckan."
+  explanation: "Rätt svar är fyra. Du ska göra anteckningar för alla transportdygn, alltså torsdag, fredag och lördag. Dessutom ska tidboken också innehålla anteckningar om den närmast föregående dygnsvilan. För torsdagens körning innebär det att även onsdagen måste omfattas. Därför blir det totalt fyra kalenderdygn. Tänk så här nästa gång: räkna först alla dagar du kör, och lägg sedan till den närmast föregående dygnsvilan om den hamnar på en extra kalenderdag."
 },
 ]
