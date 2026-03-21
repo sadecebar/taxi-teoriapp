@@ -96,6 +96,16 @@
   gap: 2px;
 }
 
+.header-status {
+  display: flex;
+}
+
+@media (min-width: 641px) {
+  .header-status {
+    display: none;
+  }
+}
+
 /* ─── Bottom Navigation ──────────────────────────────────────────────────── */
 
 .bottom-nav {
