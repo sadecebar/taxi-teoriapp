@@ -717,9 +717,11 @@ export default function App() {
   );
   const [shakeBtn,      setShakeBtn]      = useState(null);
   const [popupQ,        setPopupQ]        = useState(null);
-  const [statsQuestion, setStatsQuestion] = useState(null);
-  const [statsSelected, setStatsSelected] = useState(null);
-  const [statsAnswered, setStatsAnswered] = useState(false);
+  const [statsQuestion,    setStatsQuestion]    = useState(null);
+  const [statsSelected,    setStatsSelected]    = useState(null);
+  const [statsAnswered,    setStatsAnswered]    = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [resetting,        setResetting]        = useState(false);
 
   const timer      = useRef(null);
   const explainRef = useRef(null);
@@ -757,6 +759,21 @@ export default function App() {
       );
     } catch (e) {
       console.error("Could not save stat:", e);
+    }
+  };
+
+  // ── Reset all progress ────────────────────────────────────────────────────
+  const resetAllProgress = async () => {
+    setResetting(true);
+    try {
+      const ids = QUESTIONS.map(q => q.id);
+      await supabase.from("stats").delete().in("question_id", ids);
+      setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
+      setShowResetConfirm(false);
+    } catch (e) {
+      console.error("Could not reset stats:", e);
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -816,7 +833,7 @@ export default function App() {
     if (m === "all" || m === "quick") return QUESTIONS;
     if (m === "focus") return QUESTIONS.filter(q => {
       const s = stats[q.id] || { c: 0, w: 0 };
-      return s.w > s.c; // net wrong: more wrongs than corrects
+      return s.w > 0 && s.c === 0; // wrong pool: has wrongs AND never answered correctly
     });
     return QUESTIONS.filter(q => q.delprov === m);
   };
@@ -866,14 +883,14 @@ export default function App() {
   const tot      = Object.values(stats).reduce((a, b) => a + b.c + b.w, 0);
   const corr     = Object.values(stats).reduce((a, b) => a + b.c, 0);
   const acc      = tot > 0 ? Math.round(corr / tot * 100) : 0;
-  const mastered = Object.values(stats).filter(s => s.c >= 2 && s.w === 0).length;
+  const mastered = Object.values(stats).filter(s => s.c >= 2 && s.c > s.w).length;
 
   const dpProgress = [1, 2].map(dp => {
     const qs        = QUESTIONS.filter(q => q.delprov === dp);
     const dpS       = qs.map(q => stats[q.id] || { c: 0, w: 0 });
     const dpTot     = dpS.reduce((a, b) => a + b.c + b.w, 0);
     const dpCorr    = dpS.reduce((a, b) => a + b.c, 0);
-    const dpMastered = dpS.filter(s => s.c >= 2 && s.w === 0).length;
+    const dpMastered = dpS.filter(s => s.c >= 2 && s.c > s.w).length;
     const dpAcc     = dpTot > 0 ? Math.round(dpCorr / dpTot * 100) : 0;
     const dpPct     = Math.round(dpMastered / qs.length * 100);
     return { dp, cfg: DELPROV_CONFIG[dp], total: qs.length, mastered: dpMastered, acc: dpAcc, pct: dpPct, tried: dpTot > 0 };
@@ -881,7 +898,7 @@ export default function App() {
 
   const wrongCount = QUESTIONS.filter(q => {
     const s = stats[q.id] || { c: 0, w: 0 };
-    return s.w > s.c;
+    return s.w > 0 && s.c === 0;
   }).length;
 
   const masterPct     = QUESTIONS.length > 0 ? Math.round(mastered / QUESTIONS.length * 100) : 0;
@@ -2031,6 +2048,109 @@ export default function App() {
                   );
                 })}
               </div>
+            )}
+
+            {/* Reset button */}
+            <div style={{ marginTop: "36px", paddingTop: "24px", borderTop: `1px solid ${C.borderSoft}`, display: "flex", justifyContent: "center" }}>
+              <button
+                onClick={() => setShowResetConfirm(true)}
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontSize: "12px", color: C.faint, fontWeight: "500",
+                  letterSpacing: "0.2px", padding: "8px 12px",
+                  WebkitTapHighlightColor: "transparent",
+                  transition: "color 0.15s",
+                  fontFamily: "inherit",
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = C.red}
+                onMouseLeave={e => e.currentTarget.style.color = C.faint}
+              >
+                Nollställ all statistik
+              </button>
+            </div>
+
+            {/* Reset confirmation dialog */}
+            {showResetConfirm && createPortal(
+              <div
+                onClick={() => !resetting && setShowResetConfirm(false)}
+                style={{
+                  position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+                  background: "rgba(0,0,0,0.88)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  zIndex: 200, padding: "24px",
+                  animation: "fadeIn 0.16s ease both",
+                }}
+              >
+                <div
+                  onClick={e => e.stopPropagation()}
+                  style={{
+                    background: "#141414",
+                    border: `1px solid #2e2020`,
+                    borderRadius: "20px",
+                    padding: "28px 24px 24px",
+                    width: "100%", maxWidth: "360px",
+                    animation: "popIn 0.22s cubic-bezier(0.34,1.3,0.64,1) both",
+                  }}
+                >
+                  {/* Icon */}
+                  <div style={{
+                    width: "48px", height: "48px", borderRadius: "14px",
+                    background: "rgba(200,60,60,0.12)", border: "1px solid rgba(200,60,60,0.22)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    marginBottom: "18px", fontSize: "22px",
+                  }}>
+                    ⚠️
+                  </div>
+
+                  {/* Title */}
+                  <div style={{ fontSize: "17px", fontWeight: "800", color: C.text, marginBottom: "10px", letterSpacing: "-0.2px" }}>
+                    Nollställ all statistik?
+                  </div>
+
+                  {/* Description */}
+                  <div style={{ fontSize: "13px", color: C.textSoft, lineHeight: 1.6, marginBottom: "26px" }}>
+                    Det här tar bort all din sparade träningsstatistik — rätta svar, felaktiga svar och din kunskapsnivå per fråga. Ditt framsteg nollställs helt och du börjar om från noll.
+                    <br /><br />
+                    <span style={{ color: C.muted, fontWeight: "600" }}>Det går inte att ångra.</span>
+                  </div>
+
+                  {/* Actions */}
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      onClick={() => setShowResetConfirm(false)}
+                      disabled={resetting}
+                      style={{
+                        flex: 1, padding: "13px", borderRadius: "12px",
+                        border: `1px solid ${C.border}`, background: "transparent",
+                        color: C.muted, cursor: "pointer", fontSize: "13px", fontWeight: "600",
+                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                        opacity: resetting ? 0.4 : 1,
+                      }}
+                    >
+                      Avbryt
+                    </button>
+                    <button
+                      onClick={resetAllProgress}
+                      disabled={resetting}
+                      style={{
+                        flex: 1, padding: "13px", borderRadius: "12px",
+                        border: "1px solid rgba(200,60,60,0.5)",
+                        background: resetting ? "rgba(200,60,60,0.08)" : "rgba(200,60,60,0.14)",
+                        color: resetting ? C.muted : "#e05050",
+                        cursor: resetting ? "not-allowed" : "pointer",
+                        fontSize: "13px", fontWeight: "700",
+                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                        transition: "background 0.15s",
+                      }}
+                    >
+                      {resetting ? "Nollställer…" : "Nollställ"}
+                    </button>
+                  </div>
+                </div>
+              </div>,
+              document.body
             )}
 
             {/* Stats practice popup */}
