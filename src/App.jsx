@@ -2,7 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import "./App.css";
 import OnboardingTour from "./OnboardingTour.jsx";
+import { getInstallationId } from "./installation.js";
+
+// ─── Stable per-device ID (resolved once at module load) ──────────────────────
+const INSTALL_ID = getInstallationId();
 import { supabase } from "./supabase.js";
+import { loadLocalStats, saveAllStats, clearLocalStats, hasMigrated, markMigrated } from "./progress.js";
 import { QUESTIONS as importedQuestions } from "./questions.js";
 
 // ─── Version (injected from package.json via vite.config.js) ─────────────────
@@ -714,31 +719,46 @@ export default function App() {
   const [flipped,       setFlipped]       = useState(false);
   const [flashcards,    setFlashcards]    = useState([]);
   const [result,        setResult]        = useState(null);
-  const [statsLoaded,   setStatsLoaded]   = useState(false);
+  const [statsLoaded,   setStatsLoaded]   = useState(() => {
+    const local = loadLocalStats();
+    return local !== null || hasMigrated();
+  });
   const [statusFilter,  setStatusFilter]  = useState("alla");
-  const [stats,         setStats]         = useState(() =>
-    Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }]))
-  );
+  const [stats,         setStats]         = useState(() => {
+    const base = Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }]));
+    const local = loadLocalStats();
+    if (local) {
+      Object.keys(local).forEach(id => { if (base[id]) base[id] = local[id]; });
+    }
+    return base;
+  });
   const [shakeBtn,      setShakeBtn]      = useState(null);
   const [popupQ,        setPopupQ]        = useState(null);
   const [statsQuestion,    setStatsQuestion]    = useState(null);
   const [statsSelected,    setStatsSelected]    = useState(null);
   const [statsAnswered,    setStatsAnswered]    = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
-  const [resetting,        setResetting]        = useState(false);
   const [showOnboarding,   setShowOnboarding]   = useState(
-    () => localStorage.getItem("taxi-teori-onboarding-done") !== "1"
+    () => localStorage.getItem(`taxi-teori-onboarding-done-${INSTALL_ID}`) !== "1"
   );
 
   const timer      = useRef(null);
   const explainRef = useRef(null);
   const audioCtx   = useRef(null);
 
-  // ── Load stats from Supabase ──────────────────────────────────────────────
+  // ── One-time migration: copy Supabase stats → localStorage ──────────────
   useEffect(() => {
-    async function loadStats() {
+    if (hasMigrated()) return;                    // already done
+    if (loadLocalStats() !== null) {              // local data exists — no need
+      markMigrated();
+      return;
+    }
+    async function migrate() {
       try {
-        const { data, error } = await supabase.from("stats").select("*");
+        const { data, error } = await supabase
+          .from("stats")
+          .select("*")
+          .eq("installation_id", INSTALL_ID);
         if (error) throw error;
         if (data && data.length > 0) {
           const merged = Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }]));
@@ -746,51 +766,43 @@ export default function App() {
             if (merged[row.question_id] !== undefined)
               merged[row.question_id] = { c: row.correct, w: row.wrong };
           });
+          saveAllStats(merged);
           setStats(merged);
         }
       } catch (e) {
-        console.error("Could not load stats:", e);
+        console.error("Could not migrate stats from Supabase:", e);
       } finally {
+        markMigrated();
         setStatsLoaded(true);
       }
     }
-    loadStats();
+    migrate();
   }, []);
 
   // ── Persist a single question stat ───────────────────────────────────────
-  const saveStat = async (questionId, correct, wrong) => {
-    try {
-      await supabase.from("stats").upsert(
-        { question_id: questionId, correct, wrong, updated_at: new Date().toISOString() },
-        { onConflict: "question_id" }
-      );
-    } catch (e) {
-      console.error("Could not save stat:", e);
-    }
+  const saveStat = (questionId, correct, wrong) => {
+    setStats(prev => ({ ...prev, [questionId]: { c: correct, w: wrong } }));
   };
 
+  // ── Sync stats to localStorage whenever they change ───────────────────────
+  useEffect(() => {
+    saveAllStats(stats);
+  }, [stats]);
+
   // ── Reset all progress ────────────────────────────────────────────────────
-  const resetAllProgress = async () => {
-    setResetting(true);
-    try {
-      const ids = QUESTIONS.map(q => q.id);
-      await supabase.from("stats").delete().in("question_id", ids);
-      setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
-      setShowResetConfirm(false);
-      // Re-trigger onboarding after full reset
-      localStorage.removeItem("taxi-teori-onboarding-done");
-      setView("home");
-      setShowOnboarding(true);
-    } catch (e) {
-      console.error("Could not reset stats:", e);
-    } finally {
-      setResetting(false);
-    }
+  const resetAllProgress = () => {
+    clearLocalStats();
+    setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
+    setShowResetConfirm(false);
+    // Re-trigger onboarding for this installation only
+    localStorage.removeItem(`taxi-teori-onboarding-done-${INSTALL_ID}`);
+    setView("home");
+    setShowOnboarding(true);
   };
 
   // ── Onboarding handlers ───────────────────────────────────────────────────
   const handleOnboardingDone = () => {
-    localStorage.setItem("taxi-teori-onboarding-done", "1");
+    localStorage.setItem(`taxi-teori-onboarding-done-${INSTALL_ID}`, "1");
     setShowOnboarding(false);
   };
 
@@ -884,7 +896,6 @@ export default function App() {
     const ans  = [...quiz.answers, { id: q.id, correct: ok, chosen: quiz.answered, q }];
     const newC = stats[q.id].c + (ok ? 1 : 0);
     const newW = stats[q.id].w + (ok ? 0 : 1);
-    setStats(s => ({ ...s, [q.id]: { c: newC, w: newW } }));
     saveStat(q.id, newC, newW);
     if (quiz.current + 1 >= quiz.questions.length) endQuiz(ans);
     else setQuiz(s => ({ ...s, current: s.current + 1, answers: ans, answered: null }));
@@ -2110,7 +2121,7 @@ export default function App() {
             {/* Reset confirmation dialog */}
             {showResetConfirm && createPortal(
               <div
-                onClick={() => !resetting && setShowResetConfirm(false)}
+                onClick={() => setShowResetConfirm(false)}
                 style={{
                   position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
                   background: "rgba(0,0,0,0.88)",
@@ -2158,32 +2169,29 @@ export default function App() {
                   <div style={{ display: "flex", gap: "10px" }}>
                     <button
                       onClick={() => setShowResetConfirm(false)}
-                      disabled={resetting}
                       style={{
                         flex: 1, padding: "13px", borderRadius: "12px",
                         border: `1px solid ${C.border}`, background: "transparent",
                         color: C.muted, cursor: "pointer", fontSize: "13px", fontWeight: "600",
                         fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                        opacity: resetting ? 0.4 : 1,
                       }}
                     >
                       Avbryt
                     </button>
                     <button
                       onClick={resetAllProgress}
-                      disabled={resetting}
                       style={{
                         flex: 1, padding: "13px", borderRadius: "12px",
                         border: "1px solid rgba(200,60,60,0.5)",
-                        background: resetting ? "rgba(200,60,60,0.08)" : "rgba(200,60,60,0.14)",
-                        color: resetting ? C.muted : "#e05050",
-                        cursor: resetting ? "not-allowed" : "pointer",
+                        background: "rgba(200,60,60,0.14)",
+                        color: "#e05050",
+                        cursor: "pointer",
                         fontSize: "13px", fontWeight: "700",
                         fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                         transition: "background 0.15s",
                       }}
                     >
-                      {resetting ? "Nollställer…" : "Nollställ"}
+                      Nollställ
                     </button>
                   </div>
                 </div>
@@ -2206,7 +2214,6 @@ export default function App() {
                     const newW = cur.w + (ok ? 0 : 1);
                     setStatsSelected(i);
                     setStatsAnswered(true);
-                    setStats(prev => ({ ...prev, [statsQuestion.id]: { c: newC, w: newW } }));
                     saveStat(statsQuestion.id, newC, newW);
                   }}
                   onClose={() => setStatsQuestion(null)}
