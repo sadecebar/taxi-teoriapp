@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import "./App.css";
+import OnboardingTour from "./OnboardingTour.jsx";
 import { supabase } from "./supabase.js";
 import { QUESTIONS as importedQuestions } from "./questions.js";
 
@@ -553,12 +554,14 @@ function MasteryBar({ questions, getStatus }) {
         overflow: "hidden", gap: "2px", background: "#161616",
         marginBottom: "22px",
       }}>
-        {segments.map(seg =>
+        {segments.map((seg, i) =>
           counts[seg.key] > 0 && (
             <div key={seg.key} style={{
               flex: counts[seg.key],
               background: seg.barColor,
               minWidth: "4px",
+              animation: "fadeIn 0.45s ease both",
+              animationDelay: `${0.1 + i * 0.07}s`,
             }} />
           )
         )}
@@ -696,7 +699,8 @@ const btnGhost = {
   color: C.muted, padding: "8px 16px", borderRadius: "9px",
   cursor: "pointer", fontSize: "13px", fontWeight: "500",
   display: "inline-flex", alignItems: "center", gap: "6px",
-  WebkitTapHighlightColor: "transparent", transition: "border-color 0.15s",
+  WebkitTapHighlightColor: "transparent",
+  transition: "border-color 0.15s, color 0.15s, transform 0.11s, opacity 0.11s",
 };
 
 // ─── App ──────────────────────────────────────────────────────────────────────
@@ -722,6 +726,9 @@ export default function App() {
   const [statsAnswered,    setStatsAnswered]    = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [resetting,        setResetting]        = useState(false);
+  const [showOnboarding,   setShowOnboarding]   = useState(
+    () => localStorage.getItem("taxi-teori-onboarding-done") !== "1"
+  );
 
   const timer      = useRef(null);
   const explainRef = useRef(null);
@@ -770,11 +777,21 @@ export default function App() {
       await supabase.from("stats").delete().in("question_id", ids);
       setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
       setShowResetConfirm(false);
+      // Re-trigger onboarding after full reset
+      localStorage.removeItem("taxi-teori-onboarding-done");
+      setView("home");
+      setShowOnboarding(true);
     } catch (e) {
       console.error("Could not reset stats:", e);
     } finally {
       setResetting(false);
     }
+  };
+
+  // ── Onboarding handlers ───────────────────────────────────────────────────
+  const handleOnboardingDone = () => {
+    localStorage.setItem("taxi-teori-onboarding-done", "1");
+    setShowOnboarding(false);
   };
 
   // ── Audio feedback ────────────────────────────────────────────────────────
@@ -1002,6 +1019,7 @@ export default function App() {
         <nav className="header-nav">
           {[["home","Hem"],["quiz","Snabbprov"],["stats","Statistik"]].map(([v, label]) => (
             <button key={v}
+              id={v === "stats" ? "ob-statistik-desktop" : undefined}
               onClick={() => { if (v === "quiz") startQuiz("quick"); else setView(v); }}
               style={{
                 padding: "7px 13px",
@@ -1039,7 +1057,7 @@ export default function App() {
             {/* ─ Session / readiness card ─────────────────────────────── */}
             {tot === 0 ? (
               /* First-time user welcome */
-              <div style={{
+              <div className="home-card-1" style={{
                 ...card,
                 borderColor: C.borderGold,
                 padding: "28px 24px",
@@ -1073,7 +1091,7 @@ export default function App() {
 
               return (
                 /* Returning user — Exam Brief card */
-                <div style={{
+                <div className="home-card-1" style={{
                   borderRadius: "16px",
                   border: `1px solid ${C.borderGold}`,
                   background: C.surface,
@@ -1237,6 +1255,8 @@ export default function App() {
 
             {/* ─ Snabbprov ─────────────────────────────────────────── */}
             <button
+              id="ob-snabbprov"
+              className="home-card-2 pressable"
               onClick={() => startQuiz("quick")}
               style={{
                 width: "100%", marginBottom: "28px",
@@ -1304,8 +1324,10 @@ export default function App() {
             </button>
 
             {/* ─ Fokusträning ──────────────────────────────────────────── */}
-            {tot > 0 && (
+            {(tot > 0 || showOnboarding) && (
               <div
+                id="ob-fokustranin"
+                className="home-card-3 pressable-sm"
                 onClick={wrongCount > 0 ? () => startQuiz("focus") : undefined}
                 role={wrongCount > 0 ? "button" : undefined}
                 style={{
@@ -1392,7 +1414,7 @@ export default function App() {
             )}
 
             {/* ─ Provsimulering ────────────────────────────────────────── */}
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
+            <div className="home-card-4" style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
               <div style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: C.muted }}>
                 Provsimulering
               </div>
@@ -1405,7 +1427,7 @@ export default function App() {
                 const barCol    = prog.pct >= 70 ? C.greenLight : prog.pct >= 40 ? C.gold : prog.tried ? C.redLight : C.faint;
                 const statusLbl = prog.pct >= 70 ? "Redo" : prog.pct >= 40 ? "På väg" : prog.tried ? "Öva mer" : "Ej övad";
                 return (
-                  <button key={dp} onClick={() => startQuiz(dp)}
+                  <button key={dp} id={`ob-delprov${dp}`} className="pressable-sm" onClick={() => startQuiz(dp)}
                     style={{
                       ...card, padding: "0", cursor: "pointer",
                       textAlign: "left", display: "block",
@@ -1465,6 +1487,7 @@ export default function App() {
 
             {/* ─ Alla frågor ───────────────────────────────────────────── */}
             <button
+              className="home-card-5 pressable-sm"
               onClick={() => startQuiz("all")}
               style={{
                 ...card, width: "100%", padding: "0",
@@ -1494,13 +1517,15 @@ export default function App() {
             </button>
 
             {/* ─ Minnesträning / Flashcards ────────────────────────────── */}
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
+            <div className="home-card-6" style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
               <div style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: C.muted }}>
                 Minnesträning
               </div>
               <div style={{ fontSize: "9px", color: C.faint }}>memorera & förstå</div>
             </div>
             <button
+              id="ob-flashcards"
+              className="pressable-sm"
               onClick={() => { openFlashcards(); setView("flashcard"); }}
               style={{
                 ...card, width: "100%", padding: "0",
@@ -1616,15 +1641,21 @@ export default function App() {
                 {q.options.map((opt, i) => {
                   const s = optionStyles(i, q.correct, quiz.answered, quiz.answered !== null);
                   return (
-                    <button key={i} onClick={() => answer(i)}
+                    <button key={i}
+                      className={quiz.answered === null ? "quiz-opt" : ""}
+                      onClick={() => answer(i)}
                       style={{
                         background: s.bg, border: `1px solid ${s.brd}`, borderRadius: "12px",
                         padding: "14px 15px", color: s.col,
                         fontSize: "14px", fontWeight: "500", textAlign: "left",
                         cursor: quiz.answered !== null ? "default" : "pointer",
-                        transition: "all 0.2s",
+                        transition: "background 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s, color 0.18s",
                         display: "flex", alignItems: "center", gap: "12px",
-                        animation: shakeBtn === i ? "shake 0.45s cubic-bezier(0.36,0.07,0.19,0.97) both" : "none",
+                        animation: shakeBtn === i
+                          ? "shake 0.45s cubic-bezier(0.36,0.07,0.19,0.97) both"
+                          : (quiz.answered !== null && i === q.correct
+                            ? "correctReveal 0.38s cubic-bezier(0.34,1.2,0.64,1) both"
+                            : "none"),
                         WebkitTapHighlightColor: "transparent",
                       }}
                     >
@@ -1652,6 +1683,7 @@ export default function App() {
                     </div>
                   )}
                   <button onClick={next}
+                    className="pressable"
                     style={{
                       ...btnGold, marginTop: "16px", width: "100%", padding: "16px",
                       fontSize: "15px", boxShadow: "0 4px 24px rgba(201,168,76,0.18)",
@@ -1740,6 +1772,7 @@ export default function App() {
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "24px" }}>
                 {result.answers.map((a, i) => (
                   <button key={i}
+                    className="review-item"
                     onClick={() => setPopupQ({ ...a.q, chosen: a.chosen })}
                     style={{
                       display: "flex", alignItems: "center", gap: "11px",
@@ -1748,7 +1781,6 @@ export default function App() {
                       border: `1px solid ${a.correct ? C.greenBorder : C.redBorder}`,
                       borderRadius: "11px", cursor: "pointer",
                       width: "100%", textAlign: "left",
-                      transition: "opacity 0.14s",
                       WebkitTapHighlightColor: "transparent",
                     }}
                   >
@@ -1771,10 +1803,12 @@ export default function App() {
 
               <div style={{ display: "flex", gap: "10px" }}>
                 <button onClick={() => startQuiz(result.mode)}
+                  className="pressable"
                   style={{ ...btnGold, flex: 1, padding: "15px", fontSize: "14px" }}>
                   Försök igen
                 </button>
                 <button onClick={() => setView("home")}
+                  className="pressable-sm"
                   style={{ ...btnGhost, flex: 1, padding: "15px", fontSize: "14px", justifyContent: "center" }}>
                   Hem
                 </button>
@@ -1890,6 +1924,7 @@ export default function App() {
               {/* Navigation */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: "8px" }}>
                 <button
+                  className={flashIdx === 0 ? "" : "pressable-sm"}
                   onClick={() => { setFlashIdx(i => Math.max(0, i - 1)); setFlipped(false); }}
                   disabled={flashIdx === 0}
                   style={{
@@ -1902,6 +1937,7 @@ export default function App() {
                   ←
                 </button>
                 <button
+                  className="pressable-sm"
                   onClick={() => setFlipped(f => !f)}
                   style={{
                     background: C.goldBg, border: `1px solid ${C.borderGold}`,
@@ -1914,6 +1950,7 @@ export default function App() {
                   Vänd 🔄
                 </button>
                 <button
+                  className="pressable-sm"
                   onClick={() => {
                     if (flashIdx === qs.length - 1) { setView("home"); }
                     else { setFlashIdx(i => i + 1); setFlipped(false); }
@@ -1945,12 +1982,12 @@ export default function App() {
             {/* Summary grid */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "24px" }}>
               {[
-                [`${acc}%`,  "Träffsäkerhet", C.gold],
-                [tot,        "Totala försök", C.text],
-                [corr,       "Rätta svar",    C.greenLight],
-                [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0"],
-              ].map(([v, l, color]) => (
-                <div key={l} style={{
+                [`${acc}%`,  "Träffsäkerhet", C.gold,        "stat-card-1"],
+                [tot,        "Totala försök", C.text,         "stat-card-2"],
+                [corr,       "Rätta svar",    C.greenLight,   "stat-card-3"],
+                [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
+              ].map(([v, l, color, cn]) => (
+                <div key={l} className={cn} style={{
                   ...card, padding: "18px",
                   display: "flex", flexDirection: "column", alignItems: "flex-start",
                 }}>
@@ -1977,7 +2014,9 @@ export default function App() {
                   : QUESTIONS.filter(q => getQuestionStatus(q) === f).length;
                 const active = statusFilter === f;
                 return (
-                  <button key={f} onClick={() => setStatusFilter(f)}
+                  <button key={f}
+                    className="filter-chip"
+                    onClick={() => setStatusFilter(f)}
                     style={{
                       padding: "7px 12px", borderRadius: "8px",
                       border: `1px solid ${active ? C.borderGold : C.border}`,
@@ -1986,7 +2025,6 @@ export default function App() {
                       cursor: "pointer", fontSize: "12px", fontWeight: active ? "700" : "500",
                       display: "flex", alignItems: "center", gap: "5px",
                       WebkitTapHighlightColor: "transparent",
-                      transition: "all 0.14s",
                     }}
                   >
                     {f !== "alla" && (() => {
@@ -2010,7 +2048,7 @@ export default function App() {
             {QUESTIONS.length === 0 ? (
               <p style={{ color: C.muted, fontSize: "13px" }}>Inga frågor inlagda än.</p>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+              <div key={statusFilter} style={{ display: "flex", flexDirection: "column", gap: "5px", animation: "fadeIn 0.18s ease both" }}>
                 {filteredQuestions.map(q => {
                   const status = getQuestionStatus(q);
                   const statusColor = {
@@ -2021,6 +2059,7 @@ export default function App() {
                   }[status];
                   return (
                     <button key={q.id} type="button"
+                      className="stat-q-item"
                       onClick={() => {
                         setStatsSelected(null);
                         setStatsAnswered(false);
@@ -2031,7 +2070,6 @@ export default function App() {
                         padding: "11px 14px", ...card, borderRadius: "10px",
                         width: "100%", cursor: "pointer", textAlign: "left",
                         WebkitTapHighlightColor: "transparent",
-                        transition: "border-color 0.14s",
                       }}
                     >
                       <span style={{
@@ -2179,12 +2217,21 @@ export default function App() {
         )}
       </main>
 
+      {/* ── ONBOARDING TOUR ─────────────────────────────────────────────── */}
+      {showOnboarding && view === "home" && (
+        <OnboardingTour
+          onComplete={handleOnboardingDone}
+          onSkip={handleOnboardingDone}
+        />
+      )}
+
       {/* ── BOTTOM NAV (mobile only) ─────────────────────────────────────── */}
       {showBottomNav && (
         <nav className="bottom-nav">
           <div className="bottom-nav-inner">
             {[["home","🏠","Hem"],["quiz","⚡","Snabbprov"],["stats","📊","Statistik"]].map(([v, ico, label]) => (
               <button key={v}
+                id={v === "stats" ? "ob-statistik-mobile" : undefined}
                 className={`bottom-nav-btn${view === v ? " active" : ""}`}
                 onClick={() => { if (v === "quiz") startQuiz("quick"); else setView(v); }}
               >

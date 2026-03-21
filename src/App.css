@@ -204,3 +204,110 @@
   animation: scoreBarGrow 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
   animation-delay: 0.15s;
 }
+
+/* ─── Micro-interactions & entrance animations ───────────────────────────── */
+
+@keyframes fadeUpIn {
+  from { opacity: 0; transform: translateY(11px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes correctReveal {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.013); }
+  100% { transform: scale(1); }
+}
+
+/* Staggered home screen entrances */
+.home-card-1 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.05s; }
+.home-card-2 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.12s; }
+.home-card-3 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.18s; }
+.home-card-4 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.24s; }
+.home-card-5 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.30s; }
+.home-card-6 { animation: fadeUpIn 0.38s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.36s; }
+
+/* Staggered stats card entrances */
+.stat-card-1 { animation: fadeUpIn 0.30s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.04s; }
+.stat-card-2 { animation: fadeUpIn 0.30s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.09s; }
+.stat-card-3 { animation: fadeUpIn 0.30s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.14s; }
+.stat-card-4 { animation: fadeUpIn 0.30s cubic-bezier(0.22,0.61,0.36,1) both; animation-delay: 0.19s; }
+
+/* Primary press feedback (main CTAs) */
+.pressable {
+  transition: transform 0.11s cubic-bezier(0.4,0,0.2,1), opacity 0.11s;
+}
+.pressable:active {
+  transform: scale(0.963);
+  opacity: 0.82;
+}
+
+/* Secondary press feedback (cards, ghost buttons) */
+.pressable-sm {
+  transition: transform 0.10s cubic-bezier(0.4,0,0.2,1), opacity 0.10s;
+}
+.pressable-sm:active {
+  transform: scale(0.976);
+  opacity: 0.86;
+}
+
+/* Bottom nav icon — stronger spring + tap shrink */
+.bottom-nav-btn .bottom-nav-icon {
+  transition: transform 0.26s cubic-bezier(0.34,1.56,0.64,1), opacity 0.15s ease;
+}
+.bottom-nav-btn.active .bottom-nav-icon {
+  transform: translateY(-1px);
+}
+.bottom-nav-btn:active .bottom-nav-icon {
+  transform: scale(0.78) translateY(0);
+  opacity: 0.52;
+}
+
+/* Stats filter chips */
+.filter-chip {
+  transition: all 0.17s cubic-bezier(0.4,0,0.2,1);
+}
+.filter-chip:active {
+  transform: scale(0.90);
+  opacity: 0.72;
+}
+
+/* Quiz option buttons */
+.quiz-opt:active {
+  transform: scale(0.985);
+  opacity: 0.84;
+}
+
+/* Result review row items */
+.review-item {
+  transition: transform 0.09s, opacity 0.09s;
+}
+.review-item:active {
+  transform: scale(0.985);
+  opacity: 0.68;
+}
+
+/* Stats question list items */
+.stat-q-item {
+  transition: border-color 0.14s, transform 0.09s, opacity 0.09s;
+}
+.stat-q-item:active {
+  transform: scale(0.988);
+  opacity: 0.70;
+}
+
+/* ─── Onboarding tour ────────────────────────────────────────────────────── */
+
+@keyframes ob-bubble-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@keyframes ob-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes ob-ring-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
