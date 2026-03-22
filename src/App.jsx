@@ -2,6 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import "./App.css";
 import OnboardingTour from "./OnboardingTour.jsx";
+// DevPanel: static import is fine — the component guards itself with
+// `if (!import.meta.env.DEV) return null`, and Vite dead-code-eliminates
+// the render site `{import.meta.env.DEV && <DevPanel />}` in production.
+import DevPanel from "./DevPanel.jsx";
 import { getInstallationId } from "./installation.js";
 
 // ─── Stable per-device ID (resolved once at module load) ──────────────────────
@@ -52,22 +56,22 @@ const CHECKLIST_STEPS = [
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const C = {
   // Surfaces
-  bg:            "#090909",
-  surface:       "#111111",
-  surfaceAlt:    "#181818",
-  surface3:      "#1f1f1f",
+  bg:            "#09090b",
+  surface:       "#131316",
+  surfaceAlt:    "#1c1c21",
+  surface3:      "#222228",
 
   // Borders
-  border:        "#222222",
-  borderSoft:    "#1a1a1a",
+  border:        "#26262b",
+  borderSoft:    "#1e1e23",
   borderGold:    "rgba(201,168,76,0.22)",
   borderGoldStr: "rgba(201,168,76,0.44)",
 
   // Text
-  text:          "#f2ede4",
+  text:          "#f1ece3",
   textSoft:      "#a8a090",
-  muted:         "#686058",
-  faint:         "#353230",
+  muted:         "#65605a",
+  faint:         "#343030",
 
   // Gold (brand — use sparingly)
   gold:          "#c9a84c",
@@ -790,6 +794,40 @@ function isTaxiregelQuestion(q) {
   return /taxiförarlegitimation|taxameter|trafiktillstånd|prisinformation|taxetabell|jämförpris|summatariff|plombering|kontrollrapport|yrkesmässig taxitrafik|förarbevis/.test(text);
 }
 
+/** Clean geometric SVG icons for the bottom navigation */
+function NavIcon({ name, active = false, size = 22 }) {
+  const sw = active ? "1.8" : "1.5";
+  if (name === "prov") return (
+    <svg width={size} height={size} viewBox="0 0 22 22" fill="none" style={{ display: "block" }}>
+      <rect x="5.5" y="2.5" width="11" height="15" rx="2" stroke="currentColor" strokeWidth={sw}/>
+      <path d="M8 8h6M8 11h6M8 14h3.5" stroke="currentColor" strokeWidth={sw} strokeLinecap="round"/>
+    </svg>
+  );
+  if (name === "fragor") return (
+    <svg width={size} height={size} viewBox="0 0 22 22" fill="none" style={{ display: "block" }}>
+      <path d="M4 5.5h14M4 10.5h10M4 15.5h6.5" stroke="currentColor" strokeWidth={sw} strokeLinecap="round"/>
+    </svg>
+  );
+  if (name === "home") return (
+    <svg width={size} height={size} viewBox="0 0 22 22" fill="none" style={{ display: "block" }}>
+      <path d="M3 10.5L11 3.5l8 7V19a1 1 0 01-1 1H14.5v-5h-7v5H4a1 1 0 01-1-1v-8.5z" stroke="currentColor" strokeWidth={sw} strokeLinejoin="round"/>
+    </svg>
+  );
+  if (name === "utmaningar") return (
+    <svg width={size} height={size} viewBox="0 0 22 22" fill="none" style={{ display: "block" }}>
+      <path d="M11 2.5l2.2 5.8 6.3.5-4.8 4.1 1.5 6L11 16l-5.2 2.9 1.5-6L2.5 8.8l6.3-.5L11 2.5z" stroke="currentColor" strokeWidth={sw} strokeLinejoin="round" strokeLinecap="round"/>
+    </svg>
+  );
+  if (name === "mer") return (
+    <svg width={size} height={size} viewBox="0 0 22 22" fill="none" style={{ display: "block" }}>
+      <circle cx="5.5" cy="11" r="1.5" fill="currentColor"/>
+      <circle cx="11" cy="11" r="1.5" fill="currentColor"/>
+      <circle cx="16.5" cy="11" r="1.5" fill="currentColor"/>
+    </svg>
+  );
+  return null;
+}
+
 // ─── Shared style presets ─────────────────────────────────────────────────────
 const card    = { background: C.surface, border: `1px solid ${C.border}`, borderRadius: "16px" };
 const btnGold = {
@@ -1173,10 +1211,10 @@ export default function App() {
 
       {/* ── HEADER ──────────────────────────────────────────────────────── */}
       <header style={{
-        height: "60px",
-        background: "rgba(8,8,8,0.97)",
-        backdropFilter: "blur(28px)",
-        WebkitBackdropFilter: "blur(28px)",
+        height: "56px",
+        background: "rgba(9,9,11,0.97)",
+        backdropFilter: "blur(32px) saturate(180%)",
+        WebkitBackdropFilter: "blur(32px) saturate(180%)",
         borderBottom: `1px solid ${C.border}`,
         padding: "0 20px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -1217,7 +1255,7 @@ export default function App() {
         <nav className="header-nav">
           {[["home","Hem"],["prov","Prov"],["utmaningar","Utmaningar"],["fragor","Frågor"],["mer","Mer"]].map(([v, label]) => (
             <button key={v}
-              id={v === "mer" ? "ob-statistik-desktop" : undefined}
+              id={v !== "home" ? `ob-nav-${v}-desktop` : undefined}
               onClick={() => setView(v)}
               style={{
                 padding: "7px 13px",
@@ -1253,7 +1291,7 @@ export default function App() {
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
             {/* ══ 1. WELCOME / INTRO ══════════════════════════════════════ */}
-            <div className="home-card-1" style={{ position: "relative", padding: "4px 0 28px" }}>
+            <div className="home-card-1" style={{ position: "relative", padding: "8px 0 30px" }}>
               <div style={{
                 position: "absolute", top: "-24px", right: "-18px",
                 width: "240px", height: "200px",
@@ -1262,89 +1300,131 @@ export default function App() {
               }} />
               {tot === 0 ? (
                 <>
-                  <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.9 }}>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px", opacity: 0.85 }}>
                     Välkommen
                   </div>
-                  <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.6px", lineHeight: 1.2, marginBottom: "12px" }}>
+                  <h1 style={{ fontSize: "33px", fontWeight: "800", color: C.text, letterSpacing: "-1.3px", lineHeight: 1.1, margin: "0 0 18px", padding: 0 }}>
                     Dags att börja plugga.
-                  </div>
-                  <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.65, margin: 0, maxWidth: "300px" }}>
-                    Starta ett snabbprov för att börja öva och spåra din framgång inför körkortsprovet.
+                  </h1>
+                  <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.72, margin: 0, maxWidth: "280px" }}>
+                    Öva inför taxiförarlegitimationen med riktiga teorifrågor.
                   </p>
                 </>
               ) : (
                 <>
-                  <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.9 }}>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px", opacity: 0.85 }}>
                     Välkommen tillbaka
                   </div>
-                  <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.6px", lineHeight: 1.2, marginBottom: "14px" }}>
-                    {wrongCount > 0 ? "Fortsätt där du slutade." : "Bra jobbat — fortsätt framåt."}
+                  <h1 style={{ fontSize: "33px", fontWeight: "800", color: C.text, letterSpacing: "-1.3px", lineHeight: 1.1, margin: "0 0 22px", padding: 0 }}>
+                    {wrongCount > 0 ? "Fortsätt träna." : masterPct >= 80 ? "Du är nästan redo." : "Bra jobbat — framåt."}
+                  </h1>
+                  {/* Mastery progress track */}
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "9px" }}>
+                      <span style={{ fontSize: "12px", color: C.muted }}>
+                        {mastered} av {QUESTIONS.length} frågor behärskade
+                      </span>
+                      <span style={{ fontSize: "14px", fontWeight: "800", color: masterPct >= 80 ? C.greenLight : C.text, letterSpacing: "-0.3px" }}>
+                        {masterPct}%
+                      </span>
+                    </div>
+                    <div style={{ position: "relative", height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
+                      <div className="mastery-bar-fill" style={{
+                        position: "absolute", top: 0, left: 0, bottom: 0,
+                        width: `${masterPct}%`, borderRadius: "3px",
+                        background: masterPct >= 80
+                          ? `linear-gradient(90deg, ${C.green}, ${C.greenLight})`
+                          : `linear-gradient(90deg, #7a5c18, ${C.gold})`,
+                      }} />
+                    </div>
+                    <div style={{ position: "relative", height: "16px" }}>
+                      <div style={{ position: "absolute", left: "70%", top: 0, width: "1px", height: "5px", background: C.gold, opacity: 0.4 }} />
+                      <div style={{ position: "absolute", left: "70%", top: "7px", transform: "translateX(-50%)", fontSize: "8px", color: C.gold, opacity: 0.5, whiteSpace: "nowrap" }}>provgräns</div>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => setView("prov")}
-                    style={{
-                      background: "none", border: "none", padding: 0,
-                      display: "inline-flex", alignItems: "center", gap: "8px",
-                      cursor: "pointer", WebkitTapHighlightColor: "transparent",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    <span style={{ fontSize: "13px", color: C.muted }}>
-                      {masterPct}% behärskade · {acc}% träffsäkerhet
-                    </span>
-                    <span style={{ fontSize: "12px", color: C.gold, fontWeight: "600" }}>Prov →</span>
-                  </button>
                 </>
               )}
             </div>
 
-            {/* ══ 1b. DAGENS FRÅGA — compact daily challenge entry ═══════ */}
+            {/* ══ 1b. DAGENS FRÅGA — free-standing circular daily ritual ══ */}
             <button
               onClick={() => setView("utmaningar")}
-              className="pressable"
+              className="home-card-1b pressable"
               style={{
                 width: "100%",
                 marginBottom: "10px",
-                padding: "11px 14px 11px 15px",
-                borderRadius: "11px",
-                borderTop: `1px solid rgba(201,168,76,0.16)`,
-                borderRight: `1px solid rgba(201,168,76,0.16)`,
-                borderBottom: `1px solid rgba(201,168,76,0.16)`,
-                borderLeft: `2px solid ${C.gold}`,
-                background: "linear-gradient(90deg, rgba(201,168,76,0.055) 0%, rgba(201,168,76,0.018) 100%)",
+                padding: "10px 16px 14px",
+                background: "none",
+                border: "none",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "space-between",
                 cursor: "pointer",
-                textAlign: "left",
+                textAlign: "center",
                 WebkitTapHighlightColor: "transparent",
                 fontFamily: "inherit",
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                <div style={{ fontSize: "12px", fontWeight: "800", color: C.text, letterSpacing: "-0.1px" }}>
-                  Dagens fråga
+              {/* Circle — the entire visual identity of this feature */}
+              <div style={{
+                width: "88px",
+                height: "88px",
+                borderRadius: "50%",
+                border: dailyData.streak > 0
+                  ? `2px solid rgba(201,168,76,0.60)`
+                  : dailyData.answered
+                  ? `2px solid rgba(79,168,112,0.45)`
+                  : `2px solid rgba(201,168,76,0.25)`,
+                background: dailyData.streak > 0
+                  ? "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.07) 100%)"
+                  : dailyData.answered
+                  ? "radial-gradient(circle at 38% 36%, rgba(79,168,112,0.13) 0%, rgba(79,168,112,0.04) 100%)"
+                  : "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 100%)",
+                boxShadow: dailyData.streak > 0
+                  ? "0 0 0 7px rgba(201,168,76,0.07), 0 0 0 14px rgba(201,168,76,0.03)"
+                  : "none",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "2px",
+                marginBottom: "12px",
+                flexShrink: 0,
+              }}>
+                <div style={{
+                  fontSize: "30px",
+                  fontWeight: "800",
+                  lineHeight: 1,
+                  letterSpacing: "-1px",
+                  color: dailyData.streak > 0
+                    ? C.gold
+                    : dailyData.answered
+                    ? C.green
+                    : C.muted,
+                }}>
+                  {dailyData.answered && dailyData.streak === 0 ? "✓" : dailyData.streak}
                 </div>
-                <div style={{ fontSize: "10.5px", color: C.muted, letterSpacing: "0.1px" }}>
-                  {dailyData.answered ? "Du har svarat idag · kom tillbaka imorgon" : "Ny fråga idag · håll din streak vid liv"}
+                <div style={{
+                  fontSize: "8px",
+                  fontWeight: "700",
+                  letterSpacing: "1px",
+                  textTransform: "uppercase",
+                  color: dailyData.streak > 0
+                    ? C.goldDark
+                    : dailyData.answered
+                    ? C.green
+                    : C.faint,
+                }}>
+                  {dailyData.answered && dailyData.streak === 0 ? "klar" : "streak"}
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "7px", flexShrink: 0 }}>
-                {dailyData.streak > 0 && (
-                  <div style={{
-                    fontSize: "10px", fontWeight: "700",
-                    color: C.gold,
-                    background: "rgba(201,168,76,0.1)",
-                    border: `1px solid rgba(201,168,76,0.22)`,
-                    padding: "2px 7px",
-                    borderRadius: "20px",
-                    whiteSpace: "nowrap",
-                    letterSpacing: "0.1px",
-                  }}>
-                    🔥 {dailyData.streak} {dailyData.streak === 1 ? "dag" : "dagar"}
-                  </div>
-                )}
-                <span style={{ color: C.textSoft, fontSize: "14px", lineHeight: 1 }}>›</span>
+
+              {/* Text below the circle */}
+              <div style={{ fontSize: "13px", fontWeight: "800", color: C.text, letterSpacing: "-0.2px", marginBottom: "3px" }}>
+                Dagens fråga
+              </div>
+              <div style={{ fontSize: "11px", color: C.muted, letterSpacing: "0.1px", lineHeight: 1.4 }}>
+                {dailyData.answered ? "Kom tillbaka imorgon" : "Ny fråga idag · håll din streak vid liv"}
               </div>
             </button>
 
@@ -1355,51 +1435,55 @@ export default function App() {
               onClick={() => startQuiz("quick")}
               style={{
                 width: "100%", marginBottom: "10px",
-                padding: "22px 20px 20px",
-                borderRadius: "16px", overflow: "hidden",
-                border: `1px solid ${C.borderGoldStr}`,
-                background: "rgba(201,168,76,0.03)",
+                padding: "0",
+                borderRadius: "18px", overflow: "hidden",
+                border: `1px solid rgba(201,168,76,0.38)`,
+                background: "linear-gradient(135deg, rgba(201,168,76,0.09) 0%, rgba(201,168,76,0.03) 100%)",
                 display: "block", cursor: "pointer", textAlign: "left",
-                boxShadow: "0 2px 20px rgba(201,168,76,0.07)",
+                boxShadow: "0 2px 28px rgba(201,168,76,0.07)",
                 WebkitTapHighlightColor: "transparent",
                 position: "relative",
+                fontFamily: "inherit",
               }}
             >
+              {/* Shimmer accent at top */}
               <div style={{
-                position: "absolute", top: 0, left: 0, right: 0, height: "60px",
-                background: "linear-gradient(180deg, rgba(201,168,76,0.05) 0%, transparent 100%)",
+                position: "absolute", top: 0, left: "10%", right: "10%", height: "1px",
+                background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent)",
                 pointerEvents: "none",
               }} />
-              <div style={{
-                position: "absolute", right: "-2px", bottom: "-16px",
-                fontSize: "96px", fontWeight: "900", lineHeight: 1,
-                color: "rgba(255,255,255,0.025)", letterSpacing: "-5px",
-                pointerEvents: "none", userSelect: "none",
-              }}>15</div>
-              <div style={{ fontSize: "8px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.8, position: "relative" }}>
-                {tot === 0 ? "Kom igång" : "Daglig träning"}
-              </div>
-              <div style={{ fontSize: "24px", fontWeight: "800", color: C.text, letterSpacing: "-0.8px", lineHeight: 1, marginBottom: "6px", position: "relative" }}>
-                Snabbprov
-              </div>
-              <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5, marginBottom: "18px", position: "relative" }}>
-                Testa dig själv och mät ditt kunskapsläge
-              </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
-                <div style={{ display: "flex", gap: "5px" }}>
-                  {["15 frågor", "~5 min", "Slumpvis urval"].map(lbl => (
-                    <div key={lbl} style={{
-                      fontSize: "9px", fontWeight: "600", color: C.textSoft,
-                      background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
-                      padding: "3px 8px", borderRadius: "5px",
-                    }}>{lbl}</div>
-                  ))}
-                </div>
+              <div style={{ padding: "20px 20px 18px", display: "flex", alignItems: "center", gap: "16px" }}>
+                {/* Icon */}
                 <div style={{
-                  width: "28px", height: "28px", borderRadius: "50%", flexShrink: 0,
-                  background: C.goldBg, border: `1px solid ${C.borderGold}`,
+                  width: "50px", height: "50px", borderRadius: "14px", flexShrink: 0,
+                  background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.2)`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: C.gold, fontSize: "15px",
+                  fontSize: "24px",
+                }}>⚡</div>
+                {/* Text */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: "8px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px", opacity: 0.85 }}>
+                    {tot === 0 ? "Kom igång" : "Daglig träning"}
+                  </div>
+                  <div style={{ fontSize: "22px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1, marginBottom: "6px" }}>
+                    Snabbprov
+                  </div>
+                  <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                    {["15 frågor", "~5 min", "Slumpvis urval"].map(lbl => (
+                      <div key={lbl} style={{
+                        fontSize: "9px", fontWeight: "600", color: C.textSoft,
+                        background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
+                        padding: "3px 8px", borderRadius: "5px",
+                      }}>{lbl}</div>
+                    ))}
+                  </div>
+                </div>
+                {/* Arrow */}
+                <div style={{
+                  width: "32px", height: "32px", borderRadius: "50%", flexShrink: 0,
+                  background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.25)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: C.gold, fontSize: "17px",
                 }}>›</div>
               </div>
             </button>
@@ -1413,51 +1497,31 @@ export default function App() {
                 onClick={() => startQuiz("focus")}
                 style={{
                   width: "100%", marginBottom: "10px",
-                  padding: "20px 20px 18px",
-                  borderRadius: "16px", overflow: "hidden",
+                  padding: "12px 14px",
+                  borderRadius: "12px",
                   border: "1px solid rgba(208,112,120,0.22)",
                   background: "rgba(208,112,120,0.04)",
-                  display: "block", cursor: "pointer", textAlign: "left",
+                  display: "flex", alignItems: "center", gap: "11px",
+                  cursor: "pointer", textAlign: "left",
                   WebkitTapHighlightColor: "transparent",
-                  position: "relative",
+                  fontFamily: "inherit",
                 }}
               >
                 <div style={{
-                  position: "absolute", top: 0, left: 0, right: 0, height: "56px",
-                  background: "linear-gradient(180deg, rgba(208,112,120,0.05) 0%, transparent 100%)",
-                  pointerEvents: "none",
+                  width: "7px", height: "7px", borderRadius: "50%",
+                  background: C.red, flexShrink: 0,
+                  boxShadow: "0 0 5px rgba(184,80,88,0.55)",
                 }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: "13px", fontWeight: "700", color: C.text }}>Fokusträning</span>
+                  <span style={{ fontSize: "12px", color: C.muted, marginLeft: "8px" }}>{wrongCount} frågor kvar</span>
+                </div>
                 <div style={{
-                  position: "absolute", right: "-4px", bottom: "-18px",
-                  fontSize: "96px", fontWeight: "900", lineHeight: 1,
-                  color: "rgba(255,255,255,0.022)", letterSpacing: "-5px",
-                  pointerEvents: "none", userSelect: "none",
-                }}>{Math.min(wrongCount, 99)}</div>
-                <div style={{ fontSize: "8px", fontWeight: "700", color: C.redLight, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px", opacity: 0.8, position: "relative" }}>
-                  Felaktiga svar · {wrongCount} kvar
-                </div>
-                <div style={{ fontSize: "22px", fontWeight: "800", color: C.text, letterSpacing: "-0.6px", lineHeight: 1, marginBottom: "5px", position: "relative" }}>
-                  Fokusträning
-                </div>
-                <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5, marginBottom: "16px", position: "relative" }}>
-                  Öva de frågor du svarat fel på tills du behärskar dem
-                </div>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
-                  <div style={{ display: "flex", gap: "5px" }}>
-                    {["15 frågor", "~5 min", `${wrongCount} att rätta till`].map(lbl => (
-                      <div key={lbl} style={{
-                        fontSize: "9px", fontWeight: "600", color: C.textSoft,
-                        background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
-                        padding: "3px 8px", borderRadius: "5px",
-                      }}>{lbl}</div>
-                    ))}
-                  </div>
-                  <div style={{
-                    width: "28px", height: "28px", borderRadius: "50%", flexShrink: 0,
-                    background: "rgba(208,112,120,0.1)", border: "1px solid rgba(208,112,120,0.22)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: C.redLight, fontSize: "15px",
-                  }}>›</div>
+                  fontSize: "10px", fontWeight: "700", color: C.redLight,
+                  background: "rgba(184,80,88,0.1)", border: "1px solid rgba(184,80,88,0.22)",
+                  padding: "4px 10px", borderRadius: "20px", flexShrink: 0, whiteSpace: "nowrap",
+                }}>
+                  Träna →
                 </div>
               </button>
             ) : (
@@ -1467,60 +1531,77 @@ export default function App() {
                 className="home-card-3"
                 style={{
                   width: "100%", marginBottom: "10px",
-                  padding: "16px 18px",
-                  borderRadius: "14px",
+                  padding: "11px 14px",
+                  borderRadius: "12px",
                   border: `1px solid ${C.borderSoft}`,
-                  background: "transparent",
-                  display: "flex", alignItems: "center", gap: "14px",
+                  display: "flex", alignItems: "center", gap: "11px",
+                  opacity: tot === 0 ? 0.38 : 1,
                 }}
               >
                 <div style={{
-                  width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
-                  background: tot === 0 ? "rgba(255,255,255,0.03)" : "rgba(79,168,112,0.08)",
-                  border: `1px solid ${tot === 0 ? C.borderSoft : C.greenBorder}`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "16px",
-                }}>🎯</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "13px", fontWeight: "700", color: tot === 0 ? C.muted : C.text, marginBottom: "2px" }}>
-                    Fokusträning
-                  </div>
-                  <div style={{ fontSize: "11px", color: C.faint, lineHeight: 1.45 }}>
-                    {tot === 0
-                      ? "Aktiveras när du svarat fel på frågor"
-                      : "Inga missade frågor — du är på rätt spår"}
-                  </div>
+                  width: "7px", height: "7px", borderRadius: "50%",
+                  background: tot === 0 ? C.faint : C.green, flexShrink: 0,
+                }} />
+                <div style={{ flex: 1, fontSize: "12px", color: C.muted }}>
+                  {tot === 0 ? "Fokusträning aktiveras efter ditt första prov" : "Inga missade frågor just nu"}
                 </div>
                 {tot > 0 && (
-                  <div style={{ fontSize: "11px", fontWeight: "700", color: C.greenLight, flexShrink: 0 }}>
-                    ✓ Alla rätt
-                  </div>
+                  <span style={{ fontSize: "11px", fontWeight: "700", color: C.greenLight, flexShrink: 0 }}>✓</span>
                 )}
               </div>
             )}
 
-            {/* ══ 4. LIGHT PROGRESS OVERVIEW — only for returning users ══ */}
+            {/* ══ 3b. DELPROV QUICK TILES — only when has data ════════════ */}
             {tot > 0 && (
-              <div className="home-card-4" style={{
-                borderRadius: "14px",
-                border: `1px solid ${C.borderSoft}`,
-                padding: "0",
-                marginBottom: "12px",
-                marginTop: "6px",
-                overflow: "hidden",
-              }}>
-                {/* 3-stat grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "16px 8px 14px" }}>
+              <div className="home-card-3b" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "10px" }}>
+                {dpProgress.map(({ dp, cfg: dpCfg, pct, tried }) => {
+                  const barCol = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.faint;
+                  return (
+                    <button key={dp} className="pressable-sm" onClick={() => startQuiz(dp)}
+                      style={{
+                        padding: "14px 14px 12px",
+                        borderRadius: "13px",
+                        border: `1px solid ${C.border}`,
+                        background: "rgba(255,255,255,0.02)",
+                        cursor: "pointer", textAlign: "left",
+                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                      }}
+                    >
+                      <div style={{ fontSize: "8px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px" }}>
+                        {dpCfg.name}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: "2px", marginBottom: "9px" }}>
+                        <span style={{ fontSize: "22px", fontWeight: "800", color: tried ? C.text : C.faint, letterSpacing: "-0.6px", lineHeight: 1 }}>
+                          {pct}
+                        </span>
+                        <span style={{ fontSize: "11px", color: barCol, fontWeight: "700" }}>%</span>
+                      </div>
+                      <div style={{ height: "2px", background: "rgba(255,255,255,0.05)", borderRadius: "1px", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${pct}%`, background: barCol, borderRadius: "1px" }} />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* ══ 4. PROGRESS OVERVIEW — inline stats, no card border ══════ */}
+            {tot > 0 && (
+              <div className="home-card-4" style={{ marginTop: "8px", marginBottom: "8px" }}>
+                {/* Thin divider */}
+                <div style={{ height: "1px", background: C.borderSoft, marginBottom: "18px" }} />
+                {/* Stat row */}
+                <div style={{ display: "flex", alignItems: "center" }}>
                   {[
-                    [mastered,     "Behärskade",   C.greenLight],
-                    [`${acc}%`,    "Träffsäkerhet", C.text],
-                    [tot,          "Totalt övade",  C.muted],
+                    [mastered,  "Behärskade",   C.greenLight],
+                    [`${acc}%`, "Träffsäkerhet", C.text],
+                    [tot,       "Övade totalt",  C.muted],
                   ].map(([val, label, color], i) => (
                     <div key={label} style={{
-                      textAlign: "center",
+                      flex: 1, textAlign: "center",
                       borderLeft: i > 0 ? `1px solid ${C.borderSoft}` : "none",
                     }}>
-                      <div style={{ fontSize: "20px", fontWeight: "800", color, letterSpacing: "-0.5px", lineHeight: 1, marginBottom: "5px" }}>
+                      <div style={{ fontSize: "18px", fontWeight: "800", color, letterSpacing: "-0.4px", lineHeight: 1, marginBottom: "5px" }}>
                         {val}
                       </div>
                       <div style={{ fontSize: "9px", fontWeight: "600", color: C.faint, letterSpacing: "0.4px", textTransform: "uppercase" }}>
@@ -1533,11 +1614,10 @@ export default function App() {
                 <button
                   onClick={() => setView("prov")}
                   style={{
-                    width: "100%", padding: "10px 16px",
+                    marginTop: "14px", paddingTop: "12px",
                     borderTop: `1px solid ${C.borderSoft}`,
-                    background: "rgba(255,255,255,0.015)",
-                    border: "none",
-                    cursor: "pointer", textAlign: "left",
+                    background: "none", border: "none",
+                    width: "100%", cursor: "pointer",
                     display: "flex", alignItems: "center", justifyContent: "space-between",
                     fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                   }}
@@ -1549,14 +1629,6 @@ export default function App() {
                 </button>
               </div>
             )}
-
-            {/* Version */}
-            <div style={{
-              textAlign: "center", marginTop: "20px",
-              fontSize: "11px", color: C.muted, opacity: 0.3, letterSpacing: "0.3px",
-            }}>
-              v{APP_VERSION}
-            </div>
           </div>
         )}
 
@@ -1582,6 +1654,16 @@ export default function App() {
 
           return (
             <div style={{ animation: "screenIn 0.28s ease both" }}>
+
+              {/* ── PAGE HEADER ────────────────────────────────────────── */}
+              <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
+                <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
+                  Provförberedelse
+                </div>
+                <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+                  Prov
+                </div>
+              </div>
 
               {/* ── 1. SENASTE TESTER ──────────────────────────────────── */}
               <div style={{ marginBottom: "20px" }}>
@@ -1626,10 +1708,12 @@ export default function App() {
                       {/* Pass line label */}
                       <div style={{
                         position: "absolute",
-                        right: 0, bottom: `${PASS * 0.96 + 4}px`,
+                        left: 0, bottom: `${PASS * 0.96 + 4}px`,
                         fontSize: "8px", color: C.gold, fontWeight: "600",
                         letterSpacing: "0.2px", lineHeight: 1,
-                        zIndex: 2,
+                        zIndex: 10,
+                        background: C.surface,
+                        paddingRight: "4px",
                       }}>Godkänt 70%</div>
 
                       {/* Bars */}
@@ -1844,34 +1928,37 @@ export default function App() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {[
-                    { m: "quick", label: "Snabbprov",  sub: "15 frågor · ~5 min",  primary: true },
-                    { m: 10,      label: "10 frågor",  sub: "Snabb koll · ~3 min",  primary: false },
-                    { m: 20,      label: "20 frågor",  sub: "Djupare test · ~7 min", primary: false },
-                    { m: 30,      label: "30 frågor",  sub: "Längre session · ~10 min", primary: false },
-                  ].map(({ m, label, sub, primary }) => (
+                    { m: "quick", label: "Snabbprov",  sub: "15 frågor · ~5 min",       icon: "⚡", primary: true },
+                    { m: 10,      label: "10 frågor",  sub: "Snabb koll · ~3 min",       icon: "10", primary: false },
+                    { m: 20,      label: "20 frågor",  sub: "Djupare test · ~7 min",     icon: "20", primary: false },
+                    { m: 30,      label: "30 frågor",  sub: "Längre session · ~10 min",  icon: "30", primary: false },
+                  ].map(({ m, label, sub, icon, primary }) => (
                     <button
                       key={String(m)}
                       className="pressable-sm"
                       onClick={() => startQuiz(m)}
                       style={{
-                        ...card, width: "100%", padding: "13px 16px",
+                        ...card, width: "100%", padding: "14px 16px",
                         cursor: "pointer", display: "flex", alignItems: "center", gap: "14px",
                         textAlign: "left", WebkitTapHighlightColor: "transparent",
                         borderColor: primary ? C.borderGoldStr : C.border,
-                        transition: "border-color 0.15s",
+                        transition: "border-color 0.15s, background 0.15s",
+                        fontFamily: "inherit",
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderGoldStr; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderGoldStr; e.currentTarget.style.background = C.surfaceAlt; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; e.currentTarget.style.background = C.surface; }}
                     >
                       <div style={{
-                        width: "32px", height: "32px", borderRadius: "9px", flexShrink: 0,
+                        width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
                         background: primary ? C.goldBg : "rgba(255,255,255,0.03)",
                         border: `1px solid ${primary ? C.borderGold : C.border}`,
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: "14px", color: primary ? C.gold : C.faint,
+                        fontSize: primary ? "18px" : "12px",
                         fontWeight: "800",
+                        color: primary ? C.gold : C.muted,
+                        letterSpacing: "-0.5px",
                       }}>
-                        {m === "quick" ? "⚡" : String(m)}
+                        {icon}
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "13px", fontWeight: primary ? "700" : "600", color: C.text, marginBottom: "2px" }}>
@@ -1963,7 +2050,16 @@ export default function App() {
 
           return (
             <div style={{ animation: "screenIn 0.28s ease both" }}>
-              <Label color={C.gold}>Utmaningar</Label>
+
+              {/* ── PAGE HEADER ────────────────────────────────────────── */}
+              <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
+                <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
+                  Dagliga utmaningar
+                </div>
+                <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+                  Utmaningar
+                </div>
+              </div>
 
               {/* ══ MODE 1: Dagens fråga ════════════════════════════════════ */}
               <div style={{
@@ -2129,49 +2225,92 @@ export default function App() {
               </div>
 
               {/* ══ MODE 2: Rätt i rad ══════════════════════════════════════ */}
-              <div style={{
-                background: C.surfaceAlt,
-                border: `1px solid ${C.border}`,
-                borderRadius: "16px",
-                overflow: "hidden",
-                marginBottom: "10px",
-              }}>
-                {/* Header */}
+              <button
+                onClick={() => startQuiz("rir")}
+                className="pressable"
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                  padding: "0", marginBottom: "10px",
+                  borderRadius: "16px", overflow: "hidden",
+                  border: `1px solid rgba(201,168,76,0.22)`,
+                  background: "linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(201,168,76,0.02) 60%, rgba(9,9,11,0) 100%)",
+                  position: "relative",
+                }}
+              >
+                {/* Top shimmer line */}
                 <div style={{
-                  padding: "13px 18px",
-                  borderBottom: `1px solid ${C.border}`,
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                }}>
-                  <div style={{
-                    fontSize: "10px", fontWeight: "800", letterSpacing: "1.4px",
-                    textTransform: "uppercase", color: C.textSoft,
-                  }}>
-                    Rätt i rad
-                  </div>
-                  {rirBest > 0 && (
-                    <div style={{
-                      display: "flex", alignItems: "center", gap: "5px",
-                      fontSize: "13px", fontWeight: "700", color: C.gold,
-                    }}>
-                      🔥 {rirBest}
-                    </div>
-                  )}
-                </div>
+                  position: "absolute", top: 0, left: "8%", right: "8%", height: "1px",
+                  background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)",
+                  pointerEvents: "none",
+                }} />
 
-                {/* Body */}
-                <div style={{ padding: "14px 18px 16px" }}>
-                  <div style={{ fontSize: "13px", color: C.muted, lineHeight: 1.6, marginBottom: "14px" }}>
-                    Svara rätt utan avbrott — slutar vid första felet. Hur långt klarar du dig?
+                <div style={{ padding: "20px 20px 18px", display: "flex", alignItems: "center", gap: "16px" }}>
+                  {/* Icon badge */}
+                  <div style={{
+                    width: "50px", height: "50px", borderRadius: "14px", flexShrink: 0,
+                    background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.2)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "24px",
+                  }}>
+                    🎯
                   </div>
-                  <button
-                    onClick={() => startQuiz("rir")}
-                    className="pressable"
-                    style={{ ...btnGold, width: "100%", padding: "13px", fontSize: "14px" }}
-                  >
-                    Starta utmaning →
-                  </button>
+
+                  {/* Text block */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: "8px", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px", opacity: 0.9 }}>
+                      Utmaning
+                    </div>
+                    <div style={{ fontSize: "20px", fontWeight: "800", color: C.text, letterSpacing: "-0.5px", lineHeight: 1, marginBottom: "6px" }}>
+                      Rätt i rad
+                    </div>
+                    <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5 }}>
+                      Svara rätt utan avbrott — slutar vid första felet
+                    </div>
+                  </div>
+
+                  {/* Record circle — mirrors Dagens fråga streak circle */}
+                  <div style={{
+                    flexShrink: 0,
+                    width: "52px",
+                    height: "52px",
+                    borderRadius: "50%",
+                    border: rirBest > 0
+                      ? `1.5px solid rgba(201,168,76,0.55)`
+                      : `1.5px solid rgba(201,168,76,0.20)`,
+                    background: rirBest > 0
+                      ? "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.06) 100%)"
+                      : "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.06) 0%, rgba(201,168,76,0.02) 100%)",
+                    boxShadow: rirBest > 0
+                      ? "0 0 0 5px rgba(201,168,76,0.06), 0 0 0 10px rgba(201,168,76,0.025)"
+                      : "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "2px",
+                  }}>
+                    <div style={{
+                      fontSize: "18px",
+                      fontWeight: "800",
+                      lineHeight: 1,
+                      letterSpacing: "-0.5px",
+                      color: rirBest > 0 ? C.gold : C.muted,
+                    }}>
+                      {rirBest}
+                    </div>
+                    <div style={{
+                      fontSize: "7px",
+                      fontWeight: "700",
+                      letterSpacing: "0.8px",
+                      textTransform: "uppercase",
+                      color: rirBest > 0 ? C.goldDark : C.faint,
+                    }}>
+                      rekord
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </button>
 
             </div>
           );
@@ -2759,9 +2898,19 @@ export default function App() {
                 /* ══ HUB MODE ═════════════════════════════════════════════ */
                 <>
 
+                  {/* ── PAGE HEADER ──────────────────────────────────────── */}
+                  <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
+                    <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
+                      Frågebank
+                    </div>
+                    <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+                      Frågor
+                    </div>
+                  </div>
+
                   {/* ── 1. MINA FRÅGOR ───────────────────────────────────── */}
                   <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
                       Mina frågor
                     </div>
 
@@ -2881,40 +3030,46 @@ export default function App() {
 
                   {/* ── 2. KUNSKAPSNIVÅ ──────────────────────────────────── */}
                   <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
                       Kunskapsnivå
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                       {[
-                        { key: "ej övad",   label: "Ej övad",   color: C.faint,      dotBg: "rgba(255,255,255,0.08)" },
-                        { key: "öva mer",   label: "Öva mer",   color: C.redLight,   dotBg: "rgba(208,112,120,0.14)" },
-                        { key: "på väg",    label: "På väg",    color: C.gold,       dotBg: "rgba(201,168,76,0.14)" },
-                        { key: "behärskad", label: "Behärskad", color: C.greenLight, dotBg: "rgba(79,168,112,0.14)" },
-                      ].map(({ key, label, color, dotBg }) => {
+                        { key: "ej övad",   label: "Ej övad",   color: "rgba(255,255,255,0.28)", barBg: "rgba(255,255,255,0.06)" },
+                        { key: "öva mer",   label: "Öva mer",   color: C.redLight,               barBg: "rgba(208,112,120,0.12)" },
+                        { key: "på väg",    label: "På väg",    color: C.gold,                   barBg: "rgba(201,168,76,0.12)" },
+                        { key: "behärskad", label: "Behärskad", color: C.greenLight,             barBg: "rgba(79,168,112,0.12)" },
+                      ].map(({ key, label, color, barBg }) => {
                         const count = statusCounts[key];
+                        const total = QUESTIONS.length;
+                        const pct   = total > 0 ? Math.round(count / total * 100) : 0;
                         const clickable = count > 0;
                         return (
                           <button key={key}
                             className={clickable ? "pressable-sm" : ""}
                             onClick={() => clickable && setFragorFilter(key)}
                             style={{
-                              ...card, padding: "14px 14px 12px",
+                              ...card, padding: "0",
+                              overflow: "hidden",
                               cursor: clickable ? "pointer" : "default",
                               textAlign: "left", fontFamily: "inherit",
                               WebkitTapHighlightColor: "transparent",
-                              opacity: count === 0 ? 0.4 : 1,
+                              opacity: count === 0 ? 0.38 : 1,
                             }}
                           >
-                            <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "8px" }}>
-                              <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: color, flexShrink: 0 }} />
-                              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                            <div style={{ padding: "14px 14px 12px" }}>
+                              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "10px" }}>
                                 {label}
                               </div>
+                              <div style={{ fontSize: "28px", fontWeight: "800", color, letterSpacing: "-0.8px", lineHeight: 1, marginBottom: "4px" }}>
+                                {count}
+                              </div>
+                              <div style={{ fontSize: "9px", color: C.faint, marginBottom: "10px" }}>{pct}% av alla</div>
                             </div>
-                            <div style={{ fontSize: "26px", fontWeight: "800", color, letterSpacing: "-0.8px", lineHeight: 1, marginBottom: "2px" }}>
-                              {count}
+                            {/* Mini fill bar flush to bottom */}
+                            <div style={{ height: "2px", background: "rgba(255,255,255,0.04)" }}>
+                              <div style={{ height: "100%", width: `${pct}%`, background: color, opacity: 0.7 }} />
                             </div>
-                            <div style={{ fontSize: "9px", color: C.faint }}>frågor</div>
                           </button>
                         );
                       })}
@@ -2923,7 +3078,7 @@ export default function App() {
 
                   {/* ── 3. FRÅGOR EFTER KATEGORI ─────────────────────────── */}
                   <div>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
                       Frågor efter kategori
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -3134,36 +3289,80 @@ export default function App() {
         {view === "mer" && (
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
-            {/* ══ STATISTIK ═══════════════════════════════════════════════ */}
-            <Label color={C.gold}>Statistik</Label>
+            {/* ══ PAGE HEADER ═════════════════════════════════════════════ */}
+            <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
+              <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
+                Statistik & verktyg
+              </div>
+              <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+                Mer
+              </div>
+            </div>
 
-            {/* Summary grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "10px" }}>
-              {[
-                [`${acc}%`,  "Träffsäkerhet", C.gold,      "stat-card-1"],
-                [tot,        "Totala försök", C.text,       "stat-card-2"],
-                [corr,       "Rätta svar",    C.greenLight, "stat-card-3"],
-                [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
-              ].map(([v, l, color, cn]) => (
-                <div key={l} className={cn} style={{
-                  ...card, padding: "16px 18px",
-                  display: "flex", flexDirection: "column", alignItems: "flex-start",
-                }}>
-                  <div style={{ fontSize: "28px", fontWeight: "800", color, lineHeight: 1 }}>{v}</div>
-                  <div style={{ fontSize: "10px", color: C.muted, marginTop: "5px", fontWeight: "600", letterSpacing: "0.3px" }}>
-                    {l}
+            {/* ══ STATISTIK ═══════════════════════════════════════════════ */}
+            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Statistik</div>
+
+            {/* Unified stats block — accuracy hero row + 3-column secondary */}
+            <div style={{ ...card, overflow: "hidden", marginBottom: "10px" }}>
+              {/* Hero: Accuracy */}
+              <div className="stat-card-1" style={{
+                padding: "20px 22px 18px",
+                borderBottom: `1px solid ${C.borderSoft}`,
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                background: "linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 100%)",
+              }}>
+                <div>
+                  <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.8 }}>
+                    Träffsäkerhet
+                  </div>
+                  <div style={{ fontSize: "42px", fontWeight: "800", color: C.gold, lineHeight: 1, letterSpacing: "-2px" }}>
+                    {acc}<span style={{ fontSize: "22px", fontWeight: "700", letterSpacing: "-0.5px" }}>%</span>
                   </div>
                 </div>
-              ))}
+                {tot > 0 && (
+                  <div style={{
+                    width: "56px", height: "56px", borderRadius: "50%",
+                    background: `conic-gradient(${C.gold} ${acc * 3.6}deg, rgba(255,255,255,0.05) 0deg)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                  }}>
+                    <div style={{
+                      width: "44px", height: "44px", borderRadius: "50%",
+                      background: C.surface,
+                    }} />
+                  </div>
+                )}
+              </div>
+              {/* Secondary: 3 stats */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                {[
+                  [tot,        "Försök",     C.text,       "stat-card-2"],
+                  [corr,       "Rätt",       C.greenLight, "stat-card-3"],
+                  [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
+                ].map(([v, l, color, cn], i) => (
+                  <div key={l} className={cn} style={{
+                    padding: "14px 16px",
+                    borderRight: i < 2 ? `1px solid ${C.borderSoft}` : "none",
+                  }}>
+                    <div style={{ fontSize: "20px", fontWeight: "800", color, lineHeight: 1, letterSpacing: "-0.5px" }}>{v}</div>
+                    <div style={{ fontSize: "9px", color: C.muted, marginTop: "5px", fontWeight: "600", letterSpacing: "0.3px" }}>
+                      {l}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Mastery distribution */}
-            <div style={{ ...card, padding: "20px 20px 14px", marginBottom: "36px" }}>
+            <div style={{ ...card, padding: "16px 20px 14px", marginBottom: "32px" }}>
+              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "14px" }}>
+                Kunskapsfördelning
+              </div>
               <MasteryBar questions={QUESTIONS} getStatus={getQuestionStatus} />
             </div>
 
             {/* ══ CHECKLISTA ══════════════════════════════════════════════ */}
-            <Label>Checklista</Label>
+            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Checklista</div>
             {(() => {
               const done  = checklistDone.size;
               const total = CHECKLIST_STEPS.length;
@@ -3219,7 +3418,7 @@ export default function App() {
             })()}
 
             {/* ══ VERKTYG ════════════════════════════════════════════════ */}
-            <Label>Verktyg</Label>
+            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Verktyg</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "36px" }}>
               <button
                 id="ob-flashcards"
@@ -3250,7 +3449,7 @@ export default function App() {
             </div>
 
             {/* ══ INSTÄLLNINGAR ══════════════════════════════════════════ */}
-            <Label>Inställningar</Label>
+            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Inställningar</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "8px" }}>
               {/* Reset data row */}
               <button
@@ -3378,20 +3577,38 @@ export default function App() {
       {showBottomNav && (
         <nav className="bottom-nav">
           <div className="bottom-nav-inner">
-            {[["prov","📝","Prov"],["fragor","📚","Frågor"],["home","🏠","Hem"],["utmaningar","🏆","Utmaningar"],["mer","···","Mer"]].map(([v, ico, label]) => (
+            {[["prov","prov","Prov"],["fragor","fragor","Frågor"],["home","home","Hem"],["utmaningar","utmaningar","Utmaningar"],["mer","mer","Mer"]].map(([v, ico, label]) => (
               <button key={v}
-                id={v === "mer" ? "ob-statistik-mobile" : undefined}
+                id={v !== "home" ? `ob-nav-${v}` : undefined}
                 className={`bottom-nav-btn${view === v ? " active" : ""}`}
                 onClick={() => setView(v)}
+                style={{ color: view === v ? C.gold : C.muted }}
               >
-                <span className="bottom-nav-icon">{ico}</span>
-                <span className="bottom-nav-label" style={{ color: view === v ? C.gold : C.muted }}>
+                <span className="bottom-nav-icon"><NavIcon name={ico} active={view === v} /></span>
+                <span className="bottom-nav-label">
                   {label}
                 </span>
               </button>
             ))}
           </div>
         </nav>
+      )}
+
+      {/* ── DEV PANEL (development only) ─────────────────────────────────── */}
+      {import.meta.env.DEV && (
+        <DevPanel
+          questions={QUESTIONS}
+          installId={INSTALL_ID}
+          stats={stats}                   setStats={setStats}
+          savedIds={savedIds}             setSavedIds={setSavedIds}
+          quizHistory={quizHistory}       setQuizHistory={setQuizHistory}
+          dailyData={dailyData}           setDailyData={setDailyData}
+          rirBest={rirBest}               setRirBest={setRirBest}
+          checklistDone={checklistDone}   setChecklistDone={setChecklistDone}
+          showOnboarding={showOnboarding} setShowOnboarding={setShowOnboarding}
+          checklistSteps={CHECKLIST_STEPS}
+          saveAllStats={saveAllStats}
+        />
       )}
 
     </div>

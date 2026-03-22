@@ -3,72 +3,95 @@ import { createPortal } from "react-dom";
 
 // ─── Design tokens (mirrors App.jsx) ─────────────────────────────────────────
 const C = {
-  text:          "#f2ede4",
-  textSoft:      "#a8a090",
-  muted:         "#686058",
-  border:        "#222222",
-  gold:          "#c9a84c",
-  goldLight:     "#dbbe6a",
-  goldDark:      "#9a7a28",
+  text:     "#f1ece3",
+  textSoft: "#a8a090",
+  muted:    "#65605a",
+  border:   "#26262b",
+  gold:     "#c9a84c",
+  goldLight:"#dbbe6a",
+  goldDark: "#9a7a28",
 };
 
 const goldGrad = `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 52%, ${C.goldDark} 100%)`;
 
 // ─── Step definitions ─────────────────────────────────────────────────────────
+//
+// targetId rules:
+//   null  → centered bubble, full-screen dim (welcome / done steps)
+//   string or string[] → spotlight that element; arrays let us resolve
+//   whichever is visible (e.g. mobile bottom-nav vs desktop header-nav)
+//
+// All targets must exist in the DOM while view === "home":
+//   • ob-snabbprov        → Snabbprov button on Home page
+//   • ob-fokustranin      → Fokusträning row on Home page
+//   • ob-nav-prov         → "Prov" tab in mobile bottom nav
+//   • ob-nav-prov-desktop → "Prov" button in desktop header nav
+//   • ob-nav-utmaningar / ob-nav-utmaningar-desktop
+//   • ob-nav-fragor / ob-nav-fragor-desktop
+//   • ob-nav-mer / ob-nav-mer-desktop
+//
 const STEPS = [
   {
     id: "welcome",
     targetId: null,
     title: "Välkommen till Taxi Teori",
-    message: "Det här är din kompletta studieapp för taxiförarprovet. Låt oss ta en snabb titt på hur appen fungerar.",
+    message:
+      "Din kompletta studieapp för taxiförarprovet i Sverige. Låt oss ta en snabb titt på hur den är uppbyggd — det tar bara en minut.",
   },
   {
     id: "snabbprov",
     targetId: "ob-snabbprov",
-    title: "Snabbprov",
-    message: "Perfekt för daglig träning. Väljer 15 slumpmässiga frågor och tar ungefär fem minuter – starta gärna här varje dag.",
+    title: "Börja här — Snabbprov",
+    message:
+      "Väljer 15 slumpmässiga frågor från hela banken och tar ungefär fem minuter. Det här är din dagliga träning — starta gärna här varje gång.",
   },
   {
     id: "fokustranin",
     targetId: "ob-fokustranin",
     title: "Fokusträning",
-    message: "När du gjort prov samlas frågor du svarat fel på här. Öva på dem tills du bemästrar varje svag punkt.",
+    message:
+      "Här samlas frågor du svarat fel på. När du har övat ett tag aktiveras det automatiskt — ett effektivt sätt att rätta till dina svagheter.",
   },
   {
-    id: "delprov1",
-    targetId: "ob-delprov1",
-    title: "Delprov 1 – Säkerhet & beteende",
-    message: "Simulerar det riktiga provet med 70 frågor och 50 minuters tidsgräns. Godkänt kräver 48 rätt av 65.",
+    id: "prov",
+    targetId: ["ob-nav-prov", "ob-nav-prov-desktop"],
+    title: "Prov",
+    message:
+      "Fullständiga delprov med tidsgräns — precis som det riktiga testet. Delprov 1 har 70 frågor, Delprov 2 har 50. Klara båda för att certifieras.",
   },
   {
-    id: "delprov2",
-    targetId: "ob-delprov2",
-    title: "Delprov 2 – Lagstiftning",
-    message: "50 frågor om trafiklagstiftning med tidsgräns. Godkänt kräver 34 rätt av 46. Klara båda för att certifieras.",
+    id: "utmaningar",
+    targetId: ["ob-nav-utmaningar", "ob-nav-utmaningar-desktop"],
+    title: "Utmaningar",
+    message:
+      "Dagens fråga håller din streak vid liv — en ny fråga varje dag. Rätt i rad utmanar dig att svara korrekt så länge du kan utan ett enda fel.",
   },
   {
-    id: "statistik",
-    targetId: ["ob-statistik-mobile", "ob-statistik-desktop"],
-    title: "Statistik",
-    message: "Följ din framgång här. Se din träffsäkerhet, din provberedskap och exakt vilka frågor du behöver öva mer.",
+    id: "fragor",
+    targetId: ["ob-nav-fragor", "ob-nav-fragor-desktop"],
+    title: "Frågor",
+    message:
+      "Bläddra i hela frågebanken per kategori eller kunskapsnivå. Bokmärk frågor du vill komma tillbaka till — de samlas på ett ställe.",
   },
   {
-    id: "flashcards",
-    targetId: "ob-flashcards",
-    title: "Flashcards",
-    message: "Vill du memorera begrepp snabbt? Bläddra igenom kort, vänd dem och testa din förståelse på vägen.",
+    id: "mer",
+    targetId: ["ob-nav-mer", "ob-nav-mer-desktop"],
+    title: "Statistik & mer",
+    message:
+      "Följ din träffsäkerhet och se hur din kunskapsfördelning ser ut. Här finns även flashcards och checklistan för legitimationsansökan.",
   },
   {
     id: "done",
     targetId: null,
     title: "Du är redo att börja!",
-    message: "Starta med ett snabbprov och bygg upp din kunskap steg för steg. Vi håller koll på din framgång hela vägen.",
+    message:
+      "Starta med ett snabbprov och bygg upp din kunskap steg för steg. Vi håller koll på framstegen hela vägen till taxikortet.",
     isFinal: true,
   },
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-const PAD = 10; // padding around spotlight
+const PAD = 8; // padding around spotlight
 
 function findRect(targetId) {
   const ids = Array.isArray(targetId) ? targetId : targetId ? [targetId] : [];
@@ -91,10 +114,10 @@ function findRect(targetId) {
 }
 
 // ─── Typewriter hook ──────────────────────────────────────────────────────────
-function useTypewriter(text, speed = 16) {
-  const [shown, setShown]   = useState("");
-  const [done, setDone]     = useState(false);
-  const timerRef            = useRef(null);
+function useTypewriter(text, speed = 14) {
+  const [shown, setShown] = useState("");
+  const [done,  setDone]  = useState(false);
+  const timerRef          = useRef(null);
 
   useEffect(() => {
     setShown("");
@@ -124,7 +147,7 @@ function useTypewriter(text, speed = 16) {
 
 // ─── Spotlight overlay ────────────────────────────────────────────────────────
 function Spotlight({ rect }) {
-  const DIM  = "rgba(4,4,4,0.85)";
+  const DIM  = "rgba(4,4,4,0.88)";
   const BLUR = "blur(5px)";
   const common = { backdropFilter: BLUR, WebkitBackdropFilter: BLUR, background: DIM };
 
@@ -153,10 +176,10 @@ function Spotlight({ rect }) {
         top: rect.top, left: rect.left,
         width: rect.width, height: rect.height,
         borderRadius: "16px",
-        border: "2px solid rgba(201,168,76,0.55)",
-        boxShadow: "0 0 0 1px rgba(201,168,76,0.12), inset 0 0 24px rgba(201,168,76,0.04)",
+        border: "2px solid rgba(201,168,76,0.6)",
+        boxShadow: "0 0 0 1px rgba(201,168,76,0.14), inset 0 0 24px rgba(201,168,76,0.05)",
         pointerEvents: "none",
-        animation: "ob-ring-in 0.28s ease both",
+        animation: "ob-ring-in 0.26s ease both",
       }} />
     </>
   );
@@ -168,19 +191,20 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
   const isFirst = step === 0;
   const isLast  = step === STEPS.length - 1;
 
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const W  = Math.min(340, vw - 32);
-  const GAP = 14;
+  const vw  = window.innerWidth;
+  const vh  = window.innerHeight;
+  const W   = Math.min(340, vw - 32);
+  const GAP = 12;
 
   // Use `position: "absolute"` inside the inset:0 fixed parent — avoids the
   // mobile-Safari bug where fixed-inside-fixed resolves % against the parent
-  // compositing layer instead of the viewport. Pixel values are identical.
+  // compositing layer. Pixel values are identical to fixed.
   let pos = {};
+
   if (!rect) {
-    // Center in usable area (header ~60px, mobile bottom nav ~78px)
+    // Centered in the usable area (below header ~60px, above bottom-nav ~78px on mobile)
     const bottomNavH      = vw <= 640 ? 78 : 0;
-    const effectiveCenterY = Math.round((vh - bottomNavH) / 2);
+    const effectiveCenterY = Math.round((vh - 60 - bottomNavH) / 2) + 60;
     pos = {
       position: "absolute",
       left: Math.max(16, Math.floor((vw - W) / 2)),
@@ -189,18 +213,19 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
       width: W,
     };
   } else {
-    const cx     = rect.left + rect.width / 2;
-    const bLeft  = Math.max(16, Math.min(vw - W - 16, Math.round(cx - W / 2)));
-    const below  = vh - rect.bottom;
-    const above  = rect.top;
+    const cx    = rect.left + rect.width / 2;
+    const bLeft = Math.max(16, Math.min(vw - W - 16, Math.round(cx - W / 2)));
+    const below = vh - rect.bottom;
+    const above = rect.top;
 
-    if (below >= 170) {
+    if (below >= 180) {
       pos = { position: "absolute", left: bLeft, top: Math.round(rect.bottom + GAP), width: W };
-    } else if (above >= 170) {
+    } else if (above >= 180) {
       pos = { position: "absolute", left: bLeft, bottom: Math.round(vh - rect.top + GAP), width: W };
     } else {
-      // Not much room — place below anyway, clamped
-      pos = { position: "absolute", left: bLeft, top: Math.min(Math.round(rect.bottom + GAP), vh - 210), width: W };
+      // Nav-tab steps: not much vertical room — place above the target
+      const aboveTop = Math.max(16, Math.round(rect.top - GAP - 220));
+      pos = { position: "absolute", left: bLeft, top: aboveTop, width: W };
     }
   }
 
@@ -210,35 +235,36 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
       style={{
         ...pos,
         zIndex: 9002,
-        background: "linear-gradient(145deg, #181815 0%, #111110 60%, #0e0e0c 100%)",
-        border: "1px solid rgba(201,168,76,0.32)",
+        background: "linear-gradient(145deg, #18181a 0%, #111113 60%, #0e0e10 100%)",
+        border: "1px solid rgba(201,168,76,0.30)",
         borderRadius: "18px",
         padding: "20px 20px 16px",
-        boxShadow: "0 28px 72px rgba(0,0,0,0.72), 0 0 0 1px rgba(201,168,76,0.06)",
+        boxShadow: "0 28px 72px rgba(0,0,0,0.76), 0 0 0 1px rgba(201,168,76,0.06)",
         animation: "ob-bubble-in 0.3s cubic-bezier(0.34,1.18,0.64,1) both",
         cursor: "default",
       }}
     >
-      {/* Top gold accent */}
+      {/* Top gold shimmer */}
       <div style={{
-        position: "absolute", top: 0, left: "20%", right: "20%", height: "1px",
-        background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.55), transparent)",
+        position: "absolute", top: 0, left: "18%", right: "18%", height: "1px",
+        background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)",
+        borderRadius: "1px",
       }} />
 
-      {/* Progress dots + skip */}
+      {/* Progress indicators + skip */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-        <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
           {STEPS.map((_, i) => (
             <div key={i} style={{
-              height: "5px",
-              width: i === step ? "20px" : "5px",
+              height: "4px",
+              width: i === step ? "18px" : "4px",
               borderRadius: "3px",
               background: i === step
                 ? C.gold
                 : i < step
-                ? "rgba(201,168,76,0.38)"
-                : "rgba(255,255,255,0.09)",
-              transition: "width 0.28s ease, background 0.28s ease",
+                ? "rgba(201,168,76,0.36)"
+                : "rgba(255,255,255,0.08)",
+              transition: "width 0.26s ease, background 0.26s ease",
             }} />
           ))}
         </div>
@@ -249,10 +275,8 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
             fontSize: "10px", color: C.muted, fontWeight: "600",
             letterSpacing: "0.4px", padding: "4px 8px", borderRadius: "6px",
             fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-            transition: "color 0.14s, background 0.14s",
+            transition: "color 0.14s",
           }}
-          onMouseEnter={e => { e.currentTarget.style.color = C.textSoft; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-          onMouseLeave={e => { e.currentTarget.style.color = C.muted;    e.currentTarget.style.background = "none"; }}
         >
           Hoppa över
         </button>
@@ -289,15 +313,15 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
           <button
             onClick={onBack}
             style={{
-              background: "none", border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "9px", padding: "8px 14px",
+              background: "none", border: "1px solid rgba(255,255,255,0.10)",
+              borderRadius: "9px", padding: "9px 14px",
               color: C.muted, fontSize: "12px", fontWeight: "600",
               cursor: "pointer", fontFamily: "inherit",
               WebkitTapHighlightColor: "transparent",
               transition: "border-color 0.14s, color 0.14s",
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(201,168,76,0.3)"; e.currentTarget.style.color = C.textSoft; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; e.currentTarget.style.color = C.muted; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(201,168,76,0.28)"; e.currentTarget.style.color = C.textSoft; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)"; e.currentTarget.style.color = C.muted; }}
           >
             ← Tillbaka
           </button>
@@ -314,7 +338,7 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
             cursor: "pointer", fontFamily: "inherit",
             letterSpacing: "0.1px",
             WebkitTapHighlightColor: "transparent",
-            boxShadow: "0 4px 18px rgba(201,168,76,0.26)",
+            boxShadow: "0 4px 18px rgba(201,168,76,0.24)",
             transition: "opacity 0.14s, transform 0.12s",
           }}
           onMouseEnter={e => { e.currentTarget.style.opacity = "0.9"; e.currentTarget.style.transform = "scale(1.02)"; }}
@@ -324,11 +348,11 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
         </button>
       </div>
 
-      {/* Tap hint – first step only */}
+      {/* Tap hint — first step only */}
       {isFirst && (
         <div style={{
           textAlign: "center", marginTop: "11px",
-          fontSize: "10px", color: C.muted, opacity: 0.6,
+          fontSize: "10px", color: C.muted, opacity: 0.55,
           letterSpacing: "0.15px",
         }}>
           Tryck var som helst för att gå vidare
@@ -357,15 +381,19 @@ export default function OnboardingTour({ onComplete, onSkip }) {
     return () => clearTimeout(t);
   }, []);
 
-  // Fade out then call parent — prevents backdrop-filter GPU layer from
-  // persisting on mobile Safari/Chrome after the portal is removed from DOM.
+  // Fade out, then call parent callback.
+  // Using `pointerEvents: none` during fade-out prevents double-taps on mobile
+  // from re-triggering the action after the overlay has been dismissed.
   const dismiss = useCallback((cb) => {
     setClosing(true);
-    const t = setTimeout(cb, 340); // slightly longer than the 0.32s CSS transition
+    // 340ms > 0.32s CSS transition — ensures GPU layer is fully composited out
+    const t = setTimeout(cb, 340);
     return () => clearTimeout(t);
   }, []);
 
-  // Scroll target into view + measure its rect
+  // Measure target rect whenever step changes.
+  // Bottom-nav / header-nav buttons are fixed-position so scrollIntoView is
+  // a no-op for them, but we still call it for any in-page targets.
   useEffect(() => {
     const tid = STEPS[step]?.targetId;
     if (!tid) { setRect(null); return; }
@@ -379,12 +407,17 @@ export default function OnboardingTour({ onComplete, onSkip }) {
 
     if (!el) { setRect(null); return; }
 
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Only scroll for in-page (non-fixed) elements
+    const style = window.getComputedStyle(el);
+    if (style.position !== "fixed") {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
 
     let active = true;
+    // Wait for scroll to settle before measuring
     const t = setTimeout(() => {
       if (active) setRect(findRect(tid));
-    }, 360);
+    }, 380);
 
     return () => { active = false; clearTimeout(t); };
   }, [step]);
@@ -399,7 +432,6 @@ export default function OnboardingTour({ onComplete, onSkip }) {
     return () => window.removeEventListener("resize", onResize);
   }, [step]);
 
-  // Advance / complete typing
   const advance = useCallback(() => {
     if (!typingDone) { completeTyping(); return; }
     if (isLast) { dismiss(onComplete); return; }
@@ -426,6 +458,9 @@ export default function OnboardingTour({ onComplete, onSkip }) {
         cursor: closing ? "default" : "pointer",
         opacity: closing ? 0 : visible ? 1 : 0,
         transition: "opacity 0.32s ease",
+        // Prevent any interaction during fade-out to avoid the "black screen"
+        // issue on mobile where a tap during the dismissal animation would
+        // re-fire onAdvance while the component was already unmounting.
         pointerEvents: closing ? "none" : "auto",
       }}
     >
