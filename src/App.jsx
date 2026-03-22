@@ -1057,6 +1057,11 @@ export default function App() {
     }
   }, [quiz?.answered]);
 
+  // ── Reset scroll to top on every view change ─────────────────────────────
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
+
   // ── Countdown timer ───────────────────────────────────────────────────────
   useEffect(() => {
     if (view === "quiz" && timeLeft !== null) {
@@ -2490,13 +2495,13 @@ export default function App() {
                     : "rgba(255,255,255,0.01)",
                   textAlign: "center",
                 }}>
-                  <div style={{ fontSize: "44px", marginBottom: "12px" }}>
+                  <div className="result-emoji" style={{ fontSize: "44px", marginBottom: "12px" }}>
                     {result.score >= 20 ? "🔥" : result.score >= 10 ? "💪" : result.score >= 5 ? "📖" : "🎯"}
                   </div>
-                  <div style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "1px", textTransform: "uppercase", color: C.gold, marginBottom: "16px" }}>
+                  <div className="result-badge" style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "1px", textTransform: "uppercase", color: C.gold, marginBottom: "16px" }}>
                     Rätt i rad
                   </div>
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
+                  <div className="result-score" style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
                     <span style={{ fontSize: "58px", fontWeight: "800", color: C.text, lineHeight: 1, letterSpacing: "-2px" }}>
                       {result.score}
                     </span>
@@ -2521,11 +2526,11 @@ export default function App() {
                     : "linear-gradient(135deg, rgba(184,80,88,0.06) 0%, transparent 100%)",
                   textAlign: "center",
                 }}>
-                  <div style={{ fontSize: "44px", marginBottom: "12px" }}>
+                  <div className="result-emoji" style={{ fontSize: "44px", marginBottom: "12px" }}>
                     {passed ? "🏆" : result.expired ? "⏰" : "📖"}
                   </div>
 
-                  <div style={{
+                  <div className="result-badge" style={{
                     fontSize: "15px", fontWeight: "700", letterSpacing: "1px",
                     textTransform: "uppercase",
                     color: passed ? C.greenLight : C.redLight,
@@ -2540,7 +2545,7 @@ export default function App() {
                   </div>
 
                   {/* Score number */}
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
+                  <div className="result-score" style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
                     <span style={{ fontSize: "58px", fontWeight: "800", color: C.text, lineHeight: 1, letterSpacing: "-2px" }}>
                       {result.score}
                     </span>
@@ -3212,16 +3217,18 @@ export default function App() {
                     }}
                   >
                     {/* Check indicator */}
-                    <div style={{
-                      width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
-                      marginTop: "1px",
-                      background: done ? C.greenBg : "transparent",
-                      border: `1.5px solid ${done ? C.green : app ? C.borderGoldStr : C.border}`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "11px", fontWeight: "800",
-                      color: done ? C.greenLight : C.faint,
-                      transition: "all 0.18s",
-                    }}>
+                    <div
+                      className={`checklist-check ${done ? "is-done" : "is-undone"}`}
+                      style={{
+                        width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
+                        marginTop: "1px",
+                        background: done ? C.greenBg : "transparent",
+                        border: `1.5px solid ${done ? C.green : app ? C.borderGoldStr : C.border}`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "11px", fontWeight: "800",
+                        color: done ? C.greenLight : C.faint,
+                      }}
+                    >
                       {done ? "✓" : ""}
                     </div>
 

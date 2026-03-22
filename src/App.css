@@ -51,6 +51,26 @@
   100% { transform: scale(1); }
 }
 
+/* Score number reveal — used on result screen */
+@keyframes scoreReveal {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.92); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Small pop for badges, indicators, pills */
+@keyframes badgePop {
+  0%   { opacity: 0; transform: scale(0.72); }
+  65%  { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Active nav indicator bar slides in from center */
+@keyframes navBarIn {
+  from { opacity: 0; transform: translateX(-50%) scaleX(0.3); }
+  to   { opacity: 1; transform: translateX(-50%) scaleX(1); }
+}
+
 /* ─── Flashcard 3D Flip ──────────────────────────────────────────────────── */
 
 .flash-scene {
@@ -154,6 +174,8 @@
   -webkit-tap-highlight-color: transparent;
   position: relative;
   min-width: 52px;
+  /* Smooth color cross-fade when switching active tab */
+  transition: color 0.20s ease;
 }
 
 .bottom-nav-icon {
@@ -162,7 +184,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.20s ease;
+  will-change: transform;
 }
 
 .bottom-nav-btn.active .bottom-nav-icon {
@@ -179,10 +203,10 @@
   font-weight: 600;
   letter-spacing: 0.2px;
   font-family: 'Manrope', system-ui, sans-serif;
-  transition: opacity 0.14s;
+  transition: opacity 0.20s ease;
 }
 
-/* Active indicator — top edge bar */
+/* Active indicator — top edge bar, animates in from center */
 .bottom-nav-btn.active::before {
   content: '';
   position: absolute;
@@ -193,6 +217,7 @@
   height: 2px;
   border-radius: 0 0 3px 3px;
   background: #c9a84c;
+  animation: navBarIn 0.24s cubic-bezier(0.34, 1.4, 0.64, 1) both;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
@@ -218,6 +243,39 @@
   animation-delay: 0.15s;
 }
 
+/* ─── Result score reveal ────────────────────────────────────────────────── */
+
+.result-score {
+  animation: scoreReveal 0.52s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+  animation-delay: 0.10s;
+}
+
+.result-emoji {
+  animation: badgePop 0.38s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+}
+
+.result-badge {
+  animation: badgePop 0.36s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: 0.22s;
+}
+
+/* ─── Checklist indicator pop ────────────────────────────────────────────── */
+
+.checklist-check {
+  transition: background 0.18s ease,
+              border-color 0.18s ease,
+              color 0.18s ease,
+              transform 0.22s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+
+.checklist-check.is-done {
+  transform: scale(1);
+}
+
+.checklist-check.is-undone {
+  transform: scale(0.88);
+}
+
 /* ─── Staggered home entrance animations ────────────────────────────────── */
 
 .home-card-1  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.04s; }
@@ -238,6 +296,7 @@
 
 .pressable {
   transition: transform 0.11s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.11s;
+  will-change: transform;
 }
 .pressable:active {
   transform: scale(0.962);
@@ -246,6 +305,7 @@
 
 .pressable-sm {
   transition: transform 0.10s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.10s;
+  will-change: transform;
 }
 .pressable-sm:active {
   transform: scale(0.976);
@@ -260,6 +320,13 @@
   opacity: 0.72;
 }
 
+/* Quiz option — transition so release eases back smoothly */
+.quiz-opt {
+  transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.10s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.10s;
+}
 .quiz-opt:active {
   transform: scale(0.985);
   opacity: 0.84;
@@ -279,6 +346,45 @@
 .stat-q-item:active {
   transform: scale(0.988);
   opacity: 0.70;
+}
+
+/* ─── Desktop pointer hover states ───────────────────────────────────────── */
+/* Only apply on devices with a true pointer (mouse/trackpad), not touch. */
+
+@media (hover: hover) and (pointer: fine) {
+  .pressable:hover {
+    opacity: 0.92;
+    transform: scale(1.005);
+  }
+
+  .pressable-sm:hover {
+    opacity: 0.94;
+    transform: scale(1.003);
+  }
+
+  .bottom-nav-btn:hover .bottom-nav-icon {
+    transform: translateY(-2px);
+    opacity: 0.88;
+  }
+
+  .bottom-nav-btn.active:hover .bottom-nav-icon {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+
+  .quiz-opt:hover {
+    transform: scale(1.004);
+    opacity: 0.96;
+  }
+
+  .filter-chip:hover {
+    opacity: 0.88;
+    transform: scale(0.97);
+  }
+
+  .stat-q-item:hover {
+    border-color: rgba(201, 168, 76, 0.18);
+  }
 }
 
 /* ─── Mastery bar animated fill ──────────────────────────────────────────── */
