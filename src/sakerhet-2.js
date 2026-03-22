@@ -1,7 +1,7 @@
 export const SAKERHET_2 = [
     {
   "id": 351,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur påverkas i allmänhet en förare som använder mobiltelefon under körning?",
   "options": [
     "En förare som har stor körvana blir inte påverkad",
@@ -15,7 +15,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 352,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken fördel har en bältesstol jämfört med en bälteskudde som skyddsutrustning för barn?",
   "options": [
     "Den har ett särskilt bilbälte inbyggt i stolen",
@@ -29,7 +29,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 353,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kör taxi och upptäcker att bilen drar snett. Vad kan orsaken vara?",
   "options": [
     "Drivremmen till styrservopumpen har gått av",
@@ -43,7 +43,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 354,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har fått punktering och monterar ett nödhjul. Vilket alternativ är riktigt?",
   "options": [
     "Det finns särskilda begränsningar för hur fort jag får köra med nödhjulet",
@@ -57,7 +57,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 355,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har kopplat en tvåaxlig lätt släpvagn till din bil och ska köra i halt väglag en dag i mars. Din bil har en totalvikt av 1800 kg och är utrustad med dubbdäck. Måste du ha dubbdäck även på släpvagnen?",
   "options": [
     "Ja, men det räcker att främre axeln har dubbdäck",
@@ -72,7 +72,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 356,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken av dessa sjukdomar räknas till de psykotiska sjukdomarna?",
   "options": [
     "Schizofreni",
@@ -86,7 +86,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 357,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket påstående är riktigt om lufttrycket i däcken på en bil?",
   "options": [
     "För högt lufttryck innebär att bränsleförbrukningen ökar",
@@ -101,7 +101,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 358,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket av följande däck kan användas i trafik utan fara?",
   "options": [
     "Ett varmt däck med ett lufttryck som är något högre än rekommenderat",
@@ -115,7 +115,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 359,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kör en vuxen kund som plötsligt får tungt att andas. Det hörs att andningen är försvårad. Vilken är den troligaste orsaken?",
   "options": [
     "Kunden har fått ett astmaanfall",
@@ -129,7 +129,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 360,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur bör du inte göra när du lyfter?",
   "options": [
     "Lyfta nära kroppen",
@@ -143,7 +143,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 361,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket påstående om bilens bromsvätska är riktigt?",
   "options": [
     "Den ska bytas regelbundet för att parkeringsbromsen ska fungera",
@@ -157,7 +157,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 362,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Kan en alkoholpåverkad bilförare bli straffad för rattfylleri om han eller hon har mindre än 0,2 promille alkohol i blodet?",
   "options": [
     "Ja, om det kan antas att föraren inte kan framföra fordonet på ett betryggande sätt",
@@ -171,7 +171,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 363,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken ordningsföljd är rätt beträffande åtgärder vid trafikolycka?",
   "options": [
     "1. Värna andra trafikanter\n2. Ringa SOS Alarm 112\n3. Ge första hjälpen\n4. Överblicka olycksplatsen",
@@ -185,7 +185,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 364,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket påstående är riktigt om katalysatorn i en bensindriven bil?",
   "options": [
     "80 % av alla föroreningar i avgaserna tas bort",
@@ -199,7 +199,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 365,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket påstående är riktigt om kravet på användning av bilbälte för taxiförare vid godstransport?",
   "options": [
     "Det finns inget krav om transporten sker med lätt lastbil",
@@ -213,7 +213,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 366,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har fått fel på din taxi och tvingas stanna på en landsväg strax före ett backkrön, där högsta tillåtna hastighet är 70 km/h. Måste du sätta ut varningstriangel?",
   "options": [
     "Ja, men endast om vägen saknar vägren",
@@ -227,7 +227,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 367,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du tar medicin som kan vara trafikfarlig. Varför bör du då inte köra bil?",
   "options": [
     "Enbart för att den kan påverka uppmärksamheten",
@@ -241,7 +241,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 368,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har använt taxin till att köra din hund till veterinären. Kan det påverka nästa kund?",
   "options": [
     "Ja, kunden kan få svåra allergiska besvär",
@@ -254,7 +254,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 369,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ska ensam hjälpa en rullstolsburen passagerare uppför en trappa. Vilken av bilderna beskriver rätt teknik?",
   "options": [
     "Bild A",
@@ -268,7 +268,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 370,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken hastighet kan en bil högst ha om de flesta oskyddade trafikanter ska kunna överleva om de blir påkörda?",
   "options": [
     "20 km/h",
@@ -282,7 +282,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 371,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Barn som är 120 cm, var sitter han säkrast?",
   "options": [
     "I baksätet",
@@ -295,7 +295,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 372,
-  "delprov": 2,
+  "delprov": 1,
   "question": "När ska du använda dig av Heimlich manöver?",
   "options": [
     "När en person är chockad",
@@ -309,7 +309,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 373,
-  "delprov": 2,
+  "delprov": 1,
   "question": "En avsvimmad person, vad bör du göra i första hand?",
   "options": [
     "Kontrollera andningen",
@@ -323,7 +323,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 374,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur många år bör ett barn minst vara för att du ska låta det sitta i en bältesstol eller på en bälteskudde i stället för i en bakåtvänd bilbarnstol?",
   "options": [
     "Ca 1 år",
@@ -337,7 +337,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 375,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du får ett uppdrag där du ska köra en synskadad person. Hur bör du bemöta kunden?",
   "options": [
     "Jag öppnar dörren och ber kunden stiga in",
@@ -351,7 +351,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 376,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du tar en rökpaus utanför din taxi. Kan det påverka din nästa kunds hälsa?",
   "options": [
     "Ja, kunden kan få allergiska besvär",
@@ -365,7 +365,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 377,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken är den viktigaste anledningen till att du inte använder mobiltelefonen när du kör taxi?",
   "options": [
     "Strålning från mobiltelefonen kan störa bilens elektronik",
@@ -379,7 +379,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 378,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har en bil som är registrerad 2006 och ska byta däck på den. Du funderar på att byta till en annan däckdimension. Får du välja vilken dimension du vill?",
   "options": [
     "Ja, men enbart om däcken uppfyller belastningskraven",
@@ -393,7 +393,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 379,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Bilden visar spärren till barnsäkerhetslåset på bilens ena bakdörr. Hur fungerar låset när det är aktiverat?",
   "options": [
     "Bakdörren kan endast öppnas inifrån",
@@ -407,7 +407,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 380,
-  "delprov": 2,
+  "delprov": 1,
   "question": "En förare som talar i mobiltelefonen har ofta sämre reaktionsförmåga än vanligt. Normal reaktionstid är ca 1 sekund. Hur lång blir reaktionssträckan i 70 km/tim om det i stället tar 2 sekunder att reagera?",
   "options": [
     "Ca 25 m",
@@ -422,7 +422,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 381,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken sjukdom beskrivs i texten på bilden?",
   "options": [
     "Fobi",
@@ -437,7 +437,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 382,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har en körning med en person som har diabetes. Under körningen blir personen blek, kallsvettig och irriterad. Vad bör du göra i första hand?",
   "options": [
     "Se till att personen får i sig sitt insulin",
@@ -450,7 +450,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 383,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ska köra en långresa som startar kl. 22.00 och slutar kl. 03.00. Under vilken del av resan är risken störst att du råkar ut för en olycka på grund av trötthet?",
   "options": [
     "Under resans sista timme",
@@ -463,7 +463,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 384,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken är den enskilt effektivaste utrustningen i en bil för att skydda passagerare från skador vid en frontalkrock?",
   "options": [
     "Krockkuddar",
@@ -478,7 +478,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 385,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vid vilken ålder brukar barn normalt börja bete sig trafiksäkert?",
   "options": [
     "7 år",
@@ -492,7 +492,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 386,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ska frakta en cykel med din bil. Du får inte plats med den inne i bilen. Var bör du helst placera cykeln med tanke på miljön och bränsleförbrukningen?",
   "options": [
     "Den bör ligga på takräcket",
@@ -505,7 +505,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 387,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kör en person som plötsligt får molande värk från bröstet ut mot armarna. Vilken är den troligaste orsaken?",
   "options": [
     "Personen har satt något i halsen",
@@ -519,7 +519,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 388,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ska lyfta tungt gods. Vilken lyftteknik bör du använda?",
   "options": [
     "Jag lyfter med rak rygg och godset långt ifrån mig",
@@ -533,7 +533,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 389,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Bilföraren ska svänga till höger i situationen på bilden. Hur ska han göra?",
   "options": [
     "Han måste lämna företräde åt de gående",
@@ -546,7 +546,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 390,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Varför har barn svårt för att bete sig trafiksäkert?",
   "options": [
     "För att de är korta och impulsiva och inte har fullt utvecklad syn",
@@ -559,7 +559,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 391,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur bör du uppträda om en kund börjar bete sig argt eller hotfullt?",
   "options": [
     "Jag höjer rösten för att kunden ska förstå att den beter sig illa",
@@ -572,7 +572,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 392,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kommer fram till en olycksplats och hjälper en man som ser blek och kallsvettig ut. Bör du ge honom något att dricka?",
   "options": [
     "Nej",
@@ -586,7 +586,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 393,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad kan bli följden av att placera tung last baktill i bilen?",
   "options": [
     "Ytterkanterna på framdäcken slits hårdare",
@@ -600,7 +600,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 394,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur bör du placera tung last i en personbils bagageutrymme?",
   "options": [
     "Långt fram och lågt",
@@ -614,7 +614,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 395,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Det är höst och du funderar på att börja använda motorvärmaren. Vid vilken högsta utetemperatur lönar det sig ur bränslebesparande synpunkt att använda motorvärmare?",
   "options": [
     "Vid ca -10 C",
@@ -628,7 +628,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 396,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Din kund är gravt hörselskadad. Hur bör du göra för att kunden ska ha så stor chans som möjligt att uppfatta vad du säger?",
   "options": [
     "Jag talar så nära kundens öra eller hörapparat som möjligt",
@@ -642,7 +642,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 397,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vätskenivån i bilbatteriet är för låg. Vilken vätska ska du fylla på med?",
   "options": [
     "Svavelsyra",
@@ -656,7 +656,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 398,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Sömnen har stor betydelse för fordonsförare. Vad är riktigt beträffande sömnstörningar och nattarbete?",
   "options": [
     "Problemen ökar oavsett kön efter 45 års ålder",
@@ -669,7 +669,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 399,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur kan du som förare bäst bidra till att nollvisionens mål uppnås?",
   "options": [
     "Jag använder bra däck",
@@ -683,7 +683,7 @@ export const SAKERHET_2 = [
 },
 {
   "id": 400,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad är den troligaste följden av ett igensatt luftfilter till motorn?",
   "options": [
     "Bränsleförbrukningen blir högre",

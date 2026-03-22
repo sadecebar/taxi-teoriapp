@@ -1,7 +1,7 @@
 export const SAKERHET_3 = [
     {
   "id": 401,
-  "delprov": 2,
+  "delprov": 1,
   "question": "På vilket sätt bör du i första hand hjälpa en person som är omtöcknad på grund av diabetes?",
   "options": [
     "Placera i stabilt sidoläge",
@@ -16,7 +16,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 402,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Din kund är synskadad och har med sig sin ledarhund som har vit sele. Vad bör du göra först?",
   "options": [
     "Tala om att hundar inte får följa med i taxibilar",
@@ -29,7 +29,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 403,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Varningslampan tänds när du kör. När du kontrollerar behållaren för bromsvätska, ser du att nivån är under minimum. Vad ska du göra?",
   "options": [
     "Jag bogserar bilen till närmaste verkstad",
@@ -43,7 +43,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 404,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad kan du göra för att minska fordonets bränsleförbrukning?",
   "options": [
     "Undvika att använda den elektriska motorvärmaren vid temperaturer över +15 C",
@@ -57,7 +57,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 405,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kör en kund som plötsligt faller ihop och får kramper. Vilken är den troligaste orsaken?",
   "options": [
     "Kunden har fått ett epileptiskt anfall",
@@ -71,7 +71,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 406,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad varnar kontrollampan på bilden för?",
   "options": [
     "Låg bromsvätskenivå",
@@ -85,7 +85,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 407,
-  "delprov": 2,
+  "delprov": 1,
   "question": "På din taxibil är däcken märkta M+S. Vad betyder denna märkning?",
   "options": [
     "De är anpassade till körning med medelstor belastning",
@@ -99,7 +99,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 408,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Av vilken anledning bör bromsvätskan bytas ut med några års mellanrum?",
   "options": [
     "Den drar till sig vatten",
@@ -113,7 +113,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 409,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kommer fram till en olycksplats och hittar en kvinna som klagar på att hon fryser. Hon ser blek och kallsvettig ut. Hur bör du göra?",
   "options": [
     "Se till att hon går omkring för att hålla sig varm",
@@ -126,7 +126,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 410,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Hur bör du göra för att minska de negativa effekterna på miljön vid kallstart?",
   "options": [
     "Jag börjar köra direkt men undviker att belasta motorn hårt",
@@ -139,7 +139,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 411,
-  "delprov": 2,
+  "delprov": 1,
   "question": "På vilken av bilderna används bilbältet bäst för att skydda vid en trafikolycka?",
   "options": [
     "Bild A",
@@ -153,7 +153,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 412,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ser i backspegeln att du kommer att bli påkörd bakifrån. Vad kan du göra för att skydda nacken mot skador?",
   "options": [
     "Böja huvudet framåt och undvika att vrida huvudet",
@@ -167,7 +167,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 413,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad bör i första hand avgöra hur fort du kör i den här situationen?",
   "options": [
     "Hastighetsbegränsningen på vägen",
@@ -181,7 +181,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 414,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du ska den 1 februari koppla en släpvagn till din taxibil. Det är vinterväglag och bilen är utrustad med dubbdäck. Vilka däck får du använda på släpet?",
   "options": [
     "Antingen vinterdäck eller dubbdäck",
@@ -194,7 +194,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 415,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken grupp av förare har oftare svårt att hinna med att överblicka trafiken i korsningar?",
   "options": [
     "Män 18–24 år",
@@ -208,7 +208,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 416,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilken är den viktigaste anledningen till att man har sänkt hastighetsbegränsningen från 50 km/tim till 30 km/tim i vissa tätorter?",
   "options": [
     "Att bullernivån ska bli lägre för de boende",
@@ -223,7 +223,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 417,
-  "delprov": 2,
+  "delprov": 1,
   "question": "När ska du byta ut bilbarnstolen mot till exempel en bilbälteskudde?",
   "options": [
     "När barnet kan sitta utan stöd",
@@ -237,7 +237,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 418,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Din taxibil har krockkudde både på förarplatsen och passagerarplatsen fram. Vilket alternativ är rätt?",
   "options": [
     "En bilbarnstol i framsätet måste vara framåtvänd",
@@ -251,7 +251,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 419,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vid vilket av följande tillfällen ska taxametern besiktas när du bytt däck?",
   "options": [
     "När spårvidden ändras med mer än 5 procent",
@@ -265,7 +265,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 420,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har bytt däck på bilen. Vad ska du göra med de utslitna däcken?",
   "options": [
     "Lämna dem till däckförsäljaren för återvinning",
@@ -279,7 +279,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 421,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Din kund behöver rollator när han går och ska ha med rollatorn på resan. Hur gör du?",
   "options": [
     "Jag erbjuder kunden hjälp in i bilen och tar sedan hand om rollatorn",
@@ -292,7 +292,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 422,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du kör en person som plötsligt får väldiga smärtor i armar och rygg. Personen bär denna symbol runt halsen. Vad bör du omedelbart göra?",
   "options": [
     "Se till att personen sitter med stöd för armarna",
@@ -306,7 +306,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 423,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du har en kund som får ett astmaanfall med hosta och andningssvårigheter. Vilken hjälp bör du ge först?",
   "options": [
     "Tala lugnande och försöka få kundens uppmärksamhet riktad mot något annat",
@@ -320,7 +320,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 424,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du hör ett mekaniskt skrapande ljud när du bromsar. Måste du vidta någon åtgärd?",
   "options": [
     "Ja, kontrollera bromsvätskans nivå",
@@ -334,7 +334,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 425,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vilket av märkena markerar att en person är drabbad av en neurologisk sjukdom?",
   "options": [
     "Märke A",
@@ -348,7 +348,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 426,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Din bil är manuellt växlad. Vad kan du göra för att minska bilens bränsleförbrukning?",
   "options": [
     "Använda konstantfarthållaren så ofta som möjligt",
@@ -362,7 +362,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 427,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Vad kan förlänga din reaktionstid när du kör?",
   "options": [
     "För lågt lufttryck i däcken",
@@ -377,7 +377,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 428,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Varför bör du inte ha takboxen på bilen när du inte använder den?",
   "options": [
     "Takboxen gör att jag får betydligt längre bromssträcka",
@@ -391,7 +391,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 429,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du får en kund som bär denna symbol. Vilket symtom kan sjukdomen ge?",
   "options": [
     "Kunden kan drabbas av hjärtsvikt",
@@ -405,7 +405,7 @@ export const SAKERHET_3 = [
 },
 {
   "id": 430,
-  "delprov": 2,
+  "delprov": 1,
   "question": "Du får ett köruppdrag där kunden är kraftigt alkoholpåverkad men på gott humör. Vad bör du göra?",
   "options": [
     "Jag begär förskottsbetalning och fullföljer uppdraget",

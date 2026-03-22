@@ -304,7 +304,7 @@ function GuideBubble({ step, rect, shown, typingDone, onAdvance, onBack, onSkip,
         ) : <div />}
 
         <button
-          onClick={onAdvance}
+          onClick={(e) => { e.stopPropagation(); onAdvance(); }}
           style={{
             flex: (isFirst || isLast) ? 1 : undefined,
             padding: "10px 22px",
@@ -343,6 +343,7 @@ export default function OnboardingTour({ onComplete, onSkip }) {
   const [step,    setStep]    = useState(0);
   const [rect,    setRect]    = useState(null);
   const [visible, setVisible] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [stepKey, setStepKey] = useState(0);
 
   const current = STEPS[step];
@@ -353,6 +354,14 @@ export default function OnboardingTour({ onComplete, onSkip }) {
   // Fade in on mount
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Fade out then call parent — prevents backdrop-filter GPU layer from
+  // persisting on mobile Safari/Chrome after the portal is removed from DOM.
+  const dismiss = useCallback((cb) => {
+    setClosing(true);
+    const t = setTimeout(cb, 340); // slightly longer than the 0.32s CSS transition
     return () => clearTimeout(t);
   }, []);
 
@@ -393,10 +402,10 @@ export default function OnboardingTour({ onComplete, onSkip }) {
   // Advance / complete typing
   const advance = useCallback(() => {
     if (!typingDone) { completeTyping(); return; }
-    if (isLast) { onComplete(); return; }
+    if (isLast) { dismiss(onComplete); return; }
     setStep(s => s + 1);
     setStepKey(k => k + 1);
-  }, [typingDone, completeTyping, isLast, onComplete]);
+  }, [typingDone, completeTyping, isLast, onComplete, dismiss]);
 
   const goBack = useCallback((e) => {
     e.stopPropagation();
@@ -405,8 +414,8 @@ export default function OnboardingTour({ onComplete, onSkip }) {
 
   const handleSkip = useCallback((e) => {
     e.stopPropagation();
-    onSkip();
-  }, [onSkip]);
+    dismiss(onSkip);
+  }, [onSkip, dismiss]);
 
   return createPortal(
     <div
@@ -414,9 +423,10 @@ export default function OnboardingTour({ onComplete, onSkip }) {
       style={{
         position: "fixed", inset: 0,
         zIndex: 9000,
-        cursor: "pointer",
-        opacity: visible ? 1 : 0,
+        cursor: closing ? "default" : "pointer",
+        opacity: closing ? 0 : visible ? 1 : 0,
         transition: "opacity 0.32s ease",
+        pointerEvents: closing ? "none" : "auto",
       }}
     >
       <Spotlight rect={rect} />
