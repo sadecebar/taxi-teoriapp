@@ -1298,6 +1298,56 @@ export default function App() {
               )}
             </div>
 
+            {/* ══ 1b. DAGENS FRÅGA — compact daily challenge entry ═══════ */}
+            <button
+              onClick={() => setView("utmaningar")}
+              className="pressable"
+              style={{
+                width: "100%",
+                marginBottom: "10px",
+                padding: "11px 14px 11px 15px",
+                borderRadius: "11px",
+                borderTop: `1px solid rgba(201,168,76,0.16)`,
+                borderRight: `1px solid rgba(201,168,76,0.16)`,
+                borderBottom: `1px solid rgba(201,168,76,0.16)`,
+                borderLeft: `2px solid ${C.gold}`,
+                background: "linear-gradient(90deg, rgba(201,168,76,0.055) 0%, rgba(201,168,76,0.018) 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                cursor: "pointer",
+                textAlign: "left",
+                WebkitTapHighlightColor: "transparent",
+                fontFamily: "inherit",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <div style={{ fontSize: "12px", fontWeight: "800", color: C.text, letterSpacing: "-0.1px" }}>
+                  Dagens fråga
+                </div>
+                <div style={{ fontSize: "10.5px", color: C.muted, letterSpacing: "0.1px" }}>
+                  {dailyData.answered ? "Du har svarat idag · kom tillbaka imorgon" : "Ny fråga idag · håll din streak vid liv"}
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "7px", flexShrink: 0 }}>
+                {dailyData.streak > 0 && (
+                  <div style={{
+                    fontSize: "10px", fontWeight: "700",
+                    color: C.gold,
+                    background: "rgba(201,168,76,0.1)",
+                    border: `1px solid rgba(201,168,76,0.22)`,
+                    padding: "2px 7px",
+                    borderRadius: "20px",
+                    whiteSpace: "nowrap",
+                    letterSpacing: "0.1px",
+                  }}>
+                    🔥 {dailyData.streak} {dailyData.streak === 1 ? "dag" : "dagar"}
+                  </div>
+                )}
+                <span style={{ color: C.textSoft, fontSize: "14px", lineHeight: 1 }}>›</span>
+              </div>
+            </button>
+
             {/* ══ 2. SNABBPROV — always the primary CTA ══════════════════ */}
             <button
               id="ob-snabbprov"
