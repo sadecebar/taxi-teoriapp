@@ -2,16 +2,16 @@ export const LAGSTIFTNING_4 = [
   {
   id: 151,
   delprov: 2,
-  question: "Vem kan ställas till ansvar om ett fordon används i taxitrafik utan att vara försett med yrkestrafikmärke?",
+  question: "Vem ansvarar för att ett fordon inte används i taxitrafik innan det har anmälts till Transportstyrelsen?",
   options: [
-    "Både ägaren och beställningscentralen",
-    "Enbart föraren",
-    "Enbart ägaren",
-    "Både föraren och tillståndshavaren"
+    "Beställningscentralen",
+    "Föraren",
+    "Tillståndshavaren",
+    "Fordonsägaren"
   ],
-  correct: 3,
+  correct: 2,
   image: null,
-  explanation: "Ett fordon som används i taxitrafik ska vara rätt märkt, och ansvaret i den här typen av fråga ligger både på den som kör fordonet och på tillståndshavaren som ansvarar för verksamheten."
+  explanation: "Det är tillståndshavaren som ansvarar för att fordonet anmäls till Transportstyrelsen innan det används i taxitrafik. Tillståndshavaren ska också säkerställa att fordonet inte tas i bruk i taxiverksamheten innan en fullständig anmälan har kommit in. Tänk därför att det juridiska huvudansvaret ligger på den som har taxitrafiktillståndet, inte på beställningscentralen eller enbart föraren."
 },
 {
   id: 152,
@@ -20,21 +20,21 @@ export const LAGSTIFTNING_4 = [
   options: ["30 km/h", "50 km/h", "70 km/h", "90 km/h"],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/153.png",
-  explanation: "Frågan är bildberoende och facit pekar på 70 km/h. Det betyder att märket i bilden markerar en vägtyp eller zon där bashastigheten blir 70 km/h om inget annat anges."
+  explanation: "Märket visar att tättbebyggt område upphör. När du lämnar ett tättbebyggt område gäller bashastigheten utanför tättbebyggt område, om ingen annan hastighet anges. Det innebär 70 km/h. Tänk därför: upphör tätort + ingen ny hastighetsskylt = 70 km/h."
 },
 {
   id: 153,
   delprov: 2,
-  question: "Vilket påstående är riktigt om prisinformationen på taxibilar?",
+  question: "Vilket påstående är riktigt om prisinformationen på taxifordonets utsida?",
   options: [
-    "Den ska vara tryckt på reflekterande material som är läsbart i mörker",
-    "Den ska vara läsbar utifrån om man står minst två meter från sidan på fordonet",
-    "Den ska illustreras med symboler fastställda av vägverket",
-    "Den ska vara fastsatt i det nedre vänstra hörnet av fordonets vindruta"
+    "Den ska finnas på fordonets högra och vänstra sida",
+    "Den ska vara fastsatt i det nedre vänstra hörnet av vindrutan",
+    "Den måste vara tryckt på reflekterande material",
+    "Den ska illustreras med symboler som fastställts av Transportstyrelsen"
   ],
-  correct: 1,
+  correct: 0,
   image: null,
-  explanation: "Prisinformationen ska vara tydlig och läsbar utifrån på fordonets sidor. I den här frågan är det kravet på läsbarhet från sidan som är det riktiga påståendet."
+  explanation: "Prisinformationen på taxifordonets utsida ska vara väl synlig, varaktigt utförd och fastsatt. Den ska också finnas på både fordonets högra och vänstra sida. Tänk därför att regeln handlar om att kunden enkelt ska kunna se prisinformationen utifrån bilen, inte om särskilt reflekterande material eller en viss placering i vindrutan."
 },
 {
   id: 154,
@@ -47,30 +47,30 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/155.png",
-  explanation: "Du får inte passera en järnvägskorsning om situationen fortfarande är osäker eller om signaleringen visar att passage inte är tillåten. Att tåget nyss passerat räcker inte i sig för att du ska få köra vidare."
+  explanation: "Nej. På bilden lyser den röda signalen fortfarande, och rött blinkande ljus vid en järnvägskorsning betyder stopp. Det räcker alltså inte att tåget har passerat eller att bommen ser uppfälld ut. Du får köra först när signaleringen inte längre förbjuder passage. Tänk: signalen styr, inte bara tågets läge."
 },
 {
   id: 155,
   delprov: 2,
-  question: "Räknas släpet som lätt släpfordon i något av dessa fall?",
+  question: "I vilka av dessa fall räknas släpet som ett lätt släpfordon?",
   options: [
-    "Ja, enligt A",
-    "Ja, enligt B",
-    "Ja, enligt C",
-    "Nej"
+    "Endast A",
+    "Endast B",
+    "A och B",
+    "Endast C"
   ],
-  correct: 0,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/156-600x437.png",
-  explanation: "Ett lätt släp är normalt ett släp med totalvikt på högst 750 kg, men även ett tyngre släp kan räknas som lätt om bilens och släpets sammanlagda totalvikt inte överstiger 3 500 kg. I den här uppgiften är det alternativ A som uppfyller kraven."
+  explanation: "Ett lätt släpfordon har antingen en totalvikt på högst 750 kg, eller en högre totalvikt om bilens och släpets sammanlagda totalvikt ändå inte överstiger 3 500 kg. I både A och B är släpets totalvikt 1 000 kg, men fordonskombinationens totalvikt är 2 800 kg respektive 2 300 kg. Därför räknas släpet som lätt i både A och B. I C är den sammanlagda totalvikten 3 600 kg, så där är släpet inte lätt."
 },
 {
   id: 156,
   delprov: 2,
-  question: "Din taxi är en Volvo V70. Du har i bagageutrymmet last som väger 350 kg. Hur många passagerare kan du ta om varje passagerare väger 70 kg?",
+  question: "Din taxi är en Volvo V70. Du har i bagageutrymmet last som väger 350 kg. Hur många passagerare kan du ta med om varje passagerare väger 70 kg?",
   options: ["1", "2", "3", "4"],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/157.png",
-  explanation: "Här måste du räkna på tillåten last enligt uppgiften och dra bort bagaget först. När 350 kg redan är lastat återstår utrymme för två passagerare à 70 kg enligt facit."
+  explanation: "Bilens maxlast är 510 kg. Om du redan har 350 kg last i bagageutrymmet återstår 160 kg. Två passagerare väger tillsammans 140 kg och får därför plats inom maxlasten. Tre passagerare skulle väga 210 kg och bli för mycket. Tänk också på att föraren inte ska räknas in här, eftersom föraren redan ingår i tjänstevikten."
 },
 {
   id: 157,
@@ -78,22 +78,22 @@ export const LAGSTIFTNING_4 = [
   question: "För vilket av dessa transporter krävs det att du har taxiförarlegitimation?",
   options: [
     "En persontransport med motorcykel",
-    "En persontransport med en buss som tar 9-17 passagerare",
-    "En persontransport med en personbil i linjetrafik",
-    "En persontransport med en buss som tar fler än 17 passagerare"
+    "En persontransport med buss för upp till 16 passagerare",
+    "En persontransport med personbil i linjetrafik",
+    "En persontransport med buss för fler än 16 passagerare"
   ],
   correct: 2,
   image: null,
-  explanation: "Taxiförarlegitimation krävs för taxitrafik med personbil och lätt lastbil. I den här uppgiften är det transporten med personbil i linjetrafik som facit markerar."
+  explanation: "Taxiförarlegitimation krävs för att köra personbil eller lätt lastbil i taxitrafik. Det gäller också den här typen av persontransport med personbil i linjetrafik. För buss gäller i stället bussbehörighet och yrkesförarkompetens. Tänk därför att taxiförarlegitimation är kopplad till taxitrafik med personbil eller lätt lastbil, inte till motorcykel eller buss."
 },
 {
   id: 158,
   delprov: 2,
-  question: "Efter ett dygns vila har du kört taxi från kl. 16.00. Du har gjort uppehåll i arbetet mellan 19.00 och 22.00 då du får en långkörning till Stockholm. Den tar precis 10 timmar utan paus och lika lång tid tillbaka. Du startar hemresan från Stockholm kl. 16.00. Hur många timmar får du då köra som mest utan ny vila enligt vilotidsförordningen?",
+  question: "Efter ett dygns vila har du kört taxi från kl. 16.00. Du har gjort uppehåll i arbetet mellan 19.00 och 22.00. Därefter kör du en långkörning till Stockholm som tar 10 timmar utan paus, och du vilar sedan där mellan kl. 08.00 och 16.00. Hur många timmar får du som mest köra på hemresan innan ny vila krävs enligt vilotidsförordningen?",
   options: ["Tre", "Fem", "Sju", "Tio"],
   correct: 0,
   image: null,
-  explanation: "Vilotidsreglerna bygger på att du måste ha tillräcklig dygnsvila inom varje rullande 24-timmarsperiod. Enligt facit återstår då bara tre timmars körning innan ny vila krävs."
+  explanation: "Föraren ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. Här har du 3 timmars vila mellan 19.00 och 22.00 samt 8 timmars vila mellan 08.00 och 16.00. När du startar hemresan kl. 16.00 uppfyller du alltså precis kravet på 11 timmar. Men när klockan passerar 19.00 faller den första viloperioden ut ur 24-timmarsfönstret. Då återstår bara 8 timmars vila, vilket inte räcker. Därför får du köra högst 3 timmar till, alltså till kl. 19.00."
 },
 {
   id: 159,
@@ -107,22 +107,21 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/160.png",
-  explanation: "Det här är en bildfråga och facit pekar på alternativ D. Det betyder att märket i bilden anger ett omkörningsförbud eller undantag som i just den här uppgiften tolkas som att lastbil får köra om tvåhjulig motorcykel."
+  explanation: "Märket betyder förbud mot omkörning. Det förbjuder omkörning av andra motordrivna fordon, men tvåhjuliga mopeder och tvåhjuliga motorcyklar utan sidvagn är undantagna. Därför får en lastbil köra om en tvåhjulig motorcykel. Tänk alltså på vad som blir omkört, inte bara vilket fordon som kör om."
 },
 {
   id: 160,
   delprov: 2,
-  question: "Får en taxiförare göra tillfälliga avvikelser från reglerna om dygnsvila?",
+  question: "När får en taxiförare tillfälligt avvika från reglerna om dygnsvila?",
   options: [
-    "Ja, på direkt order av arbetsgivaren, som då tar över ansvaret",
-    "Ja, om föraren har blivit inblandad i en trafikolycka och därför är försenad",
-    "Ja, körningen får slutföras om föraren inte hinner tillbaka till stationeringsorten i tid.",
-    "Ja, när föraren utfört andra arbetsuppgifter än körning får dygnsvilan förkortas med högst två timmar",
-    "Nej, aldrig"
+    "När arbetsgivaren beordrar det och tar över ansvaret",
+    "När det är påkallat av olyckshändelse eller annan särskild omständighet som inte har kunnat förutses",
+    "När föraren inte hinner tillbaka till stationeringsorten i tid",
+    "När föraren har utfört andra arbetsuppgifter än körning"
   ],
   correct: 1,
   image: null,
-  explanation: "Huvudregeln är att dygnsvilan ska följas, men i provfrågor som denna finns ett mycket snävt undantag för oförutsedda händelser. Facit här anger trafikolycka och försening som den situation där tillfällig avvikelse kan accepteras."
+  explanation: "Huvudregeln är att reglerna om dygnsvila ska följas. En tillfällig avvikelse får bara göras när det är påkallat av en olyckshändelse eller någon annan särskild omständighet som inte har kunnat förutses. Det är alltså ett mycket snävt undantag, inte något som arbetsgivaren fritt kan besluta om och inte något som gäller bara för att man riskerar att bli sen."
 },
 {
   id: 161,
@@ -136,7 +135,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/162-600x476.png",
-  explanation: "Högerregeln gäller bara där inget annat reglerar väjningsförhållandet. I den här uppgiften är det situation D där bilen från höger har företräde enligt facit."
+  explanation: "Rätt svar är situation D. Där är korsningen inte reglerad på något annat sätt, och då gäller högerregeln. Det betyder att du ska lämna företräde åt fordon som kommer från höger. När du löser sådana här frågor ska du först kontrollera om det finns vägmärken, signaler eller utfartssituationer som tar bort högerregeln. Om inget sådant finns, gäller högerregeln."
 },
 {
   id: 162,
@@ -150,7 +149,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/163.png",
-  explanation: "Att lämna företräde kan följa av högerregeln eller annan väjningsregel. I den här bilden är det situation A som kräver att du lämnar bilen från höger företräde."
+  explanation: "Rätt svar är situation A. Där visar vägmärkena att huvudleden svänger, och om du fortsätter rakt fram lämnar du den prioriterade vägen. Bilen från höger följer då huvudleden och har företräde. Tänk därför inte bara på var bilen kommer ifrån, utan också på hur huvudleden är dragen i korsningen."
 },
 {
   id: 163,
@@ -159,25 +158,25 @@ export const LAGSTIFTNING_4 = [
   options: ["13.00", "14.00", "15.00", "16.00"],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/164.png",
-  explanation: "Du ska ha tillräcklig dygnsvila innan nästa körpass får börja. Enligt tidboksbladet och facit kan du tidigast börja kl. 14.00."
+  explanation: "Rätt svar är 14.00. En förare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna. Om du börjar redan kl. 13.00 räcker vilan i det rullande 24-timmarsfönstret inte till, men kl. 14.00 uppfylls kravet. Tänk därför att du inte bara räknar från när passet slutade, utan kontrollerar hur mycket vila som faktiskt finns i de senaste 24 timmarna."
 },
 {
   id: 164,
   delprov: 2,
-  question: "Du jobbar som tidningsbud kl. 04.00-07.00, kör skolbarn i 07.00-10.00, arbetar i beställningscentralens växel kl. 12.00-13.00 samt kör skolbarn igen kl. 13.00-15.00. Vilka vilotidsnoteringar är riktiga för denna arbetsdag enligt vilotidsförordningen?",
+  question: "Du jobbar som tidningsbud kl. 04.00-07.00, kör skolbarn kl. 07.00-10.00, arbetar i beställningscentralens växel kl. 12.00-13.00 samt kör skolbarn igen kl. 13.00-15.00. Vilka vilotidsnoteringar är riktiga för denna arbetsdag enligt vilotidsförordningen?",
   options: ["Bild A", "Bild B", "Bild C", "Bild D"],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/166.png",
-  explanation: "Tidboken ska spegla både körningar och annat arbete som påverkar vilotiden. I den här uppgiften är det bild A som stämmer med arbetsdagens upplägg enligt facit."
+  explanation: "Rätt svar är bild A. I vilotidsnoteringen ska både körning och annat arbete föras som arbetstid. Det betyder att tidningsutdelning, körning av skolbarn och arbete i växeln inte räknas som vila. Endast tider då du verkligen är ledig ska markeras som viloperioder. Tänk därför att vilotidsbladet ska spegla hela arbetsdagen, inte bara tiden då du kör fordon."
 },
 {
   id: 165,
   delprov: 2,
-  question: "Efter 11 timmars ledighet kör du taxi en måndag kl. 17.00-02.00 med en ny viloperiod kl. 20.00-21.00. När får du tidigast börja köra taxi på tisdagen enligt vilotidsförordningen?",
+  question: "Du kör taxi en måndag kl. 17.00-02.00 och har en viloperiod kl. 20.00-21.00. Om denna viloperiod ska räknas som en del av din delade dygnsvila och du därefter vilar sammanhängande, när får du tidigast börja köra igen på tisdagen?",
   options: ["Kl. 09.00", "Kl. 10.00", "Kl. 11.00", "Kl. 12.00"],
-  correct: 1,
+  correct: 3,
   image: null,
-  explanation: "Dygnsvilan ska vara minst 11 timmar under den föregående 24-timmarsperioden, och den får delas upp i två perioder där en är minst 8 timmar. Enligt facit blir tidigaste lagliga start kl. 10.00."
+  explanation: "Dygnsvilan ska vara minst 11 timmar under den föregående 24-timmarsperioden. Den får delas upp i två viloperioder. Om du redan har haft 1 timmes vila mellan 20.00 och 21.00, måste du därefter ha ytterligare 10 timmars sammanhängande vila för att komma upp i totalt 11 timmar. Slutar du köra kl. 02.00 kan du därför tidigast börja igen kl. 12.00. Tänk: delad dygnsvila = viloperioderna tillsammans måste bli 11 timmar."
 },
 {
   id: 166,
@@ -190,12 +189,12 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/168.png",
-  explanation: "Att vänta på en passagerare räknas som parkering. I just den här frågan visar facit att väntan är tillåten efter märkena i både A och B."
+  explanation: "Rätt svar är att det är tillåtet efter märkena på både bild A och B. Att vänta på en passagerare som dröjer räknas som parkering, inte bara som ett tillfälligt stopp. I den här uppgiften visar vägmärkena att parkering är tillåten där du står efter båda märkena vid den aktuella tiden. Tänk därför alltid: väntan på sen passagerare = parkering, så du måste följa reglerna för parkering och inte bara för stopp."
 },
 {
   id: 167,
   delprov: 2,
-  question: "Vad gäller när ett fordon ska kör in på motorväg från ett accelerationsfält?",
+  question: "Vad gäller när ett fordon ska köra in på motorväg från ett accelerationsfält?",
   options: [
     "Den som kör på motorväg har väjningsplikt mot trafik som kommer från accelerationsfält",
     "Den som ska lämna accelerationsfältet ska göra det så sent som möjligt",
@@ -204,7 +203,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Den som ska in från accelerationsfältet måste anpassa sig till trafiken på motorvägen, men trafiken på motorvägen ska också underlätta infarten när det kan ske utan fara. Därför är alternativ D rätt."
+  explanation: "Rätt svar är att trafiken på motorvägen ska underlätta infarten. Samtidigt måste den som kör i accelerationsfältet anpassa hastigheten och köra in utan att orsaka fara eller onödigt hinder. Det är alltså inte en vanlig väjningspliktssituation där bara den ena parten har allt ansvar. Tänk: accelerationsfält betyder samspel, där den som kör på motorvägen ska underlätta och den som kör in ska anpassa sig."
 },
 {
   id: 168,
@@ -218,20 +217,20 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/170.png",
-  explanation: "Det här är en bildberoende signal- eller märkesfråga. Facit visar att korsande trafik har väjningsplikt mot dig i just den här situationen."
+  explanation: "Rätt svar är att all korsande trafik har väjningsplikt mot dig. I bilden visar vägmärkena hur huvudleden går genom korsningen, och när du svänger vänster följer du den prioriterade vägen. Då ska trafiken från de anslutande vägarna lämna dig företräde. Tänk därför alltid på huvudledens riktning i korsningen, inte bara på åt vilket håll du själv svänger."
 },
 {
   id: 169,
   delprov: 2,
-  question: "Du behöver stanna för att släppa av en passagerare. Vad gäller här?",
+  question: "Du behöver stanna kort för att släppa av en passagerare. Var är det tillåtet att stanna i den här situationen?",
   options: [
-    "Jag får stanna intill den heldragna kantlinjen",
-    "Jag får stanna intill trottoarkanten",
-    "Jag får inte stanna"
+    "Intill den heldragna kantlinjen på körbanan",
+    "Vid trottoarkanten på gång- och cykelbanan",
+    "Det är förbjudet att stanna här"
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/171-600x418.png",
-  explanation: "Facit visar att ett kort stopp för avstigning är tillåtet intill den heldragna kantlinjen i den här situationen. Frågan är starkt beroende av bilden och den lokala utformningen på platsen."
+  explanation: "Du får stanna kort på körbanan intill den heldragna kantlinjen, om det kan ske utan fara eller onödigt hinder. Däremot får du inte stanna vid trottoarkanten här, eftersom området till höger är en gång- och cykelbana. Tänk därför så här: snabb avstigning får ske på körbanan om det är säkert, men aldrig på gång- och cykelbanan."
 },
 {
   id: 170,
@@ -240,12 +239,12 @@ export const LAGSTIFTNING_4 = [
   options: [
     "Ja, alltid",
     "Ja, men enbart om bussen är registrerad som taxifordon",
-    "Ja, men enbart om jag har körkort med behörigheten D",
+    "Ja, men enbart om jag har körkort med behörigheten D1 eller D",
     "Nej, aldrig"
   ],
   correct: 2,
   image: null,
-  explanation: "En buss med 10 passagerarplatser kräver bussbehörighet. Därför får du köra den bara om du har körkort med behörighet D."
+  explanation: "Rätt svar är att du får köra den bara om du har rätt bussbehörighet. En buss med plats för 10 passagerare ligger inom området där behörighet D1 kan räcka, och behörighet D fungerar också. Det avgörande är alltså bussbehörigheten, inte att du arbetar i taxi eller om fordonet är registrerat som taxifordon. Tänk därför att taxiförarlegitimation inte ersätter kravet på rätt körkortsbehörighet för buss."
 },
 {
   id: 171,
@@ -259,7 +258,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/173.png",
-  explanation: "Datumparkering betyder att parkering vissa datum är förbjuden på den ena eller andra sidan av gatan. Enligt facit ska du här välja sidan med jämna husnummer, och bilen får stå kvar till lördag kl. 24.00."
+  explanation: "Rätt svar är sidan med jämna husnummer, och bilen kan stå kvar till lördag kl. 24.00. Vid datumparkering är parkering förbjuden på den sida som har jämna husnummer på dagar med jämnt datum och på den sida som har udda husnummer på dagar med udda datum. Här gäller förbudet mellan kl. 0 och 6 varje dag. Eftersom fredagen den 12:e är ett jämnt datum ska du välja den jämna sidan för att stå kvar så länge som möjligt efter att den nattliga förbudstiden har passerat. Tänk: datumparkering följer datumet efter midnatt, inte bara veckodagen."
 },
 {
   id: 172,
@@ -273,12 +272,12 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Kopior av körpassrapporter för de två senaste dygnen som fordonet använts i taxitrafik ska kunna visas upp vid kontroll."
+  explanation: "Rätt svar är körpassen under de två senaste dygnen som fordonet har använts i taxitrafik. Vid en kontroll ska taxiföraren kunna skriva ut och lämna över dessa körpassrapporter. Tänk därför att det inte räcker med bara det senaste körpasset eller bara ett dygn bakåt."
 },
 {
   id: 173,
   delprov: 2,
-  question: "Vid vilken av följande tidpunkter är det enligt vägmärkena tillåtet att stanna och parkera 15 min?",
+  question: "Vid vilken av följande tidpunkter är det enligt vägmärkena tillåtet att stanna och parkera i högst 15 minuter?",
   options: [
     "En vardag som inte är dag före helgdag kl. 07.00",
     "En vardag som inte är dag före helgdag kl. 17.00",
@@ -287,7 +286,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 3,
   image: "https://teori-taxi.com/images/Lagstiftning/175.png",
-  explanation: "Tidsangivelserna på tavlorna styr när 15-minutersparkering är tillåten. Av alternativen är det lördag kl. 08.00 som ligger inom den tillåtna tiden enligt facit."
+  explanation: "Rätt svar är lördag kl. 08.00. Märket förbjuder både stannande och parkering mellan kl. 7–9 och 15–18 på vardagar som inte är dag före helgdag. Under övrig tid får du parkera i högst 15 minuter. Därför är 07.00, 15.00 och 17.00 förbjudna tider, men lördag kl. 08.00 är tillåten här. Tänk alltid först: när gäller förbudet, och först därefter: vad gäller övrig tid?"
 },
 {
   id: 174,
@@ -300,75 +299,75 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/176.png",
-  explanation: "Ett kort stopp för avstigning är tillåtet här vid den angivna tiden enligt skyltningen. Facit markerar därför att du får stanna."
+  explanation: "Rätt svar är ja. Bilden visar en taxizon, alltså en plats som är avsedd för fordon i taxitrafik. Eftersom du kör taxi och bara ska göra ett kort stopp för att släppa av en kund är det tillåtet i den här situationen. Tänk på att frågan gäller just taxi. Samma svar hade inte gällt för ett vanligt fordon."
 },
 {
   id: 175,
   delprov: 2,
   question: "Du är ledig måndag och tisdag och börjar köra taxi onsdag kl. 07.00. Du gör ett uppehåll i arbetet mellan 11.00 och 15.00. När måste du senast sluta köra enligt vilotidsförordningen om du inte gör ett nytt uppehåll?",
   options: ["kl. 22.00", "kl. 23.00", "kl. 24.00", "kl. 01.00"],
-  correct: 1,
+  correct: 2,
   image: null,
-  explanation: "Enligt reglerna ska du ha minst 11 timmars dygnsvila under den föregående 24-timmarsperioden, och vilan får delas upp i två perioder där en är minst 8 timmar. Med uppehållet 11.00–15.00 får du senast köra till kl. 23.00."
+  explanation: "Rätt svar är kl. 24.00. En taxiförare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. I den här uppgiften har du vila mellan kl. 00.00 och 07.00 samt mellan 11.00 och 15.00. Det blir tillsammans 11 timmars vila fram till kl. 24.00. Om du fortsätter efter midnatt faller en del av vilan ut ur 24-timmarsfönstret, och då uppfyller du inte längre kravet. Tänk därför alltid i rullande 24 timmar, inte bara från dagens start."
 },
 {
   id: 176,
   delprov: 2,
-  question: "Efter 11 timmars vila börjar du köra taxi kl. 07.00. Du har rast och vilar både kl. 11.00-12.00 och kl. 18.00-19.00. När måste du senast sluta detta körpass enligt vilotidsförordningen?",
+  question: "Efter 11 timmars vila börjar du köra taxi kl. 07.00. Du har uppehåll i arbetet kl. 11.00-12.00 och kl. 18.00-19.00. När måste du senast sluta detta körpass enligt vilotidsförordningen?",
   options: ["kl. 20.00", "kl. 21.00", "kl. 22.00", "kl. 23.00"],
   correct: 2,
   image: null,
-  explanation: "För att körningen ska vara tillåten måste det alltid finnas tillräcklig dygnsvila inom den senaste 24-timmarsperioden. Med de här två uppehållen blir senaste tillåtna sluttid kl. 22.00 enligt facit."
+  explanation: "Rätt svar är kl. 22.00. En förare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. Om den första 11-timmarsvilan låg direkt före körpasset finns det vid kl. 22.00 fortfarande sammanlagt 11 timmars vila i 24-timmarsfönstret. Vid kl. 23.00 har en timme av den tidigare vilan fallit ut ur fönstret, och då återstår bara 10 timmars vila. Därför måste du senast sluta kl. 22.00."
 },
 {
   id: 177,
   delprov: 2,
-  question: "Du kör taxi med enligt registreringsbeviset, dina kunders bagage väger 320 kg. Hur många passagerare får du ta med dig om de i genomsnitt väger 70 kg?",
+  question: "Du kör taxi med bilen på registreringsbeviset. Kundernas bagage väger 320 kg. Hur många passagerare får du ta med om de i genomsnitt väger 70 kg?",
   options: [
     "1 passagerare",
     "2 passagerare",
     "3 passagerare",
     "4 passagerare"
   ],
-  correct: 1,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/179.png",
-  explanation: "Du måste räkna ut hur mycket lastutrymme som återstår när bagaget dragits av från tillåten last. Enligt uppgiften och facit finns då utrymme för två passagerare à 70 kg."
+  explanation: "Bilens maxlast är 530 kg. Om bagaget väger 320 kg återstår 210 kg för passagerare. Tre passagerare väger tillsammans 210 kg och ryms därför inom maxlasten. Fyra passagerare skulle väga 280 kg och bli för mycket. Tänk alltid: maxlast minus bagage = kvarvarande vikt för passagerare."
 },
 {
   id: 178,
   delprov: 2,
   question: "Får du svänga höger i korsningen på bilden?",
   options: [
-    "Ja, jag får svänga höger utan att stanna",
+    "Ja, den gröna trafiksignalen gäller framför stoppskylten",
     "Ja, men jag måste först stanna eftersom det finns en stoppskylt",
-    "Nej, jag måste stanna och vänta tills konturpilen visar grönt ljus"
+    "Nej, jag måste vänta tills en särskild pil visar grönt"
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/180-600x388.png",
-  explanation: "Det här är en bildfråga. Facit visar att du får svänga höger utan att stanna i just den här signal- och märkesbilden."
+  explanation: "Rätt svar är ja. En anvisning genom fast sken i en trafiksignal gäller framför en anvisning om stopplikt som meddelas genom vägmärke. Det betyder att den gröna signalen styr i den här situationen. Tänk därför att trafiksignalen går före stoppskylten när de säger olika saker."
 },
 {
   id: 179,
   delprov: 2,
-  question: "Efter ett dygns vila har du kört taxi från kl. 16.00. Du har gjort uppehåll i arbetet mellan kl. 19.00 och kl. 22.00 då du får en långkörning till Stockholm. Den tar precis 10 timmar utan paus och lika lång tid tillbaka. När får du tidigast starta hemfärden från Stockholm enligt vilotidsförordningen?",
+  question: "Efter ett dygns vila har du kört taxi från kl. 16.00. Du har gjort uppehåll i arbetet mellan kl. 19.00 och kl. 22.00, då du får en långkörning till Stockholm. Den tar precis 10 timmar utan paus. När får du tidigast starta hemfärden från Stockholm enligt vilotidsförordningen?",
   options: ["Kl. 10.00", "Kl. 12.00", "Kl. 14.00", "Kl. 16.00", "Kl. 19.00"],
   correct: 3,
   image: null,
-  explanation: "Vilotidsreglerna gör att du inte kan vända direkt tillbaka efter ankomsten om du då skulle underskrida kravet på dygnsvila. Enligt facit är tidigaste tillåtna start för hemfärden kl. 16.00."
+  explanation: "Rätt svar är kl. 16.00. För att få köra måste du ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna. Du har redan 3 timmars vila mellan kl. 19.00 och 22.00. När du kommer fram till Stockholm kl. 08.00 måste du därför vila ytterligare 8 timmar för att komma upp i totalt 11 timmar inom 24-timmarsfönstret. Då får du tidigast starta hemfärden kl. 16.00."
 },
 {
   id: 180,
   delprov: 2,
   question: "Vilka av följande fordon får passera vägmärket?",
   options: [
-    "Tvåhjuliga fordon och motorcyklar med sidvagn",
-    "Tvåhjuliga motorcyklar och mopeder",
-    "Enbart cyklar och mopeder klass II",
-    "Alla fordon utom personbilar"
+    "Tvåhjuliga motorcyklar och alla mopeder",
+    "Enbart tvåhjuliga motorcyklar",
+    "Cyklar och mopeder klass II",
+    "Alla fordon med högst två hjul"
   ],
-  correct: 1,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/182.png",
-  explanation: "Facit visar att märket i bilden tillåter tvåhjuliga motorcyklar och mopeder. Det här är en tydligt bildberoende fråga, så tolkningen bör följa originalbilden."
+  explanation: "Märket förbjuder trafik med andra motordrivna fordon än moped klass II. Det betyder att motorcyklar inte får passera. Cyklar är inte motordrivna och omfattas därför inte av förbudet. Rätt svar är alltså cyklar och mopeder klass II. Tänk på att den här typen av märke förbjuder vissa motorfordon, inte all trafik."
 },
 {
   id: 181,
@@ -382,48 +381,49 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/183-600x471.png",
-  explanation: "Det här är en bildberoende fråga. Facit visar att märket betyder att mötande trafik ska lämna dig företräde om utrymmet inte räcker till för möte."
+  explanation: "Märket betyder att mötande trafik har väjningsplikt. Om vägen eller bron är så smal att två fordon inte kan mötas utan problem, är det alltså den mötande trafiken som ska lämna företräde åt dig. Tänk därför: stor vit pil i din riktning och liten röd pil i motsatt riktning betyder att du har företräde vid möte."
 },
 {
   id: 182,
   delprov: 2,
-  question: "I vilket fall krävs behörighet BE för att få köra den här fordonskombinationen?",
+  question: "När krävs minst behörigheten BE för att köra en personbil med släp?",
   options: [
-    "Bilens tjänstevikt är 1 100 kg och släpets totalvikt är 1 200 kg",
-    "Bilens tjänstevikt är 1 000 kg och släpets totalvikt är 900 kg",
-    "Så snart släpvagnens totalvikt överstiger 750 kg"
+    "När släpets totalvikt överstiger 750 kg",
+    "När bilens och släpets sammanlagda totalvikt överstiger 3 500 kg",
+    "När bilens och släpets sammanlagda totalvikt överstiger 4 250 kg",
+    "När bilen har dragkrok"
   ],
-  correct: 0,
-  image: "https://teori-taxi.com/images/Lagstiftning/184-600x308.png",
-  explanation: "BE krävs inte automatiskt bara för att släpet väger mer än 750 kg. Det beror på kombinationens vikter, och i den här uppgiften är det första alternativet som kräver BE."
+  correct: 2,
+  image: null,
+  explanation: "Behörigheten B räcker för vissa lättare fordonskombinationer, och utökad B (B96) räcker upp till en sammanlagd totalvikt på 4 250 kg. Om bilens och släpets sammanlagda totalvikt överstiger 4 250 kg krävs minst BE. Tänk därför att det i dagens regler främst är kombinationens sammanlagda totalvikt som avgör, inte bara släpets vikt i sig."
 },
 {
   id: 183,
   delprov: 2,
   question: "Du är anställd som taxiförare och din tidbok är fulltecknad. Vad ska du göra med tidboken?",
   options: [
-    "Jag lämnar den till den arbetsgivare som jag har fått boken från. Därefter börjar jag på nästa tidbok",
-    "Jag behåller den i ett år för att kunna lämna den till arbetsgivaren om denna begär det",
-    "Jag har den med i bilen en vecka. Därefter lämnar jag den till den arbetsgivare som jag har fått boken från",
-    "Jag har den med mig i bilen tre arbetsdagar. Därefter lämnar jag den till arbetsgivaren"
+    "Jag lämnar den direkt till arbetsgivaren och börjar sedan på nästa tidbok",
+    "Jag behåller den i en vecka och lämnar sedan tillbaka den till den arbetsgivare som tillhandahållit boken",
+    "Jag sparar den i ett år och lämnar den bara om arbetsgivaren begär det",
+    "Jag kastar den när en ny tidbok har börjat användas"
   ],
-  correct: 2,
+  correct: 1,
   image: null,
-  explanation: "En avslutad personlig tidbok ska behållas av föraren i en vecka efter att den fulltecknats. Därefter ska den lämnas tillbaka till den arbetsgivare som tillhandahållit boken."
+  explanation: "En avslutad personlig tidbok ska behållas av föraren i en vecka efter att den fulltecknats. Därefter ska den lämnas tillbaka till den arbetsgivare som tillhandahållit boken. Tänk därför att tidboken inte ska lämnas in direkt, men inte heller sparas hur länge som helst."
 },
 {
   id: 184,
   delprov: 2,
-  question: "Du har fått en kontrollrapport från senaste besiktningen av taxameterutrustningen i din taxi. Var ska rapporten i original förvaras?",
+  question: "Du har fått en kontrollrapport från den senaste besiktningen av taxameterutrustningen i din taxi. Var ska originalet förvaras?",
   options: [
     "I betryggande förvar hos den som utfört kontrollen",
     "I taxin",
     "I betryggande förvar i taxiföretagets lokaler",
-    "Hos polismyndigheten eller länsstyrelsen"
+    "Hos Polismyndigheten"
   ],
   correct: 1,
   image: null,
-  explanation: "Den senaste kontrollrapporten i original ska medföras i fordonet. Därför ska originalet finnas i taxin."
+  explanation: "Den senaste kontrollrapporten i original ska medföras i fordonet. Det innebär att originalet ska finnas i taxin så att det kan visas upp vid en kontroll. Tänk därför att dokumentet ska följa bilen, inte bara finnas sparat på kontoret."
 },
 {
   id: 185,
@@ -437,7 +437,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Med taxiförarlegitimation får du köra personbil och lätt lastbil i taxitrafik. Därför är lätta lastbilar rätt svar."
+  explanation: "Taxitrafik bedrivs med personbil eller lätt lastbil. Därför är lätta lastbilar rätt svar. Bussar och motorcyklar räknas inte som taxitrafik på det sätt som avses i taxitrafiklagen. Tänk därför att taxi juridiskt är kopplat till personbil och lätt lastbil."
 },
 {
   id: 186,
@@ -446,7 +446,7 @@ export const LAGSTIFTNING_4 = [
   options: ["3 meter", "5 meter", "10 meter", "20 meter", "30 meter"],
   correct: 2,
   image: null,
-  explanation: "Du får inte stanna eller parkera närmare en korsning än 10 meter från den korsande körbanans närmaste ytterkant. Därför är 10 meter rätt svar."
+  explanation: "Rätt svar är 10 meter. Du får inte stanna eller parkera i en vägkorsning eller inom 10 meter från den korsande körbanans närmaste ytterkant. Det gäller även om du bara ska göra ett kort stopp för avstigning. Tänk därför att avstigning inte ger något undantag från 10-metersregeln vid korsning."
 },
 {
   id: 187,
@@ -460,7 +460,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Nej. Om du har tappat bort taxiförarlegitimationen får du inte köra taxi innan du har fått en ny legitimation."
+  explanation: "Rätt svar är nej. Om du har tappat bort din taxiförarlegitimation får du inte köra taxi innan du har fått din nya legitimation. Tänk därför att själva behörigheten inte räcker i praktiken om du inte har den giltiga legitimationen utfärdad och klar."
 },
 {
   id: 188,
@@ -473,7 +473,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Barn under tre år får vid tillfälliga transporter under korta sträckor åka utan särskild skyddsanordning i taxi, men då ska barnet sitta i baksätet. Därför är alternativ A rätt."
+  explanation: "Rätt svar är ja, men bara vid en tillfällig färd under en kort sträcka och då måste barnet sitta i baksätet. För barn under tre år är det normalt krav på särskild skyddsanordning, men taxi har ett undantag för korta tillfälliga resor. Tänk därför: inget barn i framsätet här, och undantaget gäller bara kort taxiresa."
 },
 {
   id: 189,
@@ -485,9 +485,9 @@ export const LAGSTIFTNING_4 = [
     "De varnar fordonsförare för att en spårvagn närmar sig korsningen",
     "De varnar fordonsförare för att ett fordon närmar sig korsningen"
   ],
-  correct: 1,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/191.png",
-  explanation: "Det här är en bildfråga och jag följer originalfacit. I den här uppgiften betyder de blinkande gula lamporna att spårvagnsföraren har väjningsplikt i korsningen."
+  explanation: "Rätt svar är att lamporna varnar för att en spårvagn kan vara på väg mot korsningen. Blinkande gult ljus används för att påkalla särskild försiktighet och för att göra vägmärket eller anordningen tydligare. Här sitter lamporna tillsammans med varningsmärket för korsning med spårväg, så de ska få dig att vara extra uppmärksam på spårvagn. Tänk därför: blinkande gult betyder inte väjningsplikt i sig, men det varnar för en risk som kräver extra försiktighet."
 },
 {
   id: 190,
@@ -496,12 +496,12 @@ export const LAGSTIFTNING_4 = [
   options: [
     "Ja, alltid",
     "Ja, men enbart om bussen är registrerad som taxifordon",
-    "Ja, men enbart om körkort med behörigheten D",
+    "Ja, men enbart om jag har körkort med behörigheten D1 eller D",
     "Nej, aldrig"
   ],
   correct: 2,
   image: null,
-  explanation: "En buss med 10 passagerarplatser kräver bussbehörighet. Därför får du köra den bara om du har D-behörighet."
+  explanation: "Rätt svar är att du får köra den bara om du har rätt bussbehörighet. En buss med plats för 10 passagerare ligger inom området där D1 kan räcka, och D fungerar också. Det avgörande är alltså att du har rätt körkortsbehörighet för buss. Tänk därför att taxiförarlegitimation inte ersätter kravet på bussbehörighet."
 },
 {
   id: 191,
@@ -515,30 +515,30 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 0,
   image: null,
-  explanation: "När du backar har du ett särskilt ansvar att göra det utan fara eller onödigt hinder för andra. Du får alltså inte hindra någon annan trafikant."
+  explanation: "När du backar eller vänder har du ett särskilt ansvar. Det får bara göras om det kan ske utan fara eller onödigt hinder för andra trafikanter. Du måste alltså ta hänsyn till all trafik omkring dig, inte bara vissa grupper. Tänk därför att det är du som backar som har hela ansvaret att manövern kan göras säkert."
 },
 {
   id: 192,
   delprov: 2,
   question: "Vad gäller när du kör personbil med en bromsad släpvagn?",
   options: [
-    "Jag måste ha med både bilens och släpvagns registreringsbevis",
-    "Högsta tillåtna hastighet 80 km/tim",
+    "Jag måste ha med både bilens och släpvagnens registreringsbevis",
+    "Högsta tillåtna hastighet är 80 km/tim",
     "Släpvagnen måste ha sommardäck om bilen har sommardäck",
     "Jag måste köra på vägrenen om det finns en sådan"
   ],
   correct: 1,
   image: null,
-  explanation: "När du kör personbil med bromsad släpvagn är högsta tillåtna hastighet normalt 80 km/h. Det är den generella regeln som efterfrågas här."
+  explanation: "Rätt svar är 80 km/tim. För en bromsad släpvagn är den normala högsta tillåtna hastigheten 80 km/tim. Tänk därför att släp direkt påverkar vilken högsta hastighet som gäller, även om bilen i sig får köras fortare utan släp."
 },
 {
   id: 193,
   delprov: 2,
-  question: "Efter 11 timmars ledighet kör du taxi en lördag klockan 18.00–04.00 med en ny viloperiod klockan 20.00–21.00. På söndagen börjar du köra igen klockan 12.00. När måste du senast påbörja ytterligare en viloperiod under söndagen enligt vilotidsförordningen?",
+  question: "Efter 11 timmars ledighet kör du taxi en lördag kl. 18.00–04.00 med en viloperiod kl. 20.00–21.00. På söndagen börjar du köra igen kl. 12.00. När måste du senast påbörja ytterligare en viloperiod under söndagen enligt vilotidsförordningen?",
   options: ["kl. 14.00", "kl. 15.00", "kl. 16.00", "kl. 17.00"],
-  correct: 1,
+  correct: 2,
   image: null,
-  explanation: "Du måste ha minst 11 timmars dygnsvila under varje rullande 24-timmarsperiod. Enligt facit måste nästa viloperiod senast börja kl. 15.00 på söndagen."
+  explanation: "Rätt svar är kl. 16.00. En taxiförare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. I den här uppgiften finns vilan före lördagspasset, vilan kl. 20.00–21.00 och vilan mellan kl. 04.00 och 12.00. Vid kl. 16.00 finns fortfarande sammanlagt 11 timmars vila kvar i 24-timmarsfönstret, men vid kl. 17.00 räcker vilan inte längre. Tänk därför alltid i rullande 24 timmar."
 },
 {
   id: 194,
@@ -552,7 +552,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/196-600x538.png",
-  explanation: "Vid vänstersväng har du normalt väjningsplikt mot mötande trafik, om inte signal eller märke reglerar annat. I den här uppgiften gäller det i A, B och C enligt facit."
+  explanation: "Rätt svar är A, B och C. I de situationerna är vänstersvängen inte skyddad av en särskild pilsignal, och då måste du lämna företräde till mötande trafik. I D visas en grön pil som gäller den aktuella färdriktningen, vilket gör att den situationen skiljer sig från de andra. Tänk därför att vanlig grön signal och skyddad grön pil inte betyder samma sak vid vänstersväng."
 },
 {
   id: 195,
@@ -566,7 +566,7 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Högerregeln gäller mot trafik från höger oavsett om det är bil, motorcykel, cykel eller annat fordon. Därför är rätt svar alla fordon."
+  explanation: "Rätt svar är alla fordon. Högerregeln gäller mot det fordon som kommer från höger när era färdvägar skär varandra. Det spelar alltså ingen roll om det är en bil, motorcykel, cykel eller något annat fordon. Tänk därför att högerregeln inte bara gäller motorfordon."
 },
 {
   id: 196,
@@ -578,9 +578,9 @@ export const LAGSTIFTNING_4 = [
     "Ja, men bara för att släppa av eller ta upp passagerare",
     "Nej"
   ],
-  correct: 3,
+  correct: 2,
   image: null,
-  explanation: "Nej. Busshållplats är inte en plats där taxi får stanna fritt bara för att linjetrafiken råkar vara opåverkad. I den här frågan är stopp där inte tillåtet."
+  explanation: "Ja, det är tillåtet att stanna på en markerad busshållplats för att släppa av eller ta upp passagerare, men bara om det kan ske utan hinder för linjetrafiken. Däremot får du inte stanna där för andra skäl, som att prata i telefon eller vänta. Tänk därför: busshållplats = stopp bara för snabb på- eller avstigning, inte för andra ärenden."
 },
 {
   id: 197,
@@ -594,47 +594,46 @@ export const LAGSTIFTNING_4 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/199-600x295.png",
-  explanation: "På en gata som inte är huvudled och saknar särskilda anvisningar gäller den allmänna regeln att du får parkera högst 24 timmar i följd på vardagar, utom vardag före sön- och helgdag."
+  explanation: "Ja, du får parkera där, men högst 24 timmar i följd. På en gata som inte är huvudled och där inga särskilda parkeringsregler anges gäller huvudregeln om högst 24 timmars parkering på vardagar, utom vardag före sön- och helgdag. Eftersom den 9 mars i bilden är en onsdag gäller 24-timmarsregeln här."
 },
 {
   id: 198,
   delprov: 2,
-  question: "Du ska svänga till vänster i situationen på bilden. Hur ska du göra?",
+  question: "Du ska svänga till vänster i situationen på bilden. Vad gäller?",
   options: [
-    "Fortsätta köra men vara beredd på att den mötande bilen kanske inte stannar",
-    "Sakta ned och lämna den mötande bilen företräde eftersom det är jag som svänger",
-    "Stanna vid stopplinjen eftersom huvudsignalen visar rött sken"
+    "Jag får svänga vänster eftersom den gröna pilen gäller för min färdriktning",
+    "Jag måste lämna den mötande bilen företräde eftersom jag svänger vänster",
+    "Jag måste stanna vid stopplinjen eftersom huvudsignalen visar rött sken"
   ],
-  correct: 1,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/200-600x392.png",
-  explanation: "Vid vänstersväng ska du normalt lämna mötande trafik företräde, om inte något i signalen eller skyltningen tydligt ger dig företräde. Därför ska du sakta ned och lämna mötande bilen företräde."
+  explanation: "Den gröna vänsterpilen gäller för den färdriktning som pilen visar. Det betyder att du får svänga vänster här trots att huvudsignalen visar rött. Tänk därför att en grön pil styr just din riktning och gäller framför den övriga signalbilden."
 },
 {
   id: 199,
   delprov: 2,
-  question: "Du kör skolskjuts med din taxi. Du har en genomlyst skolskjutsskylt på bilen. När ska den vara tänd?",
+  question: "Du kör skolskjuts med din taxi. Vad krävs beträffande utmärkning av fordonet?",
   options: [
-    "Enbart 100 m efter på- eller avstigning",
-    "Enbart 100 m före på- eller avstigning",
-    "Enbart 100 m före och efter på- eller avstigning",
-    "Under hela skolskjutsningen",
-    "Enbart i mörker"
+    "Fordonet måste vara försett med en skylt eller liknande som visar att det används för skolskjutsning",
+    "Fordonet behöver bara ha sådan skylt i mörker",
+    "Fordonet behöver bara ha sådan skylt vid på- och avstigning",
+    "Fordonet behöver ingen särskild utmärkning om det är en taxi"
   ],
-  correct: 3,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/201.png",
-  explanation: "Facit i ditt material anger att den genomlysta skolskjutsskylten ska vara tänd under hela skolskjutsningen. Det är därför det alternativet används här."
+  explanation: "När ett fordon används för skolskjutsning ska det vara försett med en skylt eller liknande som visar fordonets användning. Det gäller även om skolskjutsen utförs med taxi. Tänk därför att grundkravet är att fordonet ska vara tydligt utmärkt som skolskjuts."
 },
 {
   id: 200,
   delprov: 2,
   question: "Vad innebär begreppet personbil?",
   options: [
-    "Att bilen är inrättad för högst 8 passagerare",
-    "Att bilen får användas endast till att skjutsa passagerare",
-    "Att bilen väger högst 3500 kg"
+    "En bil som är försedd med högst åtta sittplatser utöver förarplatsen och är inrättad huvudsakligen för personbefordran",
+    "En bil som bara får användas för att skjutsa passagerare mot betalning",
+    "En bil som alltid har en totalvikt på högst 3 500 kg"
   ],
-  correct: 2,
+  correct: 0,
   image: null,
-  explanation: "I den här provfrågan pekar facit på viktgränsen. Personbil är här kopplad till att fordonet har en totalvikt på högst 3 500 kg."
+  explanation: "En personbil är en bil som är försedd med högst åtta sittplatser utöver förarplatsen och som huvudsakligen är inrättad för personbefordran. Tänk därför att det är fordonets konstruktion och antal sittplatser som avgör begreppet personbil, inte bara en viss viktgräns."
 },
 ]
