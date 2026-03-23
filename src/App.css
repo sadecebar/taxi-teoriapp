@@ -360,6 +360,26 @@
 .checklist-check.is-done  { transform: scale(1); }
 .checklist-check.is-undone { transform: scale(0.88); }
 
+/* ─── Staggered Frågor entrance ────────────────────────────────────────────── */
+
+.fragor-s1  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.03s; }
+.fragor-s2  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.11s; }
+.fragor-s2b { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.17s; }
+.fragor-s3  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.23s; }
+.fragor-s4  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.30s; }
+
+/* ─── Staggered Utmaningar entrance ────────────────────────────────────────── */
+
+.utmaning-s1  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.03s; }
+.utmaning-s1b { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.10s; }
+.utmaning-s2  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.16s; }
+.utmaning-s3  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.24s; }
+.utmaning-s4  { animation: fadeUpIn 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.30s; }
+
+/* Hide scrollbar for quick-filter pills row */
+.fragor-pills { scrollbar-width: none; -ms-overflow-style: none; }
+.fragor-pills::-webkit-scrollbar { display: none; }
+
 /* ─── Staggered home entrance ──────────────────────────────────────────────── */
 
 .home-card-1  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.03s; }

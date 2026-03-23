@@ -1088,6 +1088,7 @@ export default function App() {
       const s = stats[q.id] || { c: 0, w: 0 };
       return s.w > 0 && s.c === 0; // wrong pool: has wrongs AND never answered correctly
     });
+    if (m === "bilder") return QUESTIONS.filter(q => q.image);
     return QUESTIONS.filter(q => q.delprov === m);
   };
 
@@ -1097,7 +1098,7 @@ export default function App() {
     const baseMode = (m === 10 || m === 20 || m === 30) ? "all" : m;
     let qs = [...getQs(baseMode)].sort(() => Math.random() - 0.5);
     if (qs.length === 0) return;
-    if (m === "quick" || m === "focus") qs = qs.slice(0, 15);
+    if (m === "quick" || m === "focus" || m === "bilder") qs = qs.slice(0, 15);
     if (m === 1)       qs = qs.slice(0, 70);
     if (m === 2)       qs = qs.slice(0, 50);
     if (m === "rir")   qs = qs.slice(0, 200);
@@ -1480,6 +1481,7 @@ export default function App() {
 
             {/* ══ DAGENS FRÅGA — featured daily module ════════════════════ */}
             <button
+              id="ob-dagensfraga"
               onClick={() => setView("utmaningar")}
               className="home-card-3b pressable"
               style={{
@@ -2104,20 +2106,36 @@ export default function App() {
           const dailyDateLabel = dailyQ
             ? new Date(dailyData.date + "T12:00:00").toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" })
             : "";
+          const bilderCount    = QUESTIONS.filter(q => q.image).length;
+          const isNewUser      = tot === 0;
 
           return (
             <div style={{ animation: "screenIn 0.28s ease both" }}>
 
               {/* ── PAGE HEADER ────────────────────────────────────────── */}
-              <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
-                <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
+              <div className="utmaning-s1" style={{ paddingBottom: "14px", marginBottom: "20px" }}>
+                <div style={{ fontSize: "28px", fontWeight: "800", color: C.text, letterSpacing: "-0.6px", lineHeight: 1.1, marginBottom: "4px" }}>
                   Utmaningar
                 </div>
-                <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Dagliga utmaningar</div>
+                <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>
+                  Tre sätt att testa dig — varje dag.
+                </div>
               </div>
 
+              {/* ── NEW USER INTRO ─────────────────────────────────────── */}
+              {isNewUser && (
+                <div className="utmaning-s1b" style={{
+                  padding: "11px 14px", marginBottom: "18px", borderRadius: "12px",
+                  background: "rgba(240,165,0,0.05)", border: `1px solid ${C.borderGold}`,
+                  fontSize: "12px", color: C.textSoft, lineHeight: 1.6,
+                }}>
+                  <span style={{ fontWeight: "700", color: C.gold }}>Tips för dig som börjar:</span>{" "}
+                  Svara på dagens fråga varje dag för att hålla igång din streak. Bildutmaning och Rätt i rad kan du ta när du känner dig redo.
+                </div>
+              )}
+
               {/* ══ MODE 1: Dagens fråga ════════════════════════════════════ */}
-              <div style={{
+              <div className="utmaning-s2" style={{
                 background: C.surface,
                 border: `1px solid ${
                   dailyData.answered && dailyData.correct  ? C.greenBorder :
@@ -2131,7 +2149,7 @@ export default function App() {
                 }`,
                 borderRadius: "16px",
                 overflow: "hidden",
-                marginBottom: "28px",
+                marginBottom: "12px",
               }}>
                 {/* Header */}
                 <div style={{
@@ -2287,7 +2305,7 @@ export default function App() {
               {/* ══ MODE 2: Rätt i rad ══════════════════════════════════════ */}
               <button
                 onClick={() => startQuiz("rir")}
-                className="pressable"
+                className="pressable utmaning-s3"
                 style={{
                   width: "100%", textAlign: "left", cursor: "pointer",
                   fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
@@ -2368,6 +2386,80 @@ export default function App() {
                 </div>
               </button>
 
+              {/* ══ MODE 3: Bildutmaning ════════════════════════════════════ */}
+              <button
+                onClick={() => startQuiz("bilder")}
+                className="pressable utmaning-s4"
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                  padding: "0", marginBottom: "10px",
+                  borderRadius: "20px", overflow: "hidden",
+                  border: "1px solid rgba(90,120,200,0.18)",
+                  background: "rgba(80,100,180,0.07)",
+                  boxShadow: "0 4px 24px rgba(80,100,180,0.07)",
+                  position: "relative",
+                }}
+              >
+                <div style={{ padding: "20px 20px 18px", display: "flex", alignItems: "center", gap: "16px" }}>
+                  {/* Icon badge */}
+                  <div style={{
+                    width: "50px", height: "50px", borderRadius: "16px", flexShrink: 0,
+                    background: "rgba(90,120,200,0.10)", border: "1px solid rgba(90,120,200,0.18)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "22px",
+                  }}>
+                    🖼️
+                  </div>
+
+                  {/* Text block */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      display: "inline-flex", alignItems: "center", gap: "5px",
+                      marginBottom: "8px",
+                      background: "rgba(90,120,200,0.10)",
+                      border: "1px solid rgba(90,120,200,0.18)",
+                      borderRadius: "20px",
+                      padding: "2px 8px 2px 6px",
+                    }}>
+                      <span style={{
+                        width: "5px", height: "5px", borderRadius: "50%",
+                        background: "rgba(140,160,230,0.9)", flexShrink: 0,
+                      }} />
+                      <span style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.9px", textTransform: "uppercase", color: "rgba(160,180,240,0.9)" }}>Utmaning</span>
+                    </div>
+                    <div style={{ fontSize: "22px", fontWeight: "700", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "6px" }}>
+                      Bildutmaning
+                    </div>
+                    <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5 }}>
+                      15 frågor med bilder — identifiera situationer och skyltar
+                    </div>
+                  </div>
+
+                  {/* Count circle */}
+                  <div style={{
+                    flexShrink: 0,
+                    width: "52px",
+                    height: "52px",
+                    borderRadius: "50%",
+                    border: "1.5px solid rgba(90,120,200,0.28)",
+                    background: "radial-gradient(circle at 38% 36%, rgba(90,120,200,0.12) 0%, rgba(90,120,200,0.04) 100%)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "2px",
+                  }}>
+                    <div style={{ fontSize: "15px", fontWeight: "800", lineHeight: 1, letterSpacing: "-0.5px", color: "rgba(160,180,240,0.85)" }}>
+                      {bilderCount}
+                    </div>
+                    <div style={{ fontSize: "7px", fontWeight: "700", letterSpacing: "0.8px", textTransform: "uppercase", color: "rgba(120,140,210,0.7)" }}>
+                      frågor
+                    </div>
+                  </div>
+                </div>
+              </button>
+
             </div>
           );
         })()}
@@ -2379,7 +2471,7 @@ export default function App() {
           const q         = quiz.questions[quiz.current];
           const cfg       = (mode === 1 || mode === 2) ? DELPROV_CONFIG[mode] : null;
           const danger    = timeLeft !== null && timeLeft < 300;
-          const modeLabel = mode === "quick" ? "Snabbprov" : mode === "focus" ? "Fokusträning" : mode === "rir" ? "Rätt i rad" : mode === "all" ? "Alla frågor" : mode === 10 ? "10 frågor" : mode === 20 ? "20 frågor" : mode === 30 ? "30 frågor" : cfg?.name ?? "";
+          const modeLabel = mode === "quick" ? "Snabbprov" : mode === "focus" ? "Fokusträning" : mode === "rir" ? "Rätt i rad" : mode === "bilder" ? "Bildutmaning" : mode === "all" ? "Alla frågor" : mode === 10 ? "10 frågor" : mode === 20 ? "20 frågor" : mode === 30 ? "30 frågor" : cfg?.name ?? "";
 
           return (
             <div>
@@ -2403,7 +2495,7 @@ export default function App() {
                 marginBottom: "24px",
               }}>
                 <button
-                  onClick={() => { clearTimeout(timer.current); setView(mode === "rir" ? "utmaningar" : "home"); }}
+                  onClick={() => { clearTimeout(timer.current); setView((mode === "rir" || mode === "bilder") ? "utmaningar" : "home"); }}
                   style={{
                     ...btnGhost,
                     fontSize: "13px", padding: "8px 14px",
@@ -2698,10 +2790,10 @@ export default function App() {
                   style={{ ...btnGold, flex: 1, padding: "15px", fontSize: "14px" }}>
                   {result.mode === "rir" ? "Ny omgång" : "Försök igen"}
                 </button>
-                <button onClick={() => setView(result.mode === "rir" ? "utmaningar" : "home")}
+                <button onClick={() => setView((result.mode === "rir" || result.mode === "bilder") ? "utmaningar" : "home")}
                   className="pressable-sm"
                   style={{ ...btnGhost, flex: 1, padding: "15px", fontSize: "14px", justifyContent: "center" }}>
-                  {result.mode === "rir" ? "← Utmaningar" : "Hem"}
+                  {(result.mode === "rir" || result.mode === "bilder") ? "← Utmaningar" : "Hem"}
                 </button>
               </div>
 
@@ -2870,11 +2962,11 @@ export default function App() {
             FRÅGOR
         ══════════════════════════════════════════════════════════════ */}
         {view === "fragor" && (() => {
-          // ── Derived data for hub ─────────────────────────────────────────
+          // ── Derived data ─────────────────────────────────────────────────
           const statusCounts = {
-            "ej övad":  QUESTIONS.filter(q => getQuestionStatus(q) === "ej övad").length,
-            "öva mer":  QUESTIONS.filter(q => getQuestionStatus(q) === "öva mer").length,
-            "på väg":   QUESTIONS.filter(q => getQuestionStatus(q) === "på väg").length,
+            "ej övad":   QUESTIONS.filter(q => getQuestionStatus(q) === "ej övad").length,
+            "öva mer":   QUESTIONS.filter(q => getQuestionStatus(q) === "öva mer").length,
+            "på väg":    QUESTIONS.filter(q => getQuestionStatus(q) === "på väg").length,
             "behärskad": mastered,
           };
 
@@ -2886,37 +2978,49 @@ export default function App() {
             { key: "bilder",       label: "Bildfrågor",         icon: "🖼️", qs: QUESTIONS.filter(q => q.image) },
           ].map(cat => {
             const masteredCount = cat.qs.filter(q => getQuestionStatus(q) === "behärskad").length;
-            return { ...cat, masteredCount, pct: cat.qs.length > 0 ? Math.round(masteredCount / cat.qs.length * 100) : 0 };
+            const triedCount    = cat.qs.filter(q => getQuestionStatus(q) !== "ej övad").length;
+            return { ...cat, masteredCount, triedCount, pct: cat.qs.length > 0 ? Math.round(masteredCount / cat.qs.length * 100) : 0 };
           });
+
+          // Category signals
+          const triedCats    = categories.filter(c => c.triedCount > 0 && c.pct < 100);
+          const weakestCat   = triedCats.length > 0 ? triedCats.reduce((min, c) => c.pct < min.pct ? c : min, triedCats[0]) : null;
+          const nearMasteryCat = categories.find(c => c.pct >= 70 && c.pct < 100);
 
           // ── Browse pool ──────────────────────────────────────────────────
           const browseQs = (() => {
             if (!fragorFilter) return [];
-            if (fragorFilter === "felaktiga") return QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.w > 0 && s.c === 0; });
-            if (fragorFilter === "sparade")   return QUESTIONS.filter(q => savedIds.includes(q.id));
+            if (fragorFilter === "felaktiga")    return QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.w > 0 && s.c === 0; });
+            if (fragorFilter === "sparade")      return QUESTIONS.filter(q => savedIds.includes(q.id));
             if (fragorFilter === "fordon")       return QUESTIONS.filter(q => q.delprov === 1);
             if (fragorFilter === "trafikregler") return QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q));
             if (fragorFilter === "taxiregler")   return QUESTIONS.filter(isTaxiregelQuestion);
             if (fragorFilter === "vilotid")      return QUESTIONS.filter(isVilotidQuestion);
-            if (fragorFilter === "bilder")    return QUESTIONS.filter(q => q.image);
+            if (fragorFilter === "bilder")       return QUESTIONS.filter(q => q.image);
             return QUESTIONS.filter(q => getQuestionStatus(q) === fragorFilter);
           })();
 
           const browseTitle = {
-            "felaktiga":  "Felaktigt besvarade",
-            "sparade":    "Sparade frågor",
-            "ej övad":    "Ej övad",
-            "öva mer":    "Öva mer",
-            "på väg":     "På väg",
-            "behärskad":  "Behärskad",
+            "felaktiga":    "Felaktigt besvarade",
+            "sparade":      "Sparade frågor",
+            "ej övad":      "Ej övad",
+            "öva mer":      "Öva mer",
+            "på väg":       "På väg",
+            "behärskad":    "Behärskad",
             "fordon":       "Fordon & säkerhet",
             "trafikregler": "Trafikregler",
             "taxiregler":   "Taxiregler",
             "vilotid":      "Vilotid & tidbok",
-            "bilder":     "Bildfrågor",
+            "bilder":       "Bildfrågor",
           }[fragorFilter] || "";
 
           const statusColor = (status) => ({ "behärskad": C.greenLight, "på väg": C.gold, "öva mer": C.redLight, "ej övad": C.faint }[status]);
+
+          // State classification
+          const isNewUser    = tot === 0;
+          const isHighMastery = masterPct >= 90;
+          const untriedCount = statusCounts["ej övad"];
+          const imageCount   = QUESTIONS.filter(q => q.image).length;
 
           return (
             <div style={{ animation: "screenIn 0.28s ease both" }}>
@@ -2938,7 +3042,7 @@ export default function App() {
                       ← Tillbaka
                     </button>
                     <div style={{ fontSize: "13px", fontWeight: "700", color: C.text }}>{browseTitle}</div>
-                    <div style={{ marginLeft: "auto", fontSize: "11px", color: C.faint }}>{browseQs.length} st</div>
+                    <div style={{ marginLeft: "auto", fontSize: "11px", color: C.muted }}>{browseQs.length} st</div>
                   </div>
 
                   {browseQs.length === 0 ? (
@@ -2947,7 +3051,7 @@ export default function App() {
                         {fragorFilter === "sparade" ? "🔖" : "✓"}
                       </div>
                       <div style={{ fontSize: "14px", fontWeight: "700", color: C.muted, marginBottom: "6px" }}>Inga frågor här</div>
-                      <div style={{ fontSize: "12px", color: C.faint, lineHeight: 1.65 }}>
+                      <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.65 }}>
                         {fragorFilter === "felaktiga"
                           ? "Du har inga felaktigt besvarade frågor just nu"
                           : fragorFilter === "sparade"
@@ -2988,225 +3092,307 @@ export default function App() {
                 /* ══ HUB MODE ═════════════════════════════════════════════ */
                 <>
 
-                  {/* ── PAGE HEADER ──────────────────────────────────────── */}
-                  <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
-                    <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
-                      Frågor
+                  {/* ── STATE-AWARE HEADER ───────────────────────────────── */}
+                  <div className="fragor-s1" style={{ paddingBottom: "18px" }}>
+                    <div style={{ fontSize: "34px", fontWeight: "800", color: C.text, letterSpacing: "-0.8px", lineHeight: 1.05, marginBottom: "5px" }}>
+                      {isNewUser
+                        ? "Börja med ett snabbprov."
+                        : isHighMastery
+                        ? "Håll nivån uppe."
+                        : wrongCount > 0
+                        ? "Fokusera på svagheterna."
+                        : "Studera efter ämne."}
                     </div>
-                    <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Frågebank</div>
+                    <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55 }}>
+                      {isNewUser
+                        ? "Gör ett snabbprov och se direkt var du landar — sedan kan du studera efter ämne."
+                        : isHighMastery
+                        ? `Du behärskar ${masterPct}% av alla frågor. Underhåll kunskapen.`
+                        : wrongCount > 0
+                        ? `${wrongCount} felaktiga svar att rätta till — eller välj ett ämne.`
+                        : `${mastered} av ${QUESTIONS.length} behärskade — välj vad du vill träna.`}
+                    </div>
                   </div>
 
-                  {/* ── 1. MINA FRÅGOR ───────────────────────────────────── */}
-                  <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
-                      Mina frågor
-                    </div>
+                  {/* ── FOCUS AREA (state-aware) ──────────────────────────── */}
+                  <div className="fragor-s2" style={{ marginBottom: "8px" }}>
 
-                    {/* Felaktigt besvarade — primary personal pool */}
-                    <div style={{
-                      ...card, padding: "18px 18px 16px",
-                      marginBottom: "8px",
-                      borderColor: wrongCount > 0 ? "rgba(208,112,120,0.28)" : C.border,
-                      background: wrongCount > 0 ? "rgba(208,112,120,0.04)" : C.surface,
-                      position: "relative", overflow: "hidden",
-                    }}>
-                      {wrongCount > 0 && (
-                        <div style={{
-                          position: "absolute", top: 0, left: 0, right: 0, height: "44px",
-                          background: "linear-gradient(180deg, rgba(208,112,120,0.06) 0%, transparent 100%)",
-                          pointerEvents: "none",
-                        }} />
-                      )}
-                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px" }}>
-                        <div>
-                          <div style={{ fontSize: "8px", fontWeight: "700", color: wrongCount > 0 ? C.redLight : C.faint, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
-                            Felaktigt besvarade
+                    {isNewUser ? (
+                      /* New user: Quick Test first */
+                      <>
+                        <button className="pressable" onClick={() => startQuiz("quick")}
+                          style={{ width: "100%", marginBottom: "6px", padding: "0", borderRadius: "16px",
+                            overflow: "hidden", border: "none", background: goldGrad,
+                            display: "block", cursor: "pointer", textAlign: "left",
+                            WebkitTapHighlightColor: "transparent",
+                            boxShadow: "0 4px 20px rgba(240,165,0,0.22), 0 1px 4px rgba(0,0,0,0.4)",
+                            fontFamily: "inherit" }}>
+                          <div style={{ padding: "16px 18px", display: "flex", alignItems: "center", gap: "12px" }}>
+                            <div style={{ width: "40px", height: "40px", flexShrink: 0, borderRadius: "11px",
+                              background: "rgba(0,0,0,0.16)", display: "flex", alignItems: "center",
+                              justifyContent: "center", fontSize: "18px" }}>▶</div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontSize: "16px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>Starta Snabbprov</div>
+                              <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.42)" }}>15 frågor · se direkt var du landar</div>
+                            </div>
+                            <div style={{ fontSize: "18px", color: "rgba(0,0,0,0.28)", flexShrink: 0 }}>→</div>
                           </div>
-                          {wrongCount > 0 ? (
-                            <div style={{ fontSize: "30px", fontWeight: "800", color: C.redLight, letterSpacing: "-1px", lineHeight: 1 }}>
-                              {wrongCount}
-                              <span style={{ fontSize: "13px", fontWeight: "600", color: C.muted, marginLeft: "6px", letterSpacing: 0 }}>frågor kvar</span>
-                            </div>
-                          ) : (
-                            <div style={{ fontSize: "14px", fontWeight: "700", color: C.muted, lineHeight: 1.3 }}>
-                              Inga att rätta till ✓
-                            </div>
-                          )}
+                        </button>
+                        <div style={{ fontSize: "11px", color: C.muted, textAlign: "center", padding: "2px 0 4px" }}>
+                          Eller välj ett ämne i listan nedan.
                         </div>
-                      </div>
-                      <div style={{ fontSize: "12px", color: C.faint, lineHeight: 1.55, marginBottom: wrongCount > 0 ? "14px" : "0" }}>
-                        {wrongCount > 0
-                          ? "Frågor du svarat fel på och ännu inte löst"
-                          : "Alla dina svar är rätt just nu — fortsätt öva"}
-                      </div>
-                      {wrongCount > 0 && (
+                      </>
+                    ) : wrongCount > 0 ? (
+                      /* Wrong answers: primary focus card — premium, not alarming */
+                      <div style={{ ...card, padding: "16px 18px", marginBottom: "6px",
+                        borderColor: "rgba(208,72,72,0.18)", background: C.surface }}>
+                        <div style={{ marginBottom: "14px" }}>
+                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "8px" }}>
+                            Att rätta till
+                          </div>
+                          <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+                            <span style={{ fontSize: "32px", fontWeight: "800", color: C.redLight, letterSpacing: "-1px", lineHeight: 1 }}>{wrongCount}</span>
+                            <span style={{ fontSize: "13px", color: C.textSoft }}>felaktiga svar</span>
+                          </div>
+                        </div>
                         <div style={{ display: "flex", gap: "8px" }}>
-                          <button
-                            className="pressable-sm"
-                            onClick={() => setFragorFilter("felaktiga")}
-                            style={{
-                              flex: 1, padding: "9px 14px", borderRadius: "16px",
+                          <button className="pressable-sm" onClick={() => setFragorFilter("felaktiga")}
+                            style={{ flex: 1, padding: "9px 14px", borderRadius: "11px",
                               border: `1px solid ${C.border}`, background: "transparent",
                               color: C.muted, cursor: "pointer", fontSize: "12px", fontWeight: "600",
-                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                            }}
-                          >
+                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
                             Bläddra →
                           </button>
-                          <button
-                            className="pressable-sm"
-                            onClick={() => startQuiz("focus")}
-                            style={{
-                              flex: 1, padding: "9px 14px", borderRadius: "16px",
-                              border: "1px solid rgba(208,112,120,0.35)",
-                              background: "rgba(208,112,120,0.1)",
+                          <button className="pressable-sm" onClick={() => startQuiz("focus")}
+                            style={{ flex: 1, padding: "9px 14px", borderRadius: "11px",
+                              border: "1px solid rgba(208,72,72,0.28)", background: "rgba(208,72,72,0.08)",
                               color: C.redLight, cursor: "pointer", fontSize: "12px", fontWeight: "700",
-                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                            }}
-                          >
+                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
                             Träna nu →
                           </button>
                         </div>
-                      )}
-                    </div>
-
-                    {/* Sparade frågor — active when bookmarks exist */}
-                    {savedIds.length > 0 ? (
-                      <button
-                        className="pressable-sm"
-                        onClick={() => setFragorFilter("sparade")}
-                        style={{
-                          ...card, padding: "13px 16px", width: "100%",
+                      </div>
+                    ) : isHighMastery ? (
+                      /* High mastery: maintenance card */
+                      <div style={{ ...card, padding: "16px 18px", marginBottom: "6px",
+                        borderColor: C.greenBorder, background: "rgba(44,184,122,0.04)" }}>
+                        <div style={{ fontSize: "10px", fontWeight: "700", color: C.greenLight, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "8px" }}>Underhållsläge</div>
+                        <div style={{ fontSize: "14px", fontWeight: "700", color: C.text, marginBottom: "4px" }}>Du behärskar {masterPct}% av frågorna.</div>
+                        <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.6, marginBottom: "14px" }}>
+                          Gå igenom kategorierna nedan för att hålla kunskapen fräsch, eller ta det officiella provet.
+                        </div>
+                        <button className="pressable-sm" onClick={() => setView("prov")}
+                          style={{ padding: "9px 16px", borderRadius: "11px",
+                            border: `1px solid ${C.greenBorder}`, background: "rgba(44,184,122,0.10)",
+                            color: C.greenLight, cursor: "pointer", fontSize: "12px", fontWeight: "700",
+                            fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
+                          Ta ett delprov →
+                        </button>
+                      </div>
+                    ) : savedIds.length > 0 ? (
+                      /* No wrongs + saved questions: surface saved as focus */
+                      <button className="pressable-sm" onClick={() => setFragorFilter("sparade")}
+                        style={{ ...card, padding: "13px 16px", width: "100%", marginBottom: "6px",
                           display: "flex", alignItems: "center", gap: "12px",
                           cursor: "pointer", textAlign: "left",
                           fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                          borderColor: C.borderGoldStr,
-                          background: C.goldBg,
-                        }}
-                      >
-                        <div style={{
-                          width: "30px", height: "30px", borderRadius: "16px", flexShrink: 0,
-                          background: C.goldBg, border: `1px solid ${C.borderGold}`,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "14px",
-                        }}>🔖</div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>Sparade frågor</div>
-                          <div style={{ fontSize: "10px", color: C.muted }}>{savedIds.length} sparade</div>
+                          borderColor: C.borderGoldStr, background: C.goldBg }}>
+                        <div style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                          background: "rgba(240,165,0,0.18)", border: `1px solid ${C.borderGold}`,
+                          display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>🔖</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Sparade frågor</div>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{savedIds.length} sparade att repetera</div>
                         </div>
-                        <span style={{ color: C.gold, fontSize: "14px" }}>›</span>
+                        <span style={{ color: C.gold, fontSize: "16px" }}>›</span>
                       </button>
-                    ) : (
-                      <div style={{
-                        ...card, padding: "13px 16px",
-                        display: "flex", alignItems: "center", gap: "12px",
-                        opacity: 0.45,
-                      }}>
-                        <div style={{
-                          width: "30px", height: "30px", borderRadius: "16px", flexShrink: 0,
-                          background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "14px",
-                        }}>🔖</div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.muted, marginBottom: "2px" }}>Sparade frågor</div>
-                          <div style={{ fontSize: "10px", color: C.faint }}>Bokmärk frågor med 🔖 för att samla dem här</div>
+                    ) : weakestCat ? (
+                      /* Spotlight: weakest tried category */
+                      <button className="pressable-sm" onClick={() => setFragorFilter(weakestCat.key)}
+                        style={{ ...card, padding: "13px 16px", width: "100%", marginBottom: "6px",
+                          display: "flex", alignItems: "center", gap: "12px",
+                          cursor: "pointer", textAlign: "left",
+                          fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                          borderColor: "rgba(208,72,72,0.25)" }}>
+                        <div style={{ width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                          background: "rgba(208,72,72,0.10)", border: "1px solid rgba(208,72,72,0.22)",
+                          display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>
+                          {weakestCat.icon}
                         </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.redLight, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Svagast område</div>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{weakestCat.label}</div>
+                          <div style={{ fontSize: "10px", color: C.muted }}>{weakestCat.pct}% behärskat</div>
+                        </div>
+                        <span style={{ color: C.muted, fontSize: "16px" }}>›</span>
+                      </button>
+                    ) : null}
+
+                    {/* Saved: compact secondary row, only when wrong-answers focus is primary */}
+                    {wrongCount > 0 && savedIds.length > 0 && (
+                      <button className="pressable-sm" onClick={() => setFragorFilter("sparade")}
+                        style={{ ...card, padding: "10px 14px", width: "100%",
+                          display: "flex", alignItems: "center", gap: "10px",
+                          cursor: "pointer", textAlign: "left",
+                          fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                          borderColor: C.borderGoldStr, background: C.goldBg }}>
+                        <span style={{ fontSize: "13px" }}>🔖</span>
+                        <span style={{ flex: 1, fontSize: "12px", fontWeight: "600", color: C.text }}>Sparade frågor</span>
+                        <span style={{ fontSize: "10px", color: C.muted, fontFamily: "'DM Mono', monospace" }}>{savedIds.length} st</span>
+                        <span style={{ color: C.gold, fontSize: "13px" }}>›</span>
+                      </button>
+                    )}
+
+                    {/* Saved: empty hint only for new users — clearly inactive but readable */}
+                    {isNewUser && (
+                      <div style={{ ...card, padding: "11px 14px", marginTop: "6px",
+                        display: "flex", alignItems: "center", gap: "10px",
+                        borderColor: C.borderSoft, background: "rgba(255,255,255,0.01)" }}>
+                        <div style={{ width: "30px", height: "30px", borderRadius: "9px", flexShrink: 0,
+                          background: "rgba(255,255,255,0.02)", border: `1px solid ${C.borderSoft}`,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: "13px", opacity: 0.55 }}>🔖</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted }}>Sparade frågor</div>
+                          <div style={{ fontSize: "10px", color: C.muted, opacity: 0.7, lineHeight: 1.4 }}>Tryck 🔖 under en fråga för att spara den hit</div>
+                        </div>
+                        <span style={{ fontSize: "10px", color: C.muted, opacity: 0.55, fontFamily: "'DM Mono', monospace", flexShrink: 0 }}>0 st</span>
                       </div>
                     )}
                   </div>
 
-                  {/* ── 2. KUNSKAPSNIVÅ ──────────────────────────────────── */}
-                  <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
-                      Kunskapsnivå
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                  {/* ── QUICK ACCESS PILLS ────────────────────────────────── */}
+                  <div className="fragor-s2b" style={{ marginBottom: "16px", paddingTop: "4px" }}>
+                    <div className="fragor-pills"
+                      style={{ display: "flex", gap: "6px", overflowX: "auto",
+                        paddingBottom: "2px", WebkitOverflowScrolling: "touch" }}>
                       {[
-                        { key: "ej övad",   label: "Ej övad",   color: "rgba(255,255,255,0.28)", barBg: "rgba(255,255,255,0.06)" },
-                        { key: "öva mer",   label: "Öva mer",   color: C.redLight,               barBg: "rgba(208,112,120,0.12)" },
-                        { key: "på väg",    label: "På väg",    color: C.gold,                   barBg: "rgba(201,168,76,0.12)" },
-                        { key: "behärskad", label: "Behärskad", color: C.greenLight,             barBg: "rgba(79,168,112,0.12)" },
-                      ].map(({ key, label, color, barBg }) => {
-                        const count = statusCounts[key];
-                        const total = QUESTIONS.length;
-                        const pct   = total > 0 ? Math.round(count / total * 100) : 0;
-                        const clickable = count > 0;
+                        { key: "felaktiga", label: "Felaktiga",  count: wrongCount,      color: C.redLight, border: "rgba(208,72,72,0.30)" },
+                        { key: "sparade",   label: "Sparade",    count: savedIds.length, color: C.gold,     border: C.borderGold },
+                        { key: "ej övad",   label: "Ej övade",   count: untriedCount,    color: C.textSoft, border: C.border },
+                        { key: "bilder",    label: "Bildfrågor", count: imageCount,      color: C.textSoft, border: C.border },
+                      ].map(({ key, label, count, color, border }) => {
+                        const disabled = count === 0;
                         return (
                           <button key={key}
-                            className={clickable ? "pressable-sm" : ""}
-                            onClick={() => clickable && setFragorFilter(key)}
-                            style={{
-                              ...card, padding: "0",
-                              overflow: "hidden",
-                              cursor: clickable ? "pointer" : "default",
-                              textAlign: "left", fontFamily: "inherit",
-                              WebkitTapHighlightColor: "transparent",
-                              opacity: count === 0 ? 0.38 : 1,
-                            }}
-                          >
-                            <div style={{ padding: "14px 14px 12px" }}>
-                              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "10px" }}>
-                                {label}
-                              </div>
-                              <div style={{ fontSize: "28px", fontWeight: "800", color, letterSpacing: "-0.8px", lineHeight: 1, marginBottom: "4px" }}>
-                                {count}
-                              </div>
-                              <div style={{ fontSize: "9px", color: C.faint, marginBottom: "10px" }}>{pct}% av alla</div>
-                            </div>
-                            {/* Mini fill bar flush to bottom */}
-                            <div style={{ height: "2px", background: "rgba(255,255,255,0.04)" }}>
-                              <div style={{ height: "100%", width: `${pct}%`, background: color, opacity: 0.7 }} />
-                            </div>
+                            className={!disabled ? "pressable-sm" : ""}
+                            onClick={() => !disabled && setFragorFilter(key)}
+                            style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: "5px",
+                              padding: "6px 11px", borderRadius: "99px",
+                              border: `1px solid ${disabled ? C.border : border}`,
+                              background: disabled ? "transparent" : `${color}12`,
+                              cursor: disabled ? "default" : "pointer",
+                              opacity: disabled ? 0.35 : 1,
+                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
+                            <span style={{ fontSize: "11px", fontWeight: "600", color: disabled ? C.muted : color, whiteSpace: "nowrap" }}>{label}</span>
+                            <span style={{ fontSize: "10px", fontFamily: "'DM Mono', monospace", fontWeight: "700",
+                              color: disabled ? C.muted : color,
+                              background: `${color}18`, padding: "1px 5px", borderRadius: "99px", lineHeight: "1.5" }}>{count}</span>
                           </button>
                         );
                       })}
                     </div>
                   </div>
 
-                  {/* ── 3. FRÅGOR EFTER KATEGORI ─────────────────────────── */}
-                  <div>
-                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
-                      Frågor efter kategori
+                  {/* ── KUNSKAPSNIVÅ (redesigned as integrated card) ──────── */}
+                  <div className="fragor-s3" style={{ marginBottom: "18px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>Kunskapsnivå</div>
+                    <div style={{ ...card, padding: "14px 16px" }}>
+                      {/* Stacked proportion bar */}
+                      <div style={{ display: "flex", height: "5px", borderRadius: "3px", overflow: "hidden", marginBottom: "14px", gap: "1px" }}>
+                        {[
+                          { key: "behärskad", color: C.green },
+                          { key: "på väg",    color: C.gold },
+                          { key: "öva mer",   color: C.red },
+                          { key: "ej övad",   color: "rgba(255,255,255,0.08)" },
+                        ].map(({ key, color }) => {
+                          const w = QUESTIONS.length > 0 ? (statusCounts[key] / QUESTIONS.length) * 100 : 0;
+                          return w > 0
+                            ? <div key={key} style={{ height: "100%", width: `${w}%`, background: color, transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)" }} />
+                            : null;
+                        })}
+                      </div>
+                      {/* Compact tappable rows */}
+                      {[
+                        { key: "behärskad", label: "Behärskad", color: C.greenLight },
+                        { key: "på väg",    label: "På väg",    color: C.gold },
+                        { key: "öva mer",   label: "Öva mer",   color: C.redLight },
+                        { key: "ej övad",   label: "Ej övad",   color: "rgba(255,255,255,0.35)" },
+                      ].map(({ key, label, color }, i, arr) => {
+                        const count = statusCounts[key];
+                        const pct   = QUESTIONS.length > 0 ? Math.round(count / QUESTIONS.length * 100) : 0;
+                        const clickable = count > 0;
+                        return (
+                          <button key={key}
+                            className={clickable ? "pressable-sm" : ""}
+                            onClick={() => clickable && setFragorFilter(key)}
+                            style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%",
+                              padding: `${i === 0 ? "0" : "8px"} 0 ${i === arr.length - 1 ? "0" : "8px"}`,
+                              borderTop: i > 0 ? `1px solid ${C.borderSoft}` : "none",
+                              background: "none", border: "none",
+                              cursor: clickable ? "pointer" : "default",
+                              fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                              opacity: count === 0 ? 0.38 : 1, textAlign: "left" }}>
+                            <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: color, flexShrink: 0 }} />
+                            <div style={{ flex: 1, fontSize: "12px", fontWeight: "600", color: C.text }}>{label}</div>
+                            <div style={{ fontSize: "14px", fontWeight: "800", color, letterSpacing: "-0.4px", lineHeight: 1 }}>{count}</div>
+                            <div style={{ fontSize: "10px", color: C.muted, width: "30px", textAlign: "right" }}>{pct}%</div>
+                            {clickable && <div style={{ fontSize: "13px", color: C.muted, lineHeight: 1, marginLeft: "2px" }}>›</div>}
+                          </button>
+                        );
+                      })}
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      {categories.map(({ key, label, icon, qs, masteredCount, pct }) => {
-                        const barCol = pct >= 80 ? C.greenLight : pct >= 50 ? C.gold : pct > 0 ? C.redLight : C.faint;
+                  </div>
+
+                  {/* ── ÖVA EFTER ÄMNE (category list) ──────────────────── */}
+                  <div className="fragor-s4">
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>Öva efter ämne</div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                      {categories.map(({ key, label, icon, qs, masteredCount, triedCount, pct }) => {
+                        const barCol   = pct >= 80 ? C.greenLight : pct >= 50 ? C.gold : pct > 0 ? C.redLight : "rgba(255,255,255,0.12)";
+                        const isWeakest = weakestCat && weakestCat.key === key && triedCount > 0;
+                        const isNear    = nearMasteryCat && nearMasteryCat.key === key && !isWeakest;
                         return (
                           <button key={key}
                             className="pressable-sm"
                             onClick={() => setFragorFilter(key)}
-                            style={{
-                              ...card, width: "100%", padding: "0",
+                            style={{ ...card, width: "100%", padding: "0",
                               cursor: "pointer", textAlign: "left", overflow: "hidden",
                               fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                            }}
-                          >
-                            <div style={{ padding: "13px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
-                              <div style={{
-                                width: "34px", height: "34px", borderRadius: "16px", flexShrink: 0,
-                                background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
-                                display: "flex", alignItems: "center", justifyContent: "center",
-                                fontSize: "15px",
-                              }}>{icon}</div>
+                              borderColor: isWeakest ? "rgba(208,72,72,0.22)" : isNear ? C.borderGold : C.border }}>
+                            <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", gap: "12px" }}>
+                              <div style={{ width: "34px", height: "34px", borderRadius: "10px", flexShrink: 0,
+                                background: pct > 0 ? `${barCol}14` : "rgba(255,255,255,0.03)",
+                                border: `1px solid ${pct > 0 ? `${barCol}28` : C.border}`,
+                                display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>
+                                {icon}
+                              </div>
                               <div style={{ flex: 1, minWidth: 0 }}>
-                                <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{label}</div>
+                                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
+                                  <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</div>
+                                  {isWeakest && (
+                                    <span style={{ fontSize: "8px", fontWeight: "700", color: C.redLight,
+                                      background: "rgba(208,72,72,0.12)", border: "1px solid rgba(208,72,72,0.22)",
+                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>Svagast</span>
+                                  )}
+                                  {isNear && (
+                                    <span style={{ fontSize: "8px", fontWeight: "700", color: C.gold,
+                                      background: C.goldBg, border: `1px solid ${C.borderGold}`,
+                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>Nästan klar</span>
+                                  )}
+                                </div>
                                 <div style={{ fontSize: "10px", color: C.muted }}>{masteredCount} av {qs.length} behärskade</div>
                               </div>
                               <div style={{ textAlign: "right", flexShrink: 0 }}>
-                                <div style={{ fontSize: "14px", fontWeight: "800", color: pct > 0 ? barCol : C.faint, letterSpacing: "-0.3px", lineHeight: 1 }}>
+                                <div style={{ fontSize: "14px", fontWeight: "800", color: pct > 0 ? barCol : C.muted, letterSpacing: "-0.3px", lineHeight: 1 }}>
                                   {pct}<span style={{ fontSize: "10px", fontWeight: "600" }}>%</span>
                                 </div>
-                                <div style={{ fontSize: "12px", color: C.faint, marginTop: "2px" }}>›</div>
+                                <div style={{ fontSize: "12px", color: C.muted, marginTop: "2px" }}>›</div>
                               </div>
                             </div>
-                            {/* Progress bar flush to bottom */}
                             <div style={{ height: "2px", background: "rgba(255,255,255,0.04)" }}>
-                              <div style={{
-                                height: "100%", width: `${pct}%`,
-                                background: barCol,
-                                transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)",
-                              }} />
+                              <div style={{ height: "100%", width: `${pct}%`, background: barCol,
+                                transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)" }} />
                             </div>
                           </button>
                         );
@@ -3379,78 +3565,82 @@ export default function App() {
         {view === "mer" && (
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
-            {/* ══ PAGE HEADER ═════════════════════════════════════════════ */}
-            <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
-              <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
-                Mer
-              </div>
-              <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Statistik & verktyg</div>
-            </div>
-
             {/* ══ STATISTIK ═══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Statistik</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Statistik</div>
 
-            {/* Unified stats block — accuracy hero row + 3-column secondary */}
-            <div style={{ ...card, overflow: "hidden", marginBottom: "10px" }}>
-              {/* Hero: Accuracy */}
-              <div className="stat-card-1" style={{
-                padding: "20px 22px 18px",
-                borderBottom: `1px solid ${C.borderSoft}`,
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                background: "linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 100%)",
-              }}>
-                <div>
-                  <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.8 }}>
-                    Träffsäkerhet
-                  </div>
-                  <div style={{ fontSize: "48px", fontWeight: "500", color: C.gold, lineHeight: 1, letterSpacing: "-2px", fontFamily: "'DM Mono', monospace" }}>
-                    {acc}<span style={{ fontSize: "22px", fontWeight: "400", letterSpacing: "-0.5px" }}>%</span>
-                  </div>
+            {tot === 0 ? (
+              /* No-data placeholder — compact and calm */
+              <div style={{ ...card, padding: "13px 16px", marginBottom: "10px", display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{
+                  width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0,
+                  background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <div style={{ width: "12px", height: "2px", background: C.faint, borderRadius: "2px" }} />
                 </div>
-                {tot > 0 && (
+                <div>
+                  <div style={{ fontSize: "12px", fontWeight: "600", color: C.muted, lineHeight: 1, marginBottom: "3px" }}>Ingen aktivitet ännu</div>
+                  <div style={{ fontSize: "11px", color: C.faint }}>Statistik visas här efter din första session</div>
+                </div>
+              </div>
+            ) : (
+              /* Unified stats block — accuracy hero row + 3-column secondary */
+              <div style={{ ...card, overflow: "hidden", marginBottom: "10px" }}>
+                {/* Hero: Accuracy */}
+                <div className="stat-card-1" style={{
+                  padding: "14px 18px 12px",
+                  borderBottom: `1px solid ${C.borderSoft}`,
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: "linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 100%)",
+                }}>
+                  <div>
+                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "6px", opacity: 0.8 }}>
+                      Träffsäkerhet
+                    </div>
+                    <div style={{ fontSize: "40px", fontWeight: "500", color: C.gold, lineHeight: 1, letterSpacing: "-1.5px", fontFamily: "'DM Mono', monospace" }}>
+                      {acc}<span style={{ fontSize: "18px", fontWeight: "400", letterSpacing: "-0.5px" }}>%</span>
+                    </div>
+                  </div>
                   <div style={{
-                    width: "56px", height: "56px", borderRadius: "50%",
+                    width: "50px", height: "50px", borderRadius: "50%",
                     background: `conic-gradient(${C.gold} ${acc * 3.6}deg, rgba(255,255,255,0.05) 0deg)`,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
-                    <div style={{
-                      width: "44px", height: "44px", borderRadius: "50%",
-                      background: C.surface,
-                    }} />
+                    <div style={{ width: "38px", height: "38px", borderRadius: "50%", background: C.surface }} />
                   </div>
-                )}
-              </div>
-              {/* Secondary: 3 stats */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-                {[
-                  [tot,        "Försök",     C.text,       "stat-card-2"],
-                  [corr,       "Rätt",       C.greenLight, "stat-card-3"],
-                  [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
-                ].map(([v, l, color, cn], i) => (
-                  <div key={l} className={cn} style={{
-                    padding: "14px 16px",
-                    borderRight: i < 2 ? `1px solid ${C.borderSoft}` : "none",
-                  }}>
-                    <div style={{ fontSize: "20px", fontWeight: "800", color, lineHeight: 1, letterSpacing: "-0.5px" }}>{v}</div>
-                    <div style={{ fontSize: "9px", color: C.muted, marginTop: "5px", fontWeight: "600", letterSpacing: "0.3px" }}>
-                      {l}
+                </div>
+                {/* Secondary: 3 stats */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                  {[
+                    [tot,        "Försök",     C.text,       "stat-card-2"],
+                    [corr,       "Rätt",       C.greenLight, "stat-card-3"],
+                    [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
+                  ].map(([v, l, color, cn], i) => (
+                    <div key={l} className={cn} style={{
+                      padding: "10px 14px",
+                      borderRight: i < 2 ? `1px solid ${C.borderSoft}` : "none",
+                    }}>
+                      <div style={{ fontSize: "18px", fontWeight: "800", color, lineHeight: 1, letterSpacing: "-0.5px" }}>{v}</div>
+                      <div style={{ fontSize: "9px", color: C.muted, marginTop: "4px", fontWeight: "600", letterSpacing: "0.3px" }}>
+                        {l}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Mastery distribution */}
-            <div style={{ ...card, padding: "16px 20px 14px", marginBottom: "32px" }}>
-              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "14px" }}>
+            <div style={{ ...card, padding: "12px 16px 10px", marginBottom: "20px" }}>
+              <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px" }}>
                 Kunskapsfördelning
               </div>
               <MasteryBar questions={QUESTIONS} getStatus={getQuestionStatus} />
             </div>
 
             {/* ══ CHECKLISTA ══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Checklista</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Checklista</div>
             {(() => {
               const done  = checklistDone.size;
               const total = CHECKLIST_STEPS.length;
@@ -3461,15 +3651,15 @@ export default function App() {
                   onClick={() => setView("checklista")}
                   style={{
                     ...card, width: "100%", cursor: "pointer", textAlign: "left",
-                    padding: "0", marginBottom: "36px", overflow: "hidden",
+                    padding: "0", marginBottom: "24px", overflow: "hidden",
                     display: "block", border: `1px solid ${done === total && total > 0 ? C.greenBorder : C.border}`,
                     background: done === total && total > 0 ? "linear-gradient(135deg, rgba(79,168,112,0.05) 0%, transparent 100%)" : C.surface,
                     WebkitTapHighlightColor: "transparent",
                   }}
                 >
-                  <div style={{ padding: "15px 18px 14px", display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ padding: "13px 16px 12px", display: "flex", alignItems: "center", gap: "12px" }}>
                     <span style={{
-                      width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
+                      width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
                       background: done === total && total > 0 ? C.greenBg : "rgba(255,255,255,0.04)",
                       border: `1px solid ${done === total && total > 0 ? C.greenBorder : C.border}`,
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -3506,25 +3696,25 @@ export default function App() {
             })()}
 
             {/* ══ VERKTYG ════════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Verktyg</div>
-            <div style={{ ...card, overflow: "hidden", marginBottom: "36px" }}>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Verktyg</div>
+            <div style={{ ...card, overflow: "hidden", marginBottom: "24px" }}>
               <button
                 id="ob-flashcards"
                 className="pressable-sm"
                 onClick={openFlashcards}
                 style={{
                   width: "100%", cursor: "pointer", textAlign: "left",
-                  padding: "15px 18px",
-                  display: "flex", alignItems: "center", gap: "14px",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
                   background: "none", border: "none",
                   WebkitTapHighlightColor: "transparent",
                 }}
               >
                 <span style={{
-                  width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
+                  width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
                   background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "18px",
+                  fontSize: "16px",
                 }}>🃏</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "1px" }}>
@@ -3537,25 +3727,25 @@ export default function App() {
             </div>
 
             {/* ══ INSTÄLLNINGAR ══════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Inställningar</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Inställningar</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "8px" }}>
               {/* Reset data row */}
               <button
                 onClick={() => setShowResetConfirm(true)}
                 style={{
                   width: "100%", textAlign: "left", cursor: "pointer",
-                  padding: "15px 18px",
-                  display: "flex", alignItems: "center", gap: "14px",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
                   background: "none", border: "none",
                   WebkitTapHighlightColor: "transparent",
                   borderBottom: `1px solid ${C.borderSoft}`,
                 }}
               >
                 <span style={{
-                  width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
+                  width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
                   background: "rgba(184,80,88,0.08)", border: "1px solid rgba(184,80,88,0.18)",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "16px",
+                  fontSize: "15px",
                 }}>🗑</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "13px", fontWeight: "600", color: C.redLight, marginBottom: "1px" }}>
@@ -3568,11 +3758,11 @@ export default function App() {
 
               {/* Version row */}
               <div style={{
-                padding: "12px 18px",
+                padding: "10px 16px",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
               }}>
-                <div style={{ fontSize: "13px", color: C.muted }}>Version</div>
-                <div style={{ fontSize: "12px", color: C.faint, fontWeight: "600" }}>v{APP_VERSION}</div>
+                <div style={{ fontSize: "12px", color: C.faint }}>Version</div>
+                <div style={{ fontSize: "11px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>v{APP_VERSION}</div>
               </div>
             </div>
 
