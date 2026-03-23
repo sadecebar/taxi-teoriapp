@@ -1696,357 +1696,368 @@ export default function App() {
           const TEST_MODES = new Set(["quick", 10, 20, 30, 1, 2]);
           const chartEntries = [...quizHistory]
             .filter(e => TEST_MODES.has(e.mode))
-            .slice(0, 8)   // 8 most recent (history[0] = newest)
-            .reverse();    // oldest on left in chart
-          const insightLine = masterPct >= 80
-            ? "Du är redo — dags att boka ditt prov"
-            : masterPct >= 50
-            ? `${QUESTIONS.length - mastered} frågor kvar att behärska för provnivån`
-            : "Fortsätt öva — varje session tar dig närmre målet";
+            .slice(0, 8)
+            .reverse();
+          const isNewUser = tot === 0 && chartEntries.length === 0;
+          const lastEntry = chartEntries.length > 0 ? chartEntries[chartEntries.length - 1] : null;
+
+          // Next-best-action recommendation
+          const nextAction = (() => {
+            if (isNewUser) return { type: "start", label: "Starta Snabbprov", sub: "Ditt första test visar var du står", mode: "quick" };
+            if (wrongCount > 0 && masterPct < 50) return { type: "focus", label: "Fokusträning", sub: `${wrongCount} felaktiga svar att träna på`, mode: "focus" };
+            if (masterPct >= 80) return { type: "delprov", label: "Ta Delprov 1", sub: "Du är redo för det riktiga provet", mode: 1 };
+            if (masterPct >= 50) return { type: "quick", label: "Snabbprov", sub: "Öva vidare — du är på rätt spår", mode: "quick" };
+            return { type: "quick", label: "Snabbprov", sub: "15 frågor · se var du landar", mode: "quick" };
+          })();
+
+          // Readiness state
+          const readinessLevel = masterPct >= 80 ? "high" : masterPct >= 50 ? "mid" : tot > 0 ? "low" : "none";
 
           return (
             <div style={{ animation: "screenIn 0.28s ease both" }}>
 
-              {/* ── PAGE HEADER ────────────────────────────────────────── */}
-              <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
-                <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
-                  Prov
+              {/* ── PAGE HEADER ─────────────────────────────────────────── */}
+              <div style={{ paddingBottom: "18px" }}>
+                <div style={{ fontSize: "34px", fontWeight: "800", color: C.text, letterSpacing: "-0.8px", lineHeight: 1.05, marginBottom: "5px" }}>
+                  {isNewUser
+                    ? "Träna i provformat."
+                    : masterPct >= 80
+                    ? "Du är redo att boka."
+                    : "Fortsätt mot provet."}
                 </div>
-                <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Provförberedelse</div>
+                <div style={{ fontSize: "12px", color: C.textSoft, fontWeight: "500", lineHeight: 1.55 }}>
+                  {isNewUser
+                    ? "Öva med examensfrågor i samma format som det riktiga taxiprovet."
+                    : masterPct >= 80
+                    ? `Du behärskar ${masterPct}% av frågorna — dags att testa på riktigt.`
+                    : `${mastered} av ${QUESTIONS.length} frågor behärskade`}
+                </div>
               </div>
 
-              {/* ── 1. SENASTE TESTER ──────────────────────────────────── */}
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ marginBottom: "12px" }}>
-                  <div style={{ fontSize: "15px", fontWeight: "800", color: C.text, letterSpacing: "-0.3px", marginBottom: "4px" }}>
-                    Senaste provresultat
-                  </div>
-                  <div style={{ fontSize: "11px", color: C.muted }}>
-                    Dina avklarade test i procent · godkänt vid 70%
-                  </div>
-                </div>
+              {/* ── NEW USER: GUIDED START ───────────────────────────────── */}
+              {isNewUser && (
+                <div style={{ marginBottom: "8px" }}>
+                  {/* Primary CTA */}
+                  <button className="pressable" onClick={() => startQuiz("quick")}
+                    style={{ width: "100%", marginBottom: "6px", padding: "0", borderRadius: "18px",
+                      overflow: "hidden", border: "none", background: goldGrad, display: "block",
+                      cursor: "pointer", textAlign: "left", WebkitTapHighlightColor: "transparent",
+                      boxShadow: "0 6px 24px rgba(240,165,0,0.28), 0 1px 4px rgba(0,0,0,0.5)",
+                      fontFamily: "inherit" }}>
+                    <div style={{ padding: "18px 20px", display: "flex", alignItems: "center", gap: "14px" }}>
+                      <div style={{ width: "44px", height: "44px", flexShrink: 0, borderRadius: "13px",
+                        background: "rgba(0,0,0,0.18)", display: "flex", alignItems: "center",
+                        justifyContent: "center", fontSize: "20px" }}>▶</div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "17px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "4px" }}>Starta Snabbprov</div>
+                        <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.45)" }}>15 frågor · ~5 min · se direkt var du landar</div>
+                      </div>
+                      <div style={{ fontSize: "20px", color: "rgba(0,0,0,0.30)", flexShrink: 0 }}>→</div>
+                    </div>
+                  </button>
 
-                {chartEntries.length === 0 ? (
-                  /* Empty state */
-                  <div style={{
-                    ...card, padding: "28px 20px",
-                    display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
-                  }}>
-                    <div style={{ fontSize: "30px", marginBottom: "12px", opacity: 0.5 }}>📊</div>
-                    <div style={{ fontSize: "14px", fontWeight: "700", color: C.muted, marginBottom: "6px" }}>
-                      Inga genomförda tester än
-                    </div>
-                    <div style={{ fontSize: "12px", color: C.faint, lineHeight: 1.65, maxWidth: "240px" }}>
-                      Genomför ett snabbprov eller delprov så visas dina resultat som ett diagram här
-                    </div>
-                  </div>
-                ) : (
-                  /* Bar chart */
-                  <div style={{ ...card, padding: "16px 14px 12px", position: "relative", overflow: "visible" }}>
-                    {/* Chart bars area */}
-                    <div style={{ position: "relative", height: "96px", display: "flex", alignItems: "flex-end", gap: "5px" }}>
-                      {/* Pass threshold line */}
-                      <div style={{
-                        position: "absolute", left: 0, right: 0,
-                        bottom: `${PASS * 0.96}px`,
-                        height: "1px",
-                        background: "rgba(201,168,76,0.45)",
-                        borderTop: "1px dashed rgba(201,168,76,0.45)",
-                        pointerEvents: "none",
-                        zIndex: 1,
-                      }} />
-                      {/* Pass line label */}
-                      <div style={{
-                        position: "absolute",
-                        left: 0, bottom: `${PASS * 0.96 + 4}px`,
-                        fontSize: "8px", color: C.gold, fontWeight: "600",
-                        letterSpacing: "0.2px", lineHeight: 1,
-                        zIndex: 10,
-                        background: C.surface,
-                        paddingRight: "4px",
-                      }}>Godkänt 70%</div>
-
-                      {/* Bars */}
-                      {chartEntries.map((entry, i) => {
-                        const barH = Math.max(4, Math.round(entry.pct * 0.96));
-                        const color = entry.pct >= 70 ? C.green : entry.pct >= 50 ? "#b8860b" : C.red;
-                        const isLast = i === chartEntries.length - 1;
-                        return (
-                          <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative", zIndex: 3 }}>
-                            {/* Score label */}
-                            <div style={{
-                              fontSize: "8px", fontWeight: "700", lineHeight: 1, marginBottom: "3px",
-                              color: entry.pct >= 70 ? C.greenLight : entry.pct >= 50 ? C.gold : C.redLight,
-                            }}>
-                              {entry.pct}%
-                            </div>
-                            {/* Bar body */}
-                            <div style={{
-                              width: "100%", height: `${barH}px`,
-                              background: color, borderRadius: "3px 3px 2px 2px",
-                              opacity: isLast ? 1 : 0.55 + (i / chartEntries.length) * 0.35,
-                              transition: "opacity 0.15s",
-                            }} />
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* X-axis labels */}
-                    <div style={{ display: "flex", gap: "5px", marginTop: "6px" }}>
-                      {chartEntries.map((entry, i) => (
-                        <div key={i} style={{
-                          flex: 1, textAlign: "center",
-                          fontSize: "8px", color: C.faint, lineHeight: 1,
-                        }}>
-                          {modeName(entry.mode)}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Summary row */}
-                    {chartEntries.length >= 2 && (() => {
-                      const avg = Math.round(chartEntries.reduce((s, e) => s + e.pct, 0) / chartEntries.length);
-                      const best = Math.max(...chartEntries.map(e => e.pct));
-                      const passed = chartEntries.filter(e => e.pct >= 70).length;
-                      return (
-                        <div style={{
-                          display: "flex", gap: "0", marginTop: "12px",
-                          borderTop: `1px solid ${C.borderSoft}`, paddingTop: "10px",
-                        }}>
-                          {[
-                            [`${avg}%`, "Snitt"],
-                            [`${best}%`, "Bäst"],
-                            [`${passed}/${chartEntries.length}`, "Godkänt"],
-                          ].map(([val, lbl], i) => (
-                            <div key={lbl} style={{
-                              flex: 1, textAlign: "center",
-                              borderLeft: i > 0 ? `1px solid ${C.borderSoft}` : "none",
-                            }}>
-                              <div style={{ fontSize: "14px", fontWeight: "800", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>{val}</div>
-                              <div style={{ fontSize: "9px", color: C.faint, textTransform: "uppercase", letterSpacing: "0.4px" }}>{lbl}</div>
-                            </div>
-                          ))}
-                        </div>
-                      );
-                    })()}
-                  </div>
-                )}
-              </div>
-
-              {/* ── 2. PROVBEREDSKAP ───────────────────────────────────── */}
-              {tot > 0 && (
-                <div style={{
-                  borderRadius: "16px",
-                  border: `1px solid ${C.borderGold}`,
-                  background: C.surface,
-                  marginBottom: "20px",
-                  overflow: "hidden",
-                  position: "relative",
-                }}>
-                  <div style={{ height: "2px", background: goldGrad }} />
-                  <div style={{ padding: "18px 20px 0", position: "relative" }}>
-                    <div style={{
-                      position: "absolute", top: 0, right: 0, width: "180px", height: "140px",
-                      background: "radial-gradient(ellipse at top right, rgba(201,168,76,0.06) 0%, transparent 70%)",
-                      pointerEvents: "none",
-                    }} />
-                    {/* Header row */}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                      <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase" }}>
-                        Provberedskap
-                      </div>
-                      <div style={{
-                        fontSize: "10px", fontWeight: "700",
-                        color: overallColor, background: `${overallColor}14`,
-                        border: `1px solid ${overallColor}35`, padding: "3px 10px", borderRadius: "16px",
-                      }}>
-                        {overallStatus}
-                      </div>
-                    </div>
-                    {/* Main stat row */}
-                    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "16px" }}>
-                      <div>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "2px", lineHeight: 1 }}>
-                          <span style={{ fontSize: "48px", fontWeight: "800", color: C.text, letterSpacing: "-3px" }}>{masterPct}</span>
-                          <span style={{ fontSize: "22px", fontWeight: "700", color: C.gold, letterSpacing: "-1px" }}>%</span>
-                        </div>
-                        <div style={{ fontSize: "11px", color: C.muted, marginTop: "6px" }}>
-                          {mastered} av {QUESTIONS.length} behärskade
+                  {/* How it works */}
+                  <div style={{ ...card, padding: "16px 18px", marginBottom: "6px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "14px" }}>Hur det funkar</div>
+                    {[
+                      { n: "1", t: "Gör ett snabbprov", d: "Se direkt vilka frågor du kan" },
+                      { n: "2", t: "Appen spårar misstagen", d: "Felaktiga svar sparas automatiskt" },
+                      { n: "3", t: "Träna tills du behärskar allt", d: "Fokusträna svagheterna tills du är redo" },
+                    ].map(({ n, t, d }, idx, arr) => (
+                      <div key={n} style={{ display: "flex", alignItems: "flex-start", gap: "12px",
+                        marginBottom: idx < arr.length - 1 ? "12px" : 0 }}>
+                        <div style={{ width: "24px", height: "24px", flexShrink: 0, borderRadius: "8px",
+                          background: C.goldBg, border: `1px solid ${C.borderGold}`,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontFamily: "'DM Mono', monospace", fontSize: "10px", fontWeight: "700", color: C.gold }}>{n}</div>
+                        <div style={{ paddingTop: "3px" }}>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{t}</div>
+                          <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.4 }}>{d}</div>
                         </div>
                       </div>
-                      <div style={{ textAlign: "right", paddingBottom: "2px" }}>
-                        <div style={{ fontSize: "9px", color: C.faint, textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "4px" }}>Träffsäkerhet</div>
-                        <div style={{ fontSize: "22px", fontWeight: "700", color: C.textSoft, letterSpacing: "-0.5px", lineHeight: 1 }}>
-                          {acc}<span style={{ fontSize: "12px", fontWeight: "600" }}>%</span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Mastery progress bar */}
-                    <div style={{ marginBottom: "4px" }}>
-                      <div style={{ position: "relative", height: "6px" }}>
-                        <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.05)", borderRadius: "3px" }} />
-                        <div style={{ position: "absolute", inset: 0, borderRadius: "3px", overflow: "hidden" }}>
-                          <div style={{
-                            height: "100%", borderRadius: "3px", width: `${masterPct}%`,
-                            background: masterPct >= 80
-                              ? `linear-gradient(90deg, ${C.green}, ${C.greenLight})`
-                              : masterPct >= 50
-                              ? `linear-gradient(90deg, #7a5c18, ${C.gold})`
-                              : `linear-gradient(90deg, rgba(184,80,88,0.7), ${C.redLight})`,
-                            transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)",
-                          }} />
-                        </div>
-                        <div style={{
-                          position: "absolute", left: `${PASS}%`,
-                          top: "-3px", height: "12px", width: "2px",
-                          background: C.gold, borderRadius: "1px", opacity: 0.55,
-                        }} />
-                      </div>
-                      <div style={{ position: "relative", height: "16px" }}>
-                        <div style={{
-                          position: "absolute", left: `${PASS}%`, top: "3px",
-                          transform: "translateX(-50%)",
-                          fontSize: "8px", color: C.gold, opacity: 0.65,
-                          whiteSpace: "nowrap",
-                        }}>provgräns</div>
-                      </div>
-                    </div>
-                    <div style={{ fontSize: "11px", color: C.muted, fontStyle: "italic", paddingBottom: "16px" }}>
-                      {insightLine}
-                    </div>
-                  </div>
-                  {/* Delprov breakdown */}
-                  <div style={{ height: "1px", background: C.border }} />
-                  <div style={{ padding: "14px 20px 18px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                    {dpProgress.map(({ dp, cfg: dpCfg, total, mastered: dpM, acc: dpA, pct, tried }) => {
-                      const toPass   = Math.max(0, Math.ceil(total * 70 / 100) - dpM);
-                      const barCol   = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.faint;
-                      const dpStatus = pct >= 70 ? "Redo" : pct >= 40 ? "På väg" : tried ? "Öva mer" : "Ej övad";
-                      const detail   = !tried
-                        ? "Ingen träning ännu"
-                        : pct >= 70
-                        ? `${dpM} av ${total} behärskade · ${dpA}% rätt`
-                        : `${toPass} fler för att nå provgränsen · ${dpA}% rätt`;
-                      return (
-                        <div key={dp}>
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "7px" }}>
-                            <div>
-                              <span style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{dpCfg.name}</span>
-                              <span style={{ fontSize: "10px", color: C.faint, marginLeft: "6px" }}>{dpCfg.sub}</span>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "7px", flexShrink: 0, marginLeft: "8px" }}>
-                              <span style={{ fontSize: "15px", fontWeight: "800", color: C.text, letterSpacing: "-0.5px" }}>
-                                {pct}<span style={{ fontSize: "10px", color: barCol, fontWeight: "700" }}>%</span>
-                              </span>
-                              <span style={{
-                                fontSize: "9px", fontWeight: "700", color: barCol,
-                                background: `${barCol}15`, border: `1px solid ${barCol}35`,
-                                padding: "2px 7px", borderRadius: "16px",
-                              }}>{dpStatus}</span>
-                            </div>
-                          </div>
-                          <div style={{ position: "relative", height: "4px", marginBottom: "5px" }}>
-                            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.04)", borderRadius: "16px" }} />
-                            <div style={{ position: "absolute", inset: 0, borderRadius: "16px", overflow: "hidden" }}>
-                              <div style={{
-                                height: "100%", borderRadius: "16px", width: `${pct}%`,
-                                background: barCol, transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)",
-                              }} />
-                            </div>
-                            <div style={{
-                              position: "absolute", left: "70%",
-                              top: "-2px", height: "8px", width: "1.5px",
-                              background: C.gold, borderRadius: "1px", opacity: 0.5,
-                            }} />
-                          </div>
-                          <div style={{ fontSize: "10px", color: C.faint }}>{detail}</div>
-                        </div>
-                      );
-                    })}
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* ── 3A. SNABBA TEST ────────────────────────────────────── */}
-              <div style={{ marginBottom: "20px" }}>
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted }}>
-                    Snabba test
+              {/* ── RETURNING USER: READINESS + NEXT ACTION ─────────────── */}
+              {!isNewUser && (
+                <div style={{ marginBottom: "8px" }}>
+
+                  {/* Readiness card */}
+                  <div style={{ borderRadius: "16px", border: `1px solid ${C.borderGold}`,
+                    background: C.surface, marginBottom: "6px", overflow: "hidden", position: "relative" }}>
+                    <div style={{ height: "2px", background: goldGrad }} />
+                    <div style={{ padding: "16px 18px", position: "relative" }}>
+                      <div style={{
+                        position: "absolute", top: 0, right: 0, width: "160px", height: "120px",
+                        background: "radial-gradient(ellipse at top right, rgba(201,168,76,0.06) 0%, transparent 70%)",
+                        pointerEvents: "none",
+                      }} />
+                      {/* Top row: label + status badge */}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+                        <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase" }}>Provberedskap</div>
+                        <div style={{ fontSize: "10px", fontWeight: "700", color: overallColor,
+                          background: `${overallColor}14`, border: `1px solid ${overallColor}35`,
+                          padding: "3px 10px", borderRadius: "16px" }}>{overallStatus}</div>
+                      </div>
+
+                      {/* Mastery % large + progress bar inline */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "12px" }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "2px", lineHeight: 1, flexShrink: 0 }}>
+                          <span style={{ fontSize: "44px", fontWeight: "800", color: C.text, letterSpacing: "-3px" }}>{masterPct}</span>
+                          <span style={{ fontSize: "20px", fontWeight: "700", color: C.gold, letterSpacing: "-1px" }}>%</span>
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: "11px", color: C.textSoft, marginBottom: "7px" }}>
+                            {mastered} av {QUESTIONS.length} behärskade
+                          </div>
+                          {/* Progress bar */}
+                          <div style={{ position: "relative", height: "6px" }}>
+                            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.05)", borderRadius: "3px" }} />
+                            <div style={{ position: "absolute", inset: 0, borderRadius: "3px", overflow: "hidden" }}>
+                              <div style={{
+                                height: "100%", borderRadius: "3px", width: `${masterPct}%`,
+                                background: readinessLevel === "high"
+                                  ? `linear-gradient(90deg, ${C.green}, ${C.greenLight})`
+                                  : readinessLevel === "mid"
+                                  ? `linear-gradient(90deg, #7a5c18, ${C.gold})`
+                                  : `linear-gradient(90deg, rgba(184,80,88,0.7), ${C.redLight})`,
+                                transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)",
+                              }} />
+                            </div>
+                            <div style={{ position: "absolute", left: `${PASS}%`,
+                              top: "-3px", height: "12px", width: "2px",
+                              background: C.gold, borderRadius: "1px", opacity: 0.5 }} />
+                          </div>
+                          <div style={{ marginTop: "4px", fontSize: "8px", color: C.muted, opacity: 0.7 }}>
+                            provgräns vid {PASS}%
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Contextual message */}
+                      <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55 }}>
+                        {readinessLevel === "high"
+                          ? <><span style={{ color: C.text, fontWeight: "700" }}>Imponerande.</span> Du behärskar det mesta — redo att boka provet?</>
+                          : readinessLevel === "mid"
+                          ? <><span style={{ color: C.gold, fontWeight: "700" }}>{QUESTIONS.length - mastered}</span> frågor kvar tills du når provgränsen.</>
+                          : <><span style={{ color: C.text, fontWeight: "700" }}>Bra start.</span> Fortsätt öva — varje prov gör dig starkare.</>}
+                      </div>
+                    </div>
+
+                    {/* Delprov breakdown */}
+                    <div style={{ height: "1px", background: C.border }} />
+                    <div style={{ padding: "14px 18px 16px", display: "flex", flexDirection: "column", gap: "14px" }}>
+                      {dpProgress.map(({ dp, cfg: dpCfg, total, mastered: dpM, acc: dpA, pct, tried }) => {
+                        const toPass   = Math.max(0, Math.ceil(total * 70 / 100) - dpM);
+                        const barCol   = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.border;
+                        const dpStatus = pct >= 70 ? "Redo" : pct >= 40 ? "På väg" : tried ? "Öva mer" : "Ej övad";
+                        const detail   = !tried
+                          ? "Ingen träning ännu"
+                          : pct >= 70
+                          ? `${dpM} av ${total} behärskade · ${dpA}% rätt`
+                          : `${toPass} fler för att nå provgränsen · ${dpA}% rätt`;
+                        return (
+                          <div key={dp}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                              <div>
+                                <span style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{dpCfg.name}</span>
+                                <span style={{ fontSize: "10px", color: C.textSoft, marginLeft: "6px" }}>{dpCfg.sub}</span>
+                              </div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0, marginLeft: "8px" }}>
+                                <span style={{ fontSize: "14px", fontWeight: "800", color: C.text, letterSpacing: "-0.5px" }}>
+                                  {pct}<span style={{ fontSize: "10px", color: barCol, fontWeight: "700" }}>%</span>
+                                </span>
+                                <span style={{ fontSize: "9px", fontWeight: "700", color: barCol,
+                                  background: `${barCol}15`, border: `1px solid ${barCol}35`,
+                                  padding: "2px 7px", borderRadius: "16px" }}>{dpStatus}</span>
+                              </div>
+                            </div>
+                            <div style={{ position: "relative", height: "4px", marginBottom: "4px" }}>
+                              <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.04)", borderRadius: "16px" }} />
+                              <div style={{ position: "absolute", inset: 0, borderRadius: "16px", overflow: "hidden" }}>
+                                <div style={{ height: "100%", borderRadius: "16px", width: `${pct}%`,
+                                  background: barCol, transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)" }} />
+                              </div>
+                              <div style={{ position: "absolute", left: "70%", top: "-2px", height: "8px",
+                                width: "1.5px", background: C.gold, borderRadius: "1px", opacity: 0.5 }} />
+                            </div>
+                            <div style={{ fontSize: "10px", color: C.textSoft }}>{detail}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div style={{ fontSize: "9px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>slumpvist urval</div>
+
+                  {/* NEXT BEST ACTION */}
+                  <button className="pressable" onClick={() => startQuiz(nextAction.mode)}
+                    style={{ width: "100%", marginBottom: "6px", padding: "13px 16px",
+                      borderRadius: "14px", border: `1px solid ${nextAction.type === "focus" ? C.redBorder : C.borderGoldStr}`,
+                      background: nextAction.type === "focus" ? C.redBg : C.goldBg,
+                      display: "flex", alignItems: "center", gap: "12px",
+                      cursor: "pointer", textAlign: "left", WebkitTapHighlightColor: "transparent", fontFamily: "inherit" }}>
+                    <div style={{ width: "38px", height: "38px", flexShrink: 0, borderRadius: "11px",
+                      background: nextAction.type === "focus" ? "rgba(208,72,72,0.18)" : "rgba(240,165,0,0.18)",
+                      border: `1px solid ${nextAction.type === "focus" ? C.redBorder : C.borderGold}`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "16px" }}>
+                      {nextAction.type === "focus" ? "🎯" : nextAction.type === "delprov" ? "🏁" : "⚡"}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.6px",
+                        color: nextAction.type === "focus" ? C.redLight : C.gold, marginBottom: "3px" }}>Rekommenderat nästa</div>
+                      <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{nextAction.label}</div>
+                      <div style={{ fontSize: "11px", color: C.textSoft }}>{nextAction.sub}</div>
+                    </div>
+                    <div style={{ fontSize: "10px", fontWeight: "700",
+                      color: nextAction.type === "focus" ? C.redLight : C.gold,
+                      border: `1px solid ${nextAction.type === "focus" ? C.redBorder : C.borderGold}`,
+                      padding: "4px 10px", borderRadius: "6px", flexShrink: 0,
+                      fontFamily: "'DM Mono', monospace", letterSpacing: "0.5px" }}>STARTA →</div>
+                  </button>
+
+                  {/* RESULT HISTORY CHART — only when there are entries */}
+                  {chartEntries.length > 0 && (
+                    <div style={{ ...card, padding: "14px 14px 10px", marginBottom: "6px", position: "relative" }}>
+                      <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px",
+                        textTransform: "uppercase", marginBottom: "10px" }}>Senaste resultat</div>
+                      {/* Chart bars */}
+                      <div style={{ position: "relative", height: "72px", display: "flex", alignItems: "flex-end", gap: "4px" }}>
+                        <div style={{ position: "absolute", left: 0, right: 0,
+                          bottom: `${PASS * 0.72}px`, height: "1px",
+                          borderTop: "1px dashed rgba(201,168,76,0.40)", pointerEvents: "none", zIndex: 1 }} />
+                        <div style={{ position: "absolute", left: 0, bottom: `${PASS * 0.72 + 3}px`,
+                          fontSize: "8px", color: C.gold, fontWeight: "600", zIndex: 10,
+                          background: C.surface, paddingRight: "4px" }}>70%</div>
+                        {chartEntries.map((entry, i) => {
+                          const barH = Math.max(3, Math.round(entry.pct * 0.72));
+                          const isLast = i === chartEntries.length - 1;
+                          return (
+                            <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative", zIndex: 3 }}>
+                              <div style={{ fontSize: "7px", fontWeight: "700", lineHeight: 1, marginBottom: "3px",
+                                color: entry.pct >= 70 ? C.greenLight : entry.pct >= 50 ? C.gold : C.redLight }}>
+                                {isLast ? `${entry.pct}%` : ""}
+                              </div>
+                              <div style={{ width: "100%", height: `${barH}px`,
+                                background: entry.pct >= 70 ? C.green : entry.pct >= 50 ? "#b8860b" : C.red,
+                                borderRadius: "3px 3px 2px 2px",
+                                opacity: isLast ? 1 : 0.45 + (i / chartEntries.length) * 0.4 }} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* X-axis */}
+                      <div style={{ display: "flex", gap: "4px", marginTop: "5px" }}>
+                        {chartEntries.map((entry, i) => (
+                          <div key={i} style={{ flex: 1, textAlign: "center",
+                            fontSize: "7.5px", color: C.muted, lineHeight: 1 }}>
+                            {modeName(entry.mode)}
+                          </div>
+                        ))}
+                      </div>
+                      {/* Summary row */}
+                      {chartEntries.length >= 2 && (() => {
+                        const avg = Math.round(chartEntries.reduce((s, e) => s + e.pct, 0) / chartEntries.length);
+                        const best = Math.max(...chartEntries.map(e => e.pct));
+                        const passed = chartEntries.filter(e => e.pct >= 70).length;
+                        return (
+                          <div style={{ display: "flex", marginTop: "10px",
+                            borderTop: `1px solid ${C.borderSoft}`, paddingTop: "10px" }}>
+                            {[[`${avg}%`, "Snitt"], [`${best}%`, "Bäst"], [`${passed}/${chartEntries.length}`, "Godkänt"]].map(([val, lbl], i) => (
+                              <div key={lbl} style={{ flex: 1, textAlign: "center",
+                                borderLeft: i > 0 ? `1px solid ${C.borderSoft}` : "none" }}>
+                                <div style={{ fontSize: "14px", fontWeight: "800", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>{val}</div>
+                                <div style={{ fontSize: "9px", color: C.muted, textTransform: "uppercase", letterSpacing: "0.4px" }}>{lbl}</div>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  {[
-                    { m: "quick", label: "Snabbprov",  sub: "15 frågor · ~5 min",       icon: "⚡", primary: true },
-                    { m: 10,      label: "10 frågor",  sub: "Snabb koll · ~3 min",       icon: "10", primary: false },
-                    { m: 20,      label: "20 frågor",  sub: "Djupare test · ~7 min",     icon: "20", primary: false },
-                    { m: 30,      label: "30 frågor",  sub: "Längre session · ~10 min",  icon: "30", primary: false },
-                  ].map(({ m, label, sub, icon, primary }) => (
-                    <button
-                      key={String(m)}
-                      className="pressable-sm"
-                      onClick={() => startQuiz(m)}
-                      style={{
-                        ...card, width: "100%", padding: "14px 16px",
-                        cursor: "pointer", display: "flex", alignItems: "center", gap: "14px",
+              )}
+
+              {/* ── VÄLJ TEST ─────────────────────────────────────────────── */}
+              <div style={{ marginBottom: "8px" }}>
+                <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px",
+                  textTransform: "uppercase", marginBottom: "10px" }}>
+                  {isNewUser ? "Välj provlängd" : "Fler alternativ"}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+                  {(isNewUser
+                    ? [
+                        { m: "quick", label: "Snabbprov",  sub: "15 frågor · ~5 min",      icon: "⚡", primary: true },
+                        { m: 10,      label: "10 frågor",  sub: "Snabb koll · ~3 min",      icon: "10", primary: false },
+                        { m: 20,      label: "20 frågor",  sub: "Djupare test · ~7 min",    icon: "20", primary: false },
+                        { m: 30,      label: "30 frågor",  sub: "Längre session · ~10 min", icon: "30", primary: false },
+                      ]
+                    : [
+                        { m: "quick", label: "Snabbprov",  sub: "15 frågor · slumpat",      icon: "⚡", primary: false },
+                        { m: 10,      label: "10 frågor",  sub: "Snabb koll",                icon: "10", primary: false },
+                        { m: 20,      label: "20 frågor",  sub: "Djupare test",              icon: "20", primary: false },
+                        { m: 30,      label: "30 frågor",  sub: "Längre session",            icon: "30", primary: false },
+                      ]
+                  ).map(({ m, label, sub, icon, primary }) => (
+                    <button key={String(m)} className="pressable-sm" onClick={() => startQuiz(m)}
+                      style={{ ...card, width: "100%", padding: "12px 14px",
+                        cursor: "pointer", display: "flex", alignItems: "center", gap: "12px",
                         textAlign: "left", WebkitTapHighlightColor: "transparent",
                         borderColor: primary ? C.borderGoldStr : C.border,
-                        transition: "border-color 0.15s, background 0.15s",
-                        fontFamily: "inherit",
-                      }}
+                        transition: "border-color 0.15s, background 0.15s", fontFamily: "inherit" }}
                       onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderGoldStr; e.currentTarget.style.background = C.surfaceAlt; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; e.currentTarget.style.background = C.surface; }}
-                    >
-                      <div style={{
-                        width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; e.currentTarget.style.background = C.surface; }}>
+                      <div style={{ width: "34px", height: "34px", borderRadius: "10px", flexShrink: 0,
                         background: primary ? C.goldBg : "rgba(255,255,255,0.03)",
                         border: `1px solid ${primary ? C.borderGold : C.border}`,
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        fontSize: primary ? "18px" : "12px",
-                        fontWeight: "800",
-                        color: primary ? C.gold : C.muted,
-                        letterSpacing: "-0.5px",
-                      }}>
+                        fontSize: primary ? "17px" : "11px", fontWeight: "800",
+                        color: primary ? C.gold : C.muted, letterSpacing: "-0.5px" }}>
                         {icon}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: "13px", fontWeight: primary ? "700" : "600", color: C.text, marginBottom: "2px" }}>
-                          {label}
-                        </div>
+                        <div style={{ fontSize: "13px", fontWeight: primary ? "700" : "600", color: C.text, marginBottom: "1px" }}>{label}</div>
                         <div style={{ fontSize: "10px", color: C.muted }}>{sub}</div>
                       </div>
-                      <span style={{ color: C.faint, fontSize: "16px", lineHeight: 1 }}>›</span>
+                      <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* ── 3B. OFFICIELLA DELPROV ─────────────────────────────── */}
-              <div>
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <div style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: C.muted }}>
-                    Officiella delprov
+              {/* ── OFFICIELLA DELPROV ───────────────────────────────────── */}
+              <div style={{ paddingBottom: "4px" }}>
+
+                {/* Section header + explanation */}
+                <div style={{ marginBottom: "14px" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "7px" }}>
+                    <div style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.6px", textTransform: "uppercase", color: C.textSoft }}>
+                      Officiella delprov
+                    </div>
+                    <div style={{ fontSize: "8px", fontWeight: "700", color: C.gold, letterSpacing: "0.4px",
+                      background: C.goldBg, border: `1px solid ${C.borderGold}`,
+                      padding: "2px 7px", borderRadius: "5px", fontFamily: "'DM Mono', monospace",
+                      flexShrink: 0 }}>OFFICIELLT FORMAT</div>
                   </div>
-                  <div style={{ fontSize: "9px", color: C.faint }}>med tidsgräns</div>
+                  <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.65 }}>
+                    Det riktiga taxiprovet är uppdelat i två delprov. Öva i exakt samma format — med tidsgräns och godkändgräns som på det riktiga provet.
+                  </div>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                   {[1, 2].map(dp => {
                     const dpCfg = DELPROV_CONFIG[dp];
                     const prog  = dpProgress.find(p => p.dp === dp);
-                    const barCol    = prog.pct >= 70 ? C.greenLight : prog.pct >= 40 ? C.gold : prog.tried ? C.redLight : C.faint;
+                    const barCol    = prog.pct >= 70 ? C.greenLight : prog.pct >= 40 ? C.gold : prog.tried ? C.redLight : C.border;
                     const statusLbl = prog.pct >= 70 ? "Redo" : prog.pct >= 40 ? "På väg" : prog.tried ? "Öva mer" : "Ej övad";
                     return (
                       <button key={dp} id={`ob-delprov${dp}`} className="pressable-sm" onClick={() => startQuiz(dp)}
-                        style={{
-                          ...card, padding: "0", cursor: "pointer",
-                          textAlign: "left", display: "block", overflow: "hidden",
-                          transition: "border-color 0.18s, background 0.18s",
-                          WebkitTapHighlightColor: "transparent",
-                        }}
+                        style={{ ...card, padding: "0", cursor: "pointer", textAlign: "left", display: "block",
+                          overflow: "hidden", transition: "border-color 0.18s, background 0.18s",
+                          WebkitTapHighlightColor: "transparent" }}
                         onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderGoldStr; e.currentTarget.style.background = C.surfaceAlt; }}
-                        onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}
-                      >
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}>
                         <div style={{ padding: "14px 14px 0" }}>
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "10px" }}>
                             <div>
@@ -2057,27 +2068,23 @@ export default function App() {
                                 {dpCfg.sub}
                               </div>
                             </div>
-                            <div style={{
-                              fontSize: "8px", fontWeight: "700", color: barCol,
+                            <div style={{ fontSize: "8px", fontWeight: "700", color: barCol,
                               background: `${barCol}15`, border: `1px solid ${barCol}30`,
-                              padding: "2px 6px", borderRadius: "16px",
-                              flexShrink: 0, marginLeft: "4px",
-                            }}>{statusLbl}</div>
+                              padding: "2px 6px", borderRadius: "16px", flexShrink: 0, marginLeft: "4px" }}>{statusLbl}</div>
                           </div>
                           <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "16px", overflow: "hidden", marginBottom: "14px" }}>
-                            <div style={{
-                              height: "100%", borderRadius: "16px", width: `${prog.pct}%`,
-                              background: barCol, transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)",
-                            }} />
+                            <div style={{ height: "100%", borderRadius: "16px", width: `${prog.pct}%`,
+                              background: barCol, transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)" }} />
                           </div>
                         </div>
-                        <div style={{
-                          padding: "9px 14px", borderTop: `1px solid ${C.border}`,
-                          background: "rgba(0,0,0,0.15)",
-                          fontSize: "9px", color: C.faint, lineHeight: "1.8",
-                        }}>
-                          {dpCfg.total} frågor · {dpCfg.time} min<br />
-                          Godkänt {dpCfg.passMark}/{dpCfg.countedQ}
+                        <div style={{ padding: "9px 14px", borderTop: `1px solid ${C.border}`,
+                          background: "rgba(0,0,0,0.15)" }}>
+                          <div style={{ fontSize: "9px", color: C.textSoft, lineHeight: 1.7 }}>
+                            {dpCfg.total} frågor · {dpCfg.time} min
+                          </div>
+                          <div style={{ fontSize: "9px", color: C.muted, lineHeight: 1.7 }}>
+                            Godkänt {dpCfg.passMark}/{dpCfg.countedQ} rätt
+                          </div>
                         </div>
                       </button>
                     );
