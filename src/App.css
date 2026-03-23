@@ -1,4 +1,4 @@
-/* ─── Keyframe Animations ────────────────────────────────────────────────── */
+/* ─── Keyframe Animations ──────────────────────────────────────────────────── */
 
 @keyframes loadBar {
   0%   { width: 0%;    margin-left: 0; }
@@ -7,17 +7,17 @@
 }
 
 @keyframes popIn {
-  0%   { opacity: 0; transform: translateY(14px) scale(0.97); }
-  65%  { opacity: 1; transform: translateY(-2px) scale(1.005); }
-  100% { opacity: 1; transform: translateY(0)    scale(1); }
+  0%   { opacity: 0; transform: translateY(12px) scale(0.96); }
+  65%  { opacity: 1; transform: translateY(-1px) scale(1.002); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes shake {
   0%,100% { transform: translateX(0); }
-  16%     { transform: translateX(-6px); }
-  33%     { transform: translateX(6px); }
-  50%     { transform: translateX(-4px); }
-  66%     { transform: translateX(4px); }
+  16%     { transform: translateX(-5px); }
+  33%     { transform: translateX(5px); }
+  50%     { transform: translateX(-3px); }
+  66%     { transform: translateX(3px); }
   83%     { transform: translateX(-2px); }
 }
 
@@ -32,7 +32,7 @@
 }
 
 @keyframes screenIn {
-  from { opacity: 0; transform: translateY(7px); }
+  from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -47,31 +47,116 @@
 
 @keyframes correctReveal {
   0%   { transform: scale(1); }
-  40%  { transform: scale(1.013); }
+  40%  { transform: scale(1.012); }
   100% { transform: scale(1); }
 }
 
-/* Score number reveal — used on result screen */
 @keyframes scoreReveal {
-  0%   { opacity: 0; transform: translateY(10px) scale(0.92); }
-  60%  { opacity: 1; transform: translateY(-2px) scale(1.02); }
-  100% { opacity: 1; transform: translateY(0)    scale(1); }
+  0%   { opacity: 0; transform: translateY(10px) scale(0.93); }
+  60%  { opacity: 1; transform: translateY(-1px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Small pop for badges, indicators, pills */
 @keyframes badgePop {
   0%   { opacity: 0; transform: scale(0.72); }
-  65%  { opacity: 1; transform: scale(1.08); }
+  65%  { opacity: 1; transform: scale(1.07); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Active nav indicator bar slides in from center */
-@keyframes navBarIn {
+@keyframes navPillIn {
   from { opacity: 0; transform: translateX(-50%) scaleX(0.3); }
   to   { opacity: 1; transform: translateX(-50%) scaleX(1); }
 }
 
-/* ─── Flashcard 3D Flip ──────────────────────────────────────────────────── */
+@keyframes softGlow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50%       { transform: scale(2.4); opacity: 0; }
+}
+
+/* ─── Animated badge pill (21st.dev pattern) ───────────────────────────────── */
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(240, 165, 0, 0.08);
+  border: 1px solid rgba(240, 165, 0, 0.15);
+  border-radius: 99px;
+  padding: 5px 13px 5px 9px;
+  margin-bottom: 18px;
+}
+
+.badge-pill-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-pill-dot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(240, 165, 0, 0.5);
+  animation: pulseDot 2.2s ease-in-out infinite;
+}
+
+.badge-pill-dot::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F0A500;
+  display: block;
+}
+
+.badge-pill-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #F0A500;
+  letter-spacing: 0.3px;
+}
+
+/* Category pill — page headers */
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(240, 165, 0, 0.07);
+  border: 1px solid rgba(240, 165, 0, 0.14);
+  border-radius: 99px;
+  padding: 4px 11px 4px 8px;
+  margin-bottom: 16px;
+}
+
+.cat-pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #F0A500;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.cat-pill-text {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #F0A500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* ─── Flashcard 3D Flip ────────────────────────────────────────────────────── */
 
 .flash-scene {
   perspective: 1400px;
@@ -81,9 +166,9 @@
 .flash-card {
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.56s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.52s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border-radius: 18px;
+  border-radius: 20px;
 }
 
 .flash-card.is-flipped {
@@ -93,19 +178,17 @@
 .flash-face {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 18px;
-  padding: 32px 28px;
+  border-radius: 20px;
+  padding: 36px 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 280px;
+  min-height: 260px;
 }
 
-.flash-front {
-  /* in flow — determines card height */
-}
+.flash-front { }
 
 .flash-back {
   position: absolute;
@@ -114,17 +197,23 @@
   overflow-y: auto;
 }
 
-/* ─── Layout Shell ───────────────────────────────────────────────────────── */
+/* ─── Layout Shell ─────────────────────────────────────────────────────────── */
 
 .main-content {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   max-width: 580px;
+  width: 100%;
   margin: 0 auto;
-  padding: 28px 18px 40px;
+  padding: 18px 18px 24px;
 }
 
 .header-nav {
   display: flex;
-  gap: 2px;
+  gap: 0;
 }
 
 .header-status {
@@ -137,45 +226,51 @@
   }
 }
 
-/* ─── Bottom Navigation ──────────────────────────────────────────────────── */
+/* ─── Bottom Navigation ────────────────────────────────────────────────────── */
 
 .bottom-nav {
   display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  background: rgba(9, 9, 11, 0.97);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border-top: 1px solid rgba(38, 38, 43, 0.9);
-  padding-top: 8px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  flex-shrink: 0;
+  background: rgba(13, 13, 20, 0.97);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 6px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
 
 .bottom-nav-inner {
   display: flex;
+  align-items: center;
   justify-content: space-around;
   max-width: 480px;
   margin: 0 auto;
   position: relative;
+  padding: 0 8px;
 }
+
+/* ─── Expanding pill nav (21st.dev BottomNavBar pattern) ──────────────────── */
 
 .bottom-nav-btn {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 5px;
-  padding: 4px 12px 2px;
+  justify-content: center;
+  gap: 0;
+  padding: 9px 10px;
   background: none;
   border: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   position: relative;
-  min-width: 52px;
-  /* Smooth color cross-fade when switching active tab */
-  transition: color 0.20s ease;
+  border-radius: 99px;
+  transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.18s ease;
+  min-width: 44px;
+  overflow: hidden;
+}
+
+/* Active pill background */
+.bottom-nav-btn.active {
+  background: rgba(240, 165, 0, 0.11);
 }
 
 .bottom-nav-icon {
@@ -184,43 +279,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
-              opacity 0.20s ease;
+  flex-shrink: 0;
+  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
   will-change: transform;
-}
-
-.bottom-nav-btn.active .bottom-nav-icon {
-  transform: translateY(-1px);
+  position: relative;
+  z-index: 1;
 }
 
 .bottom-nav-btn:active .bottom-nav-icon {
   transform: scale(0.78);
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
+/* Label — expands from 0 on active, hidden when inactive */
 .bottom-nav-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  font-family: 'Manrope', system-ui, sans-serif;
-  transition: opacity 0.20s ease;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  font-family: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.20s ease,
+              margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0;
 }
 
-/* Active indicator — top edge bar, animates in from center */
-.bottom-nav-btn.active::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 2px;
-  border-radius: 0 0 3px 3px;
-  background: #c9a84c;
-  animation: navBarIn 0.24s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+.bottom-nav-btn.active .bottom-nav-label {
+  max-width: 72px;
+  opacity: 1;
+  margin-left: 6px;
 }
 
-/* ─── Responsive ─────────────────────────────────────────────────────────── */
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {
   .bottom-nav {
@@ -230,77 +323,68 @@
   .header-nav {
     display: none;
   }
-
-  .has-bottom-nav {
-    padding-bottom: calc(76px + env(safe-area-inset-bottom));
-  }
 }
 
-/* ─── Score bar animation ────────────────────────────────────────────────── */
+/* ─── Score bar animation ──────────────────────────────────────────────────── */
 
 .score-bar-fill {
   animation: scoreBarGrow 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
   animation-delay: 0.15s;
 }
 
-/* ─── Result score reveal ────────────────────────────────────────────────── */
+/* ─── Result score reveal ──────────────────────────────────────────────────── */
 
 .result-score {
-  animation: scoreReveal 0.52s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+  animation: scoreReveal 0.48s cubic-bezier(0.34, 1.1, 0.64, 1) both;
   animation-delay: 0.10s;
 }
 
 .result-emoji {
-  animation: badgePop 0.38s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+  animation: badgePop 0.34s cubic-bezier(0.34, 1.5, 0.64, 1) both;
 }
 
 .result-badge {
-  animation: badgePop 0.36s cubic-bezier(0.34, 1.4, 0.64, 1) both;
-  animation-delay: 0.22s;
+  animation: badgePop 0.32s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: 0.18s;
 }
 
-/* ─── Checklist indicator pop ────────────────────────────────────────────── */
+/* ─── Checklist indicator ──────────────────────────────────────────────────── */
 
 .checklist-check {
-  transition: background 0.18s ease,
-              border-color 0.18s ease,
-              color 0.18s ease,
-              transform 0.22s cubic-bezier(0.34, 1.5, 0.64, 1);
+  transition: background 0.16s ease,
+              border-color 0.16s ease,
+              color 0.16s ease,
+              transform 0.20s cubic-bezier(0.34, 1.5, 0.64, 1);
 }
 
-.checklist-check.is-done {
-  transform: scale(1);
-}
+.checklist-check.is-done  { transform: scale(1); }
+.checklist-check.is-undone { transform: scale(0.88); }
 
-.checklist-check.is-undone {
-  transform: scale(0.88);
-}
+/* ─── Staggered home entrance ──────────────────────────────────────────────── */
 
-/* ─── Staggered home entrance animations ────────────────────────────────── */
+.home-card-1  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.03s; }
+.home-card-1b { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.09s; }
+.home-card-2  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.15s; }
+.home-card-3  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.20s; }
+.home-card-3b { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.25s; }
+.home-card-4  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.30s; }
+.home-card-5  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.35s; }
+.home-card-6  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.40s; }
 
-.home-card-1  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.04s; }
-.home-card-1b { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.10s; }
-.home-card-2  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.16s; }
-.home-card-3  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.22s; }
-.home-card-3b { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.27s; }
-.home-card-4  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.32s; }
-.home-card-5  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.38s; }
-.home-card-6  { animation: fadeUpIn 0.40s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.44s; }
+.stat-card-1 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.03s; }
+.stat-card-2 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.07s; }
+.stat-card-3 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.11s; }
+.stat-card-4 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.15s; }
 
-.stat-card-1 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.04s; }
-.stat-card-2 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.09s; }
-.stat-card-3 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.14s; }
-.stat-card-4 { animation: fadeUpIn 0.30s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: 0.19s; }
-
-/* ─── Press feedback ─────────────────────────────────────────────────────── */
+/* ─── Press feedback ───────────────────────────────────────────────────────── */
 
 .pressable {
-  transition: transform 0.11s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.11s;
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.12s;
   will-change: transform;
 }
 .pressable:active {
-  transform: scale(0.962);
-  opacity: 0.80;
+  transform: scale(0.972);
+  opacity: 0.84;
 }
 
 .pressable-sm {
@@ -308,97 +392,89 @@
   will-change: transform;
 }
 .pressable-sm:active {
-  transform: scale(0.976);
-  opacity: 0.85;
+  transform: scale(0.977);
+  opacity: 0.88;
 }
 
 .filter-chip {
-  transition: all 0.17s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .filter-chip:active {
   transform: scale(0.90);
-  opacity: 0.72;
+  opacity: 0.70;
 }
 
-/* Quiz option — transition so release eases back smoothly */
+/* Quiz option transition */
 .quiz-opt {
   transition: background 0.15s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.10s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.10s;
 }
 .quiz-opt:active {
-  transform: scale(0.985);
-  opacity: 0.84;
+  transform: scale(0.986);
+  opacity: 0.88;
 }
 
 .review-item {
   transition: transform 0.09s, opacity 0.09s;
 }
 .review-item:active {
-  transform: scale(0.985);
-  opacity: 0.68;
+  transform: scale(0.984);
+  opacity: 0.72;
 }
 
 .stat-q-item {
-  transition: border-color 0.14s, transform 0.09s, opacity 0.09s;
+  transition: border-color 0.15s, transform 0.09s, opacity 0.09s;
 }
 .stat-q-item:active {
   transform: scale(0.988);
-  opacity: 0.70;
+  opacity: 0.74;
 }
 
-/* ─── Desktop pointer hover states ───────────────────────────────────────── */
-/* Only apply on devices with a true pointer (mouse/trackpad), not touch. */
+/* ─── Desktop pointer hover states ────────────────────────────────────────── */
 
 @media (hover: hover) and (pointer: fine) {
   .pressable:hover {
     opacity: 0.92;
     transform: scale(1.005);
   }
-
   .pressable-sm:hover {
-    opacity: 0.94;
+    opacity: 0.93;
     transform: scale(1.003);
   }
-
-  .bottom-nav-btn:hover .bottom-nav-icon {
-    transform: translateY(-2px);
-    opacity: 0.88;
+  .bottom-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
-
-  .bottom-nav-btn.active:hover .bottom-nav-icon {
-    transform: translateY(-2px);
-    opacity: 1;
+  .bottom-nav-btn.active:hover {
+    background: rgba(240, 165, 0, 0.15);
   }
-
   .quiz-opt:hover {
     transform: scale(1.004);
-    opacity: 0.96;
+    opacity: 0.95;
   }
-
   .filter-chip:hover {
-    opacity: 0.88;
-    transform: scale(0.97);
+    opacity: 0.85;
+    transform: scale(0.96);
   }
-
   .stat-q-item:hover {
-    border-color: rgba(201, 168, 76, 0.18);
+    border-color: rgba(240, 165, 0, 0.20);
   }
 }
 
-/* ─── Mastery bar animated fill ──────────────────────────────────────────── */
+/* ─── Mastery bar animated fill ────────────────────────────────────────────── */
 
 .mastery-bar-fill {
-  animation: scoreBarGrow 1.1s cubic-bezier(0.4, 0, 0.2, 1) both;
-  animation-delay: 0.12s;
+  animation: scoreBarGrow 1.0s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 0.10s;
 }
 
-/* ─── Onboarding tour ────────────────────────────────────────────────────── */
+/* ─── Onboarding tour ──────────────────────────────────────────────────────── */
 
 @keyframes ob-bubble-in {
-  from { opacity: 0; transform: translateY(10px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0)    scale(1); }
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes ob-cursor-blink {
@@ -409,4 +485,127 @@
 @keyframes ob-ring-in {
   from { opacity: 0; transform: scale(0.97); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+/* ─── Section heading ──────────────────────────────────────────────────────── */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F0A500;
+  flex-shrink: 0;
+  opacity: 0.9;
+  box-shadow: 0 0 8px rgba(240, 165, 0, 0.4);
+}
+
+
+/* ─── Smooth elevated card ─────────────────────────────────────────────────── */
+
+.module {
+  background: #141421;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.22);
+}
+
+.module-amber {
+  background: #141421;
+  border: 1px solid rgba(240, 165, 0, 0.18);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 24px rgba(240, 165, 0, 0.06);
+}
+
+/* ─── Module row ───────────────────────────────────────────────────────────── */
+
+.module-row {
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.module-row:last-child {
+  border-bottom: none;
+}
+
+/* ─── Mono stat number ──────────────────────────────────────────────────────── */
+
+.stat-num {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* ─── Quiz progress bar at top ──────────────────────────────────────────────── */
+
+.quiz-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  z-index: 100;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #F0A500, #FFBE2E);
+  border-radius: 0 3px 3px 0;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Daily challenge container ─────────────────────────────────────────────── */
+
+.daily-ring {
+  width: 64px;
+  height: 64px;
+  border: 1.5px solid rgba(240, 165, 0, 0.25);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.daily-ring.is-done {
+  border-color: rgba(44, 184, 122, 0.40);
+  box-shadow: 0 0 16px rgba(44, 184, 122, 0.10);
+}
+
+.daily-ring.has-streak {
+  border-color: rgba(240, 165, 0, 0.55);
+  box-shadow: 0 0 20px rgba(240, 165, 0, 0.12);
+}
+
+/* ─── Horizontal rule dividers ─────────────────────────────────────────────── */
+
+.h-rule {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 20px 0;
+}
+
+.h-rule-amber {
+  height: 1px;
+  background: rgba(240, 165, 0, 0.14);
+  margin: 0;
 }

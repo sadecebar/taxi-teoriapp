@@ -1,15 +1,40 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* ─── Design Tokens ──────────────────────────────────────────────────────── */
 
 :root {
+  --bg:           #0D0D14;
+  --surface:      #141421;
+  --surface-alt:  #1A1A28;
+  --surface-3:    #202030;
+  --border:       rgba(255, 255, 255, 0.08);
+  --border-soft:  rgba(255, 255, 255, 0.04);
+  --text:         #F2ECE4;
+  --text-soft:    #A8A9C0;
+  --muted:        #666880;
+  --faint:        #252538;
+  --amber:        #F0A500;
+  --amber-light:  #FFBE2E;
+  --amber-dim:    rgba(240, 165, 0, 0.10);
+  --amber-border: rgba(240, 165, 0, 0.20);
+  --green:        #2CB87A;
+  --green-light:  #4CD99A;
+  --green-dim:    rgba(44, 184, 122, 0.10);
+  --red:          #D04848;
+  --red-light:    #E86868;
+  --red-dim:      rgba(208, 72, 72, 0.10);
+
   color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Global Reset ───────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
@@ -18,12 +43,12 @@ html {
 
 body {
   margin: 0;
-  background: #090909;
+  background: #0D0D14;
   overscroll-behavior-y: none;
 }
 
 #root {
-  min-height: 100dvh;
+  height: 100dvh;
 }
 
 h1, h2, h3, h4, h5, h6, p, button, input {

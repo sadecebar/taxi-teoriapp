@@ -56,44 +56,44 @@ const CHECKLIST_STEPS = [
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const C = {
   // Surfaces
-  bg:            "#09090b",
-  surface:       "#131316",
-  surfaceAlt:    "#1c1c21",
-  surface3:      "#222228",
+  bg:            "#0D0D14",
+  surface:       "#141421",
+  surfaceAlt:    "#1A1A28",
+  surface3:      "#202030",
 
-  // Borders
-  border:        "#26262b",
-  borderSoft:    "#1e1e23",
-  borderGold:    "rgba(201,168,76,0.22)",
-  borderGoldStr: "rgba(201,168,76,0.44)",
+  // Borders — soft, glass-like
+  border:        "rgba(255,255,255,0.08)",
+  borderSoft:    "rgba(255,255,255,0.04)",
+  borderGold:    "rgba(240,165,0,0.18)",
+  borderGoldStr: "rgba(240,165,0,0.38)",
 
   // Text
-  text:          "#f1ece3",
-  textSoft:      "#a8a090",
-  muted:         "#65605a",
-  faint:         "#343030",
+  text:          "#F2ECE4",
+  textSoft:      "#A8A9C0",
+  muted:         "#666880",
+  faint:         "#252538",
 
-  // Gold (brand — use sparingly)
-  gold:          "#c9a84c",
-  goldLight:     "#dbbe6a",
-  goldDark:      "#9a7a28",
-  goldBg:        "rgba(201,168,76,0.08)",
-  goldBgHover:   "rgba(201,168,76,0.14)",
+  // Amber (brand)
+  gold:          "#F0A500",
+  goldLight:     "#FFBE2E",
+  goldDark:      "#B07800",
+  goldBg:        "rgba(240,165,0,0.10)",
+  goldBgHover:   "rgba(240,165,0,0.16)",
 
   // Correct
-  green:         "#4fa870",
-  greenLight:    "#6ec892",
-  greenBg:       "rgba(79,168,112,0.10)",
-  greenBorder:   "rgba(79,168,112,0.30)",
+  green:         "#2CB87A",
+  greenLight:    "#4CD99A",
+  greenBg:       "rgba(44,184,122,0.12)",
+  greenBorder:   "rgba(44,184,122,0.25)",
 
   // Wrong
-  red:           "#b85058",
-  redLight:      "#d07078",
-  redBg:         "rgba(184,80,88,0.10)",
-  redBorder:     "rgba(184,80,88,0.30)",
+  red:           "#D04848",
+  redLight:      "#E86868",
+  redBg:         "rgba(208,72,72,0.12)",
+  redBorder:     "rgba(208,72,72,0.25)",
 };
 
-const goldGrad = `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 52%, ${C.goldDark} 100%)`;
+const goldGrad = `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 55%, ${C.goldDark} 100%)`;
 
 // ─── Utility ──────────────────────────────────────────────────────────────────
 function fmt(s) {
@@ -315,7 +315,7 @@ function ImageModal({ src, onClose }) {
           maxWidth: "96vw",
           maxHeight: "88dvh",
           overflow: "hidden",
-          borderRadius: "14px",
+          borderRadius: "16px",
           cursor: scale > 1 ? (dragging ? "grabbing" : "grab") : "zoom-in",
           userSelect: "none",
           WebkitUserSelect: "none",
@@ -331,7 +331,7 @@ function ImageModal({ src, onClose }) {
             maxWidth: "96vw",
             maxHeight: "88dvh",
             objectFit: "contain",
-            borderRadius: "14px",
+            borderRadius: "16px",
             border: `1px solid rgba(201,168,76,0.22)`,
             transform: `translate(${translate.x}px,${translate.y}px) scale(${scale})`,
             transformOrigin: "center center",
@@ -344,7 +344,7 @@ function ImageModal({ src, onClose }) {
       {scale === 1 && (
         <div style={{
           position: "fixed", bottom: "28px", left: "50%", transform: "translateX(-50%)",
-          background: "rgba(0,0,0,0.55)", borderRadius: "20px",
+          background: "rgba(0,0,0,0.55)", borderRadius: "16px",
           padding: "6px 16px", fontSize: "11px", color: "rgba(255,255,255,0.45)",
           pointerEvents: "none", whiteSpace: "nowrap", letterSpacing: "0.3px",
         }}>
@@ -388,13 +388,13 @@ function Logo({ size = 36 }) {
   );
 }
 
-/** Small all-caps section label */
+/** Small section label */
 function Label({ children, color }) {
   return (
     <div style={{
-      fontSize: "10px", fontWeight: "700", letterSpacing: "2px",
-      textTransform: "uppercase", color: color || C.muted,
-      marginBottom: "10px",
+      fontSize: "11px", fontWeight: "600", letterSpacing: "0.2px",
+      color: color || C.muted,
+      marginBottom: "12px",
     }}>
       {children}
     </div>
@@ -405,9 +405,10 @@ function Label({ children, color }) {
 function ProgressBar({ value, total }) {
   const pct = total > 0 ? (value / total) * 100 : 0;
   return (
-    <div style={{ height: "2px", background: C.border, borderRadius: "2px", marginBottom: "24px", overflow: "hidden" }}>
+    <div style={{ height: "4px", borderRadius: "99px", background: C.faint, marginBottom: "22px", overflow: "hidden" }}>
       <div style={{
-        height: "100%", background: goldGrad, borderRadius: "2px",
+        height: "100%", borderRadius: "99px",
+        background: `linear-gradient(90deg, ${C.gold}, ${C.goldLight})`,
         width: `${pct}%`, transition: "width 0.4s ease",
       }} />
     </div>
@@ -421,8 +422,9 @@ function OptionBadge({ letter, bg, border, color }) {
       width: "28px", height: "28px", borderRadius: "8px",
       background: bg, border: `1px solid ${border}`,
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontSize: "11px", fontWeight: "800", flexShrink: 0, color,
-      transition: "all 0.18s",
+      fontSize: "11px", fontWeight: "700", flexShrink: 0, color,
+      fontFamily: "'DM Mono', monospace",
+      transition: "all 0.15s",
     }}>
       {letter}
     </span>
@@ -434,27 +436,27 @@ function ExplanationBox({ text }) {
   if (!text) return null;
   return (
     <div style={{
-      padding: "16px 18px",
-      background: "rgba(201,168,76,0.05)",
-      borderRadius: "13px",
-      border: `1px solid rgba(201,168,76,0.16)`,
+      padding: "18px 20px",
+      background: C.goldBg,
+      borderRadius: "16px",
+      border: `1px solid ${C.borderGold}`,
+      boxShadow: "0 2px 16px rgba(240,165,0,0.08)",
     }}>
       <div style={{
         display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px",
       }}>
         <div style={{
-          width: "22px", height: "22px", borderRadius: "7px",
-          background: "rgba(201,168,76,0.14)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "11px", flexShrink: 0,
+          width: "6px", height: "6px", borderRadius: "50%",
+          background: C.gold, opacity: 0.9, flexShrink: 0,
+        }} />
+        <span style={{
+          fontSize: "11px", fontWeight: "600",
+          color: C.gold, letterSpacing: "0.2px",
         }}>
-          📖
-        </div>
-        <span style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "2px", color: C.gold, textTransform: "uppercase" }}>
           Förklaring
         </span>
       </div>
-      <p style={{ color: C.textSoft, fontSize: "14px", lineHeight: "1.76", margin: 0 }}>
+      <p style={{ color: C.textSoft, fontSize: "14px", lineHeight: "1.72", margin: 0 }}>
         {text}
       </p>
     </div>
@@ -477,19 +479,20 @@ function Popup({ onClose, children }) {
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: "#131313",
-          borderRadius: "22px 22px 0 0",
-          border: `1px solid ${C.borderGold}`,
+          background: C.surface,
+          borderRadius: "24px 24px 0 0",
+          border: `1px solid ${C.border}`,
           borderBottom: "none",
-          padding: "16px 20px 44px",
+          padding: "12px 20px 44px",
           width: "100%", maxWidth: "580px",
-          animation: "slideUp 0.26s cubic-bezier(0.34,1.2,0.64,1) both",
+          animation: "slideUp 0.28s cubic-bezier(0.34,1.1,0.64,1) both",
           maxHeight: "88dvh", overflowY: "auto",
+          boxShadow: "0 -8px 48px rgba(0,0,0,0.35)",
         }}
       >
         {/* Drag handle */}
         <div
-          style={{ width: "32px", height: "3px", background: C.border, borderRadius: "2px", margin: "0 auto 22px", cursor: "pointer" }}
+          style={{ width: "36px", height: "4px", background: C.border, borderRadius: "99px", margin: "4px auto 20px", cursor: "pointer" }}
           onClick={onClose}
         />
         {children}
@@ -512,7 +515,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
     <>
       <ZoomableImage
         src={q.image}
-        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px", border: `1px solid ${C.border}` }}
+        style={{ width: "100%", borderRadius: "16px", marginBottom: "16px", border: `1px solid ${C.border}` }}
       />
 
       <p style={{
@@ -531,7 +534,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
               style={{
                 display: "flex", alignItems: "center", gap: "12px",
                 padding: "12px 14px",
-                background: s.bg, border: `1px solid ${s.brd}`, borderRadius: "11px",
+                background: s.bg, border: `1px solid ${s.brd}`, borderRadius: "16px",
                 color: s.col, fontSize: "14px", textAlign: "left",
                 cursor: showAnswers ? "default" : "pointer",
                 transition: "all 0.18s",
@@ -619,7 +622,7 @@ function MasteryBar({ questions, getStatus }) {
         marginBottom: "18px",
       }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-          <span style={{ fontSize: "46px", fontWeight: "800", color: headlineCol, lineHeight: 1, letterSpacing: "-1px" }}>
+          <span style={{ fontSize: "52px", fontWeight: "500", color: headlineCol, lineHeight: 1, letterSpacing: "-2px", fontFamily: "'DM Mono', monospace" }}>
             {masteredPct}%
           </span>
           <span style={{ fontSize: "12px", color: C.muted, fontWeight: "500", paddingBottom: "5px" }}>
@@ -639,8 +642,8 @@ function MasteryBar({ questions, getStatus }) {
 
       {/* ── Stacked bar ──────────────────────────────────────── */}
       <div style={{
-        display: "flex", height: "8px", borderRadius: "6px",
-        overflow: "hidden", gap: "2px", background: "#161616",
+        display: "flex", height: "6px", borderRadius: "99px",
+        overflow: "hidden", gap: "1px", background: C.faint,
         marginBottom: "22px",
       }}>
         {segments.map((seg, i) =>
@@ -687,12 +690,12 @@ function MasteryBar({ questions, getStatus }) {
 
               {/* Proportional mini-bar */}
               <div style={{
-                width: "72px", height: "3px", borderRadius: "2px",
-                background: "#1e1e1e", flexShrink: 0, overflow: "hidden",
+                width: "72px", height: "3px", borderRadius: "99px",
+                background: C.faint, flexShrink: 0, overflow: "hidden",
               }}>
                 {active && (
                   <div style={{
-                    height: "100%", borderRadius: "2px",
+                    height: "100%", borderRadius: "99px",
                     width: `${pct}%`,
                     background: seg.barColor,
                     animation: "scoreBarGrow 0.7s cubic-bezier(0.4, 0, 0.2, 1) both",
@@ -829,16 +832,22 @@ function NavIcon({ name, active = false, size = 22 }) {
 }
 
 // ─── Shared style presets ─────────────────────────────────────────────────────
-const card    = { background: C.surface, border: `1px solid ${C.border}`, borderRadius: "16px" };
+const card    = {
+  background: C.surface,
+  border: `1px solid ${C.border}`,
+  borderRadius: "18px",
+  boxShadow: "0 2px 20px rgba(0,0,0,0.22)",
+};
 const btnGold = {
-  background: goldGrad, border: "none", borderRadius: "12px",
-  fontWeight: "700", color: "#080808", cursor: "pointer",
+  background: goldGrad, border: "none", borderRadius: "14px",
+  fontWeight: "700", color: "#090909", cursor: "pointer",
   display: "inline-flex", alignItems: "center", justifyContent: "center",
-  gap: "8px", letterSpacing: "0.2px", WebkitTapHighlightColor: "transparent",
+  gap: "8px", letterSpacing: "0.3px", WebkitTapHighlightColor: "transparent",
+  boxShadow: "0 4px 20px rgba(240,165,0,0.20)",
 };
 const btnGhost = {
   background: "transparent", border: `1px solid ${C.border}`,
-  color: C.muted, padding: "8px 16px", borderRadius: "9px",
+  color: C.muted, padding: "8px 16px", borderRadius: "14px",
   cursor: "pointer", fontSize: "13px", fontWeight: "500",
   display: "inline-flex", alignItems: "center", gap: "6px",
   WebkitTapHighlightColor: "transparent",
@@ -906,6 +915,7 @@ export default function App() {
   const timer      = useRef(null);
   const explainRef = useRef(null);
   const audioCtx   = useRef(null);
+  const mainRef    = useRef(null);
 
   // ── One-time migration: copy Supabase stats → localStorage ──────────────
   useEffect(() => {
@@ -1059,7 +1069,7 @@ export default function App() {
 
   // ── Reset scroll to top on every view change ─────────────────────────────
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (mainRef.current) mainRef.current.scrollTop = 0;
   }, [view]);
 
   // ── Countdown timer ───────────────────────────────────────────────────────
@@ -1192,17 +1202,32 @@ export default function App() {
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", gap: "20px",
       }}>
-        <Logo size={68} />
-        <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: "18px", fontWeight: "800", color: C.text, letterSpacing: "1px", marginBottom: "4px" }}>
-            TAXI TEORI
+        {/* Brand mark */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "14px" }}>
+          <div style={{
+            width: "56px", height: "56px", borderRadius: "16px",
+            background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 100%)`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 8px 32px rgba(240,165,0,0.28)",
+            fontSize: "28px",
+          }}>🚕</div>
+          <div style={{
+            fontSize: "18px", fontWeight: "700", color: C.text,
+            letterSpacing: "0.3px",
+            fontFamily: "'Manrope', sans-serif",
+          }}>
+            Taxi Teori
           </div>
-          <div style={{ fontSize: "10px", fontWeight: "600", color: C.muted, letterSpacing: "3px", textTransform: "uppercase" }}>
+          <div style={{
+            fontSize: "12px", color: C.muted,
+            marginTop: "-6px",
+          }}>
             Studieapp
           </div>
         </div>
-        <div style={{ width: "48px", height: "2px", background: C.border, borderRadius: "2px", overflow: "hidden" }}>
-          <div style={{ height: "100%", background: goldGrad, borderRadius: "2px", animation: "loadBar 1.5s ease-in-out infinite" }} />
+        {/* Loading bar */}
+        <div style={{ width: "96px", height: "3px", borderRadius: "99px", background: C.faint, overflow: "hidden" }}>
+          <div style={{ height: "100%", borderRadius: "99px", background: `linear-gradient(90deg, ${C.gold}, ${C.goldLight})`, animation: "loadBar 1.5s ease-in-out infinite" }} />
         </div>
       </div>
     );
@@ -1212,45 +1237,43 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div style={{ minHeight: "100dvh", background: C.bg, color: C.text }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", background: C.bg, color: C.text }}>
 
       {/* ── HEADER ──────────────────────────────────────────────────────── */}
       <header style={{
         height: "56px",
-        background: "rgba(9,9,11,0.97)",
-        backdropFilter: "blur(32px) saturate(180%)",
-        WebkitBackdropFilter: "blur(32px) saturate(180%)",
+        flexShrink: 0,
+        background: "rgba(13,13,20,0.96)",
+        backdropFilter: "blur(32px) saturate(200%)",
+        WebkitBackdropFilter: "blur(32px) saturate(200%)",
         borderBottom: `1px solid ${C.border}`,
         padding: "0 20px",
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        position: "sticky", top: 0, zIndex: 40,
+        zIndex: 40,
       }}>
-        {/* Centered gold fade rule at very top */}
-        <div style={{
-          position: "absolute", top: 0, left: "15%", right: "15%", height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5) 35%, rgba(201,168,76,0.5) 65%, transparent)",
-          pointerEvents: "none",
-        }} />
-
-        {/* Brand mark — logo · rule · wordmark */}
+        {/* Brand mark — warm glow logo */}
         <button
           onClick={() => setView("home")}
           style={{
-            display: "flex", alignItems: "center",
+            display: "flex", alignItems: "center", gap: "10px",
             background: "none", border: "none", cursor: "pointer", padding: 0,
             WebkitTapHighlightColor: "transparent",
           }}
         >
-          <Logo size={30} />
           <div style={{
-            width: "1px", height: "20px",
-            background: "rgba(201,168,76,0.38)",
-            margin: "0 13px", flexShrink: 0,
-          }} />
+            width: "28px", height: "28px", borderRadius: "8px",
+            background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 100%)`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
+            boxShadow: "0 2px 10px rgba(240,165,0,0.30)",
+          }}>
+            <span style={{ fontSize: "14px", lineHeight: 1 }}>🚕</span>
+          </div>
           <span style={{
-            fontSize: "15px", fontWeight: "900",
-            color: C.text, letterSpacing: "3px",
-            textTransform: "uppercase", lineHeight: 1,
+            fontSize: "15px", fontWeight: "700",
+            color: C.text, letterSpacing: "0.2px",
+            lineHeight: 1,
+            fontFamily: "'Manrope', sans-serif",
           }}>
             Taxi Teori
           </span>
@@ -1263,31 +1286,26 @@ export default function App() {
               id={v !== "home" ? `ob-nav-${v}-desktop` : undefined}
               onClick={() => setView(v)}
               style={{
-                padding: "7px 13px",
-                border: "none", borderRadius: "8px",
-                cursor: "pointer", fontSize: "12px", fontWeight: "600",
-                background: "transparent",
-                color: view === v ? C.text : C.muted,
-                position: "relative",
-                transition: "color 0.14s", WebkitTapHighlightColor: "transparent",
+                padding: "6px 14px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "13px", fontWeight: "600",
+                letterSpacing: "0.2px",
+                background: view === v ? C.goldBg : "transparent",
+                color: view === v ? C.gold : C.muted,
+                transition: "color 0.16s, background 0.16s",
+                WebkitTapHighlightColor: "transparent",
               }}
             >
               {label}
-              {view === v && (
-                <div style={{
-                  position: "absolute", bottom: "2px", left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "16px", height: "1.5px",
-                  background: C.gold, borderRadius: "1px",
-                }} />
-              )}
             </button>
           ))}
         </nav>
       </header>
 
       {/* ── CONTENT ─────────────────────────────────────────────────────── */}
-      <main className={`main-content${showBottomNav ? " has-bottom-nav" : ""}`}>
+      <main ref={mainRef} className="main-content">
 
         {/* ══════════════════════════════════════════════════════════════
             HEM
@@ -1296,141 +1314,140 @@ export default function App() {
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
             {/* ══ 1. WELCOME / INTRO ══════════════════════════════════════ */}
-            <div className="home-card-1" style={{ position: "relative", padding: "8px 0 30px" }}>
+            <div className="home-card-1" style={{ position: "relative", padding: "4px 0 20px", marginBottom: "10px" }}>
+              {/* Ambient glow */}
               <div style={{
-                position: "absolute", top: "-24px", right: "-18px",
-                width: "240px", height: "200px",
-                background: "radial-gradient(ellipse at top right, rgba(201,168,76,0.07) 0%, transparent 68%)",
+                position: "absolute", top: "-40px", right: "-40px",
+                width: "220px", height: "220px",
+                background: "radial-gradient(circle, rgba(240,165,0,0.08) 0%, transparent 65%)",
                 pointerEvents: "none",
               }} />
               {tot === 0 ? (
                 <>
-                  <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px", opacity: 0.85 }}>
-                    Välkommen
-                  </div>
-                  <h1 style={{ fontSize: "33px", fontWeight: "800", color: C.text, letterSpacing: "-1.3px", lineHeight: 1.1, margin: "0 0 18px", padding: 0 }}>
+                  <h1 style={{
+                    fontSize: "30px", fontWeight: "800", color: C.text,
+                    letterSpacing: "-0.7px", lineHeight: 1.1,
+                    margin: "0 0 8px", padding: 0,
+                  }}>
                     Dags att börja plugga.
                   </h1>
-                  <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.72, margin: 0, maxWidth: "280px" }}>
+                  <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.6, margin: 0, maxWidth: "260px", fontWeight: "500" }}>
                     Öva inför taxiförarlegitimationen med riktiga teorifrågor.
                   </p>
                 </>
               ) : (
                 <>
-                  <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px", opacity: 0.85 }}>
-                    Välkommen tillbaka
-                  </div>
-                  <h1 style={{ fontSize: "33px", fontWeight: "800", color: C.text, letterSpacing: "-1.3px", lineHeight: 1.1, margin: "0 0 22px", padding: 0 }}>
+                  <h1 style={{
+                    fontSize: "30px", fontWeight: "800", color: C.text,
+                    letterSpacing: "-0.7px", lineHeight: 1.1,
+                    margin: "0 0 16px", padding: 0,
+                  }}>
                     {wrongCount > 0 ? "Fortsätt träna." : masterPct >= 80 ? "Du är nästan redo." : "Bra jobbat — framåt."}
                   </h1>
-                  {/* Mastery progress track */}
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "9px" }}>
-                      <span style={{ fontSize: "12px", color: C.muted }}>
-                        {mastered} av {QUESTIONS.length} frågor behärskade
-                      </span>
-                      <span style={{ fontSize: "14px", fontWeight: "800", color: masterPct >= 80 ? C.greenLight : C.text, letterSpacing: "-0.3px" }}>
-                        {masterPct}%
-                      </span>
+                  {/* Stats row: SVG ring + numbers */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                    {/* Mastery ring */}
+                    <div style={{ position: "relative", flexShrink: 0, width: "72px", height: "72px" }}>
+                      <svg width="72" height="72" viewBox="0 0 72 72" style={{ display: "block" }}>
+                        <circle cx="36" cy="36" r="28" fill="none" stroke={C.faint} strokeWidth="4.5" />
+                        <circle cx="36" cy="36" r="28" fill="none" stroke={C.surface3} strokeWidth="4.5" strokeDasharray="3 8" strokeLinecap="round" />
+                        <circle cx="36" cy="36" r="28" fill="none"
+                          stroke={masterPct >= 80 ? C.green : C.gold}
+                          strokeWidth="4.5" strokeLinecap="round"
+                          strokeDasharray="175.9"
+                          strokeDashoffset={175.9 * (1 - masterPct / 100)}
+                          style={{
+                            transform: "rotate(-90deg)", transformOrigin: "50% 50%",
+                            transition: "stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)",
+                            filter: masterPct >= 80
+                              ? "drop-shadow(0 0 5px rgba(44,184,122,0.4))"
+                              : "drop-shadow(0 0 5px rgba(240,165,0,0.35))",
+                          }}
+                        />
+                      </svg>
+                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "13px", fontWeight: "600", lineHeight: 1, color: masterPct >= 80 ? C.greenLight : C.gold }}>
+                          {masterPct}%
+                        </span>
+                      </div>
                     </div>
-                    <div style={{ position: "relative", height: "4px", background: "rgba(255,255,255,0.06)", borderRadius: "3px", overflow: "hidden" }}>
-                      <div className="mastery-bar-fill" style={{
-                        position: "absolute", top: 0, left: 0, bottom: 0,
-                        width: `${masterPct}%`, borderRadius: "3px",
-                        background: masterPct >= 80
-                          ? `linear-gradient(90deg, ${C.green}, ${C.greenLight})`
-                          : `linear-gradient(90deg, #7a5c18, ${C.gold})`,
-                      }} />
-                    </div>
-                    <div style={{ position: "relative", height: "16px" }}>
-                      <div style={{ position: "absolute", left: "70%", top: 0, width: "1px", height: "5px", background: C.gold, opacity: 0.4 }} />
-                      <div style={{ position: "absolute", left: "70%", top: "7px", transform: "translateX(-50%)", fontSize: "8px", color: C.gold, opacity: 0.5, whiteSpace: "nowrap" }}>provgräns</div>
+                    {/* Stats */}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: "10px", color: C.muted, marginBottom: "2px", fontWeight: "600", letterSpacing: "0.3px" }}>Behärskat</div>
+                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "20px", fontWeight: "600", color: C.text, lineHeight: 1, letterSpacing: "-0.5px", marginBottom: "12px" }}>
+                        {mastered}<span style={{ fontSize: "12px", fontWeight: "400", color: C.muted }}>/{QUESTIONS.length}</span>
+                      </div>
+                      <div style={{ fontSize: "10px", color: C.muted, marginBottom: "2px", fontWeight: "600", letterSpacing: "0.3px" }}>Träffsäkerhet</div>
+                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "16px", fontWeight: "600", color: acc >= 70 ? C.greenLight : C.textSoft, lineHeight: 1 }}>
+                        {acc}%
+                      </div>
                     </div>
                   </div>
                 </>
               )}
             </div>
 
-            {/* ══ 1b. DAGENS FRÅGA — free-standing circular daily ritual ══ */}
+            {/* ══ 1b. DAGENS FRÅGA — compact horizontal strip ══ */}
             <button
               onClick={() => setView("utmaningar")}
               className="home-card-1b pressable"
               style={{
                 width: "100%",
-                marginBottom: "10px",
-                padding: "10px 16px 14px",
+                marginBottom: "6px",
+                padding: "10px 14px",
                 background: "none",
-                border: "none",
+                border: `1px solid ${dailyData.answered ? C.greenBorder : C.borderGold}`,
+                borderRadius: "14px",
                 display: "flex",
-                flexDirection: "column",
                 alignItems: "center",
+                gap: "12px",
                 cursor: "pointer",
-                textAlign: "center",
+                textAlign: "left",
                 WebkitTapHighlightColor: "transparent",
                 fontFamily: "inherit",
               }}
             >
-              {/* Circle — the entire visual identity of this feature */}
+              {/* Streak counter */}
               <div style={{
-                width: "88px",
-                height: "88px",
-                borderRadius: "50%",
-                border: dailyData.streak > 0
-                  ? `2px solid rgba(201,168,76,0.60)`
-                  : dailyData.answered
-                  ? `2px solid rgba(79,168,112,0.45)`
-                  : `2px solid rgba(201,168,76,0.25)`,
-                background: dailyData.streak > 0
-                  ? "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.18) 0%, rgba(201,168,76,0.07) 100%)"
-                  : dailyData.answered
-                  ? "radial-gradient(circle at 38% 36%, rgba(79,168,112,0.13) 0%, rgba(79,168,112,0.04) 100%)"
-                  : "radial-gradient(circle at 38% 36%, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.02) 100%)",
-                boxShadow: dailyData.streak > 0
-                  ? "0 0 0 7px rgba(201,168,76,0.07), 0 0 0 14px rgba(201,168,76,0.03)"
-                  : "none",
+                flexShrink: 0,
+                width: "44px", height: "44px",
+                borderRadius: "12px",
+                background: dailyData.streak > 0 ? C.goldBg : dailyData.answered ? C.greenBg : C.faint,
+                border: `1px solid ${dailyData.streak > 0 ? C.borderGold : dailyData.answered ? C.greenBorder : C.border}`,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "2px",
-                marginBottom: "12px",
-                flexShrink: 0,
+                gap: "1px",
               }}>
                 <div style={{
-                  fontSize: "30px",
-                  fontWeight: "800",
+                  fontSize: "17px",
+                  fontWeight: "600",
                   lineHeight: 1,
-                  letterSpacing: "-1px",
-                  color: dailyData.streak > 0
-                    ? C.gold
-                    : dailyData.answered
-                    ? C.green
-                    : C.muted,
+                  color: dailyData.streak > 0 ? C.gold : dailyData.answered ? C.greenLight : C.muted,
+                  fontFamily: "'DM Mono', monospace",
                 }}>
                   {dailyData.answered && dailyData.streak === 0 ? "✓" : dailyData.streak}
                 </div>
                 <div style={{
-                  fontSize: "8px",
-                  fontWeight: "700",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  color: dailyData.streak > 0
-                    ? C.goldDark
-                    : dailyData.answered
-                    ? C.green
-                    : C.faint,
+                  fontSize: "7.5px",
+                  fontWeight: "600",
+                  color: dailyData.streak > 0 ? C.gold : dailyData.answered ? C.green : C.faint,
                 }}>
                   {dailyData.answered && dailyData.streak === 0 ? "klar" : "streak"}
                 </div>
               </div>
 
-              {/* Text below the circle */}
-              <div style={{ fontSize: "13px", fontWeight: "800", color: C.text, letterSpacing: "-0.2px", marginBottom: "3px" }}>
-                Dagens fråga
+              {/* Text */}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: "13px", fontWeight: "800", color: C.text, marginBottom: "2px", fontFamily: "'Manrope', sans-serif" }}>
+                  Dagens fråga
+                </div>
+                <div style={{ fontSize: "11px", color: C.muted }}>
+                  {dailyData.answered ? "Kom tillbaka imorgon" : "Ny fråga · håll din streak"}
+                </div>
               </div>
-              <div style={{ fontSize: "11px", color: C.muted, letterSpacing: "0.1px", lineHeight: 1.4 }}>
-                {dailyData.answered ? "Kom tillbaka imorgon" : "Ny fråga idag · håll din streak vid liv"}
-              </div>
+              <span style={{ color: C.gold, fontSize: "14px", flexShrink: 0 }}>→</span>
             </button>
 
             {/* ══ 2. SNABBPROV — always the primary CTA ══════════════════ */}
@@ -1439,57 +1456,44 @@ export default function App() {
               className="home-card-2 pressable"
               onClick={() => startQuiz("quick")}
               style={{
-                width: "100%", marginBottom: "10px",
+                width: "100%", marginBottom: "6px",
                 padding: "0",
-                borderRadius: "18px", overflow: "hidden",
-                border: `1px solid rgba(201,168,76,0.38)`,
-                background: "linear-gradient(135deg, rgba(201,168,76,0.09) 0%, rgba(201,168,76,0.03) 100%)",
+                borderRadius: "16px", overflow: "hidden",
+                border: `1px solid ${C.borderGold}`,
+                background: C.goldBg,
                 display: "block", cursor: "pointer", textAlign: "left",
-                boxShadow: "0 2px 28px rgba(201,168,76,0.07)",
                 WebkitTapHighlightColor: "transparent",
                 position: "relative",
                 fontFamily: "inherit",
               }}
             >
-              {/* Shimmer accent at top */}
-              <div style={{
-                position: "absolute", top: 0, left: "10%", right: "10%", height: "1px",
-                background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.6), transparent)",
-                pointerEvents: "none",
-              }} />
-              <div style={{ padding: "20px 20px 18px", display: "flex", alignItems: "center", gap: "16px" }}>
-                {/* Icon */}
-                <div style={{
-                  width: "50px", height: "50px", borderRadius: "14px", flexShrink: 0,
-                  background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.2)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "24px",
-                }}>⚡</div>
-                {/* Text */}
+              <div style={{ padding: "15px 18px 14px", display: "flex", alignItems: "center", gap: "14px" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: "8px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "5px", opacity: 0.85 }}>
-                    {tot === 0 ? "Kom igång" : "Daglig träning"}
-                  </div>
-                  <div style={{ fontSize: "22px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1, marginBottom: "6px" }}>
+                  <div style={{
+                    fontSize: "20px", fontWeight: "800", color: C.text,
+                    letterSpacing: "-0.4px", lineHeight: 1, marginBottom: "8px",
+                  }}>
                     Snabbprov
                   </div>
-                  <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
-                    {["15 frågor", "~5 min", "Slumpvis urval"].map(lbl => (
+                  <div style={{ display: "flex", gap: "5px" }}>
+                    {["15 frågor", "~5 min", "Slumpvis"].map(lbl => (
                       <div key={lbl} style={{
-                        fontSize: "9px", fontWeight: "600", color: C.textSoft,
-                        background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
-                        padding: "3px 8px", borderRadius: "5px",
+                        fontSize: "10px", fontWeight: "500", color: C.muted,
+                        background: C.goldBg,
+                        border: `1px solid ${C.borderGold}`,
+                        padding: "2px 8px", borderRadius: "99px",
                       }}>{lbl}</div>
                     ))}
                   </div>
                 </div>
                 {/* Arrow */}
                 <div style={{
-                  width: "32px", height: "32px", borderRadius: "50%", flexShrink: 0,
-                  background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.25)`,
+                  width: "34px", height: "34px", flexShrink: 0, borderRadius: "10px",
+                  background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 100%)`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: C.gold, fontSize: "17px",
-                }}>›</div>
+                  color: "#090909", fontSize: "16px", fontWeight: "700",
+                  boxShadow: "0 3px 10px rgba(240,165,0,0.25)",
+                }}>→</div>
               </div>
             </button>
 
@@ -1501,32 +1505,37 @@ export default function App() {
                 className="home-card-3 pressable"
                 onClick={() => startQuiz("focus")}
                 style={{
-                  width: "100%", marginBottom: "10px",
+                  width: "100%", marginBottom: "6px",
                   padding: "12px 14px",
-                  borderRadius: "12px",
-                  border: "1px solid rgba(208,112,120,0.22)",
-                  background: "rgba(208,112,120,0.04)",
-                  display: "flex", alignItems: "center", gap: "11px",
+                  borderRadius: "14px",
+                  border: `1px solid ${C.redBorder}`,
+                  background: C.redBg,
+                  display: "flex", alignItems: "center", gap: "12px",
                   cursor: "pointer", textAlign: "left",
                   WebkitTapHighlightColor: "transparent",
                   fontFamily: "inherit",
                 }}
               >
                 <div style={{
-                  width: "7px", height: "7px", borderRadius: "50%",
-                  background: C.red, flexShrink: 0,
-                  boxShadow: "0 0 5px rgba(184,80,88,0.55)",
-                }} />
+                  width: "36px", height: "36px", flexShrink: 0, borderRadius: "10px",
+                  background: C.redBg, border: `1px solid ${C.redBorder}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "16px",
+                }}>🎯</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontSize: "13px", fontWeight: "700", color: C.text }}>Fokusträning</span>
-                  <span style={{ fontSize: "12px", color: C.muted, marginLeft: "8px" }}>{wrongCount} frågor kvar</span>
+                  <div style={{ fontSize: "10px", fontWeight: "600", color: C.redLight, marginBottom: "2px" }}>
+                    Felaktiga svar
+                  </div>
+                  <span style={{ fontSize: "14px", fontWeight: "700", color: C.text, fontFamily: "'Manrope', sans-serif" }}>Fokusträning</span>
+                  <span style={{ fontSize: "11px", color: C.muted, marginLeft: "7px" }}>{wrongCount} kvar</span>
                 </div>
                 <div style={{
                   fontSize: "10px", fontWeight: "700", color: C.redLight,
-                  background: "rgba(184,80,88,0.1)", border: "1px solid rgba(184,80,88,0.22)",
-                  padding: "4px 10px", borderRadius: "20px", flexShrink: 0, whiteSpace: "nowrap",
+                  border: `1px solid ${C.redBorder}`,
+                  padding: "4px 10px", flexShrink: 0,
+                  fontFamily: "'DM Mono', monospace", letterSpacing: "1px",
                 }}>
-                  Träna →
+                  TRÄNA →
                 </div>
               </button>
             ) : (
@@ -1535,54 +1544,102 @@ export default function App() {
                 id="ob-fokustranin"
                 className="home-card-3"
                 style={{
-                  width: "100%", marginBottom: "10px",
-                  padding: "11px 14px",
-                  borderRadius: "12px",
-                  border: `1px solid ${C.borderSoft}`,
-                  display: "flex", alignItems: "center", gap: "11px",
-                  opacity: tot === 0 ? 0.38 : 1,
+                  width: "100%", marginBottom: "6px",
+                  padding: "10px 14px",
+                  borderRadius: "14px",
+                  border: `1px solid ${C.border}`,
+                  display: "flex", alignItems: "center", gap: "10px",
+                  opacity: tot === 0 ? 0.35 : 1,
                 }}
               >
                 <div style={{
-                  width: "7px", height: "7px", borderRadius: "50%",
-                  background: tot === 0 ? C.faint : C.green, flexShrink: 0,
-                }} />
+                  width: "28px", height: "28px", flexShrink: 0, borderRadius: "8px",
+                  background: tot === 0 ? C.faint : C.greenBg,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "14px",
+                }}>{tot === 0 ? "🔒" : "✅"}</div>
                 <div style={{ flex: 1, fontSize: "12px", color: C.muted }}>
                   {tot === 0 ? "Fokusträning aktiveras efter ditt första prov" : "Inga missade frågor just nu"}
                 </div>
                 {tot > 0 && (
-                  <span style={{ fontSize: "11px", fontWeight: "700", color: C.greenLight, flexShrink: 0 }}>✓</span>
+                  <span style={{ fontSize: "11px", fontWeight: "600", color: C.greenLight, flexShrink: 0 }}>OK</span>
                 )}
               </div>
             )}
 
-            {/* ══ 3b. DELPROV QUICK TILES — only when has data ════════════ */}
+            {/* ══ 3b. BÖRJA HÄR — new user entry points ══════════════════ */}
+            {tot === 0 && (
+              <div className="home-card-3b" style={{ marginTop: "10px", marginBottom: "6px" }}>
+                <div style={{
+                  fontSize: "10px", fontWeight: "700", color: C.muted,
+                  letterSpacing: "0.5px", textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}>
+                  Välj delprov att börja med
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+                  {[
+                    { dp: 1, label: "Delprov 1", sub: "Säkerhet & beteende", q: DELPROV_CONFIG[1].total },
+                    { dp: 2, label: "Delprov 2", sub: "Lagstiftning", q: DELPROV_CONFIG[2].total },
+                  ].map(({ dp, label, sub, q }) => (
+                    <button key={dp}
+                      className="pressable-sm"
+                      onClick={() => startQuiz(dp)}
+                      style={{
+                        padding: "14px 14px 12px",
+                        borderRadius: "14px",
+                        border: `1px solid ${C.border}`,
+                        background: C.surface,
+                        cursor: "pointer", textAlign: "left",
+                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                      }}
+                    >
+                      <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "5px" }}>
+                        {label}
+                      </div>
+                      <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, lineHeight: 1.3, marginBottom: "8px" }}>
+                        {sub}
+                      </div>
+                      <div style={{ fontSize: "10px", color: C.muted }}>
+                        {q} frågor →
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ══ 3c. DELPROV QUICK TILES — only when has data ════════════ */}
             {tot > 0 && (
-              <div className="home-card-3b" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "10px" }}>
+              <div className="home-card-3b" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", marginBottom: "6px" }}>
                 {dpProgress.map(({ dp, cfg: dpCfg, pct, tried }) => {
                   const barCol = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.faint;
                   return (
                     <button key={dp} className="pressable-sm" onClick={() => startQuiz(dp)}
                       style={{
-                        padding: "14px 14px 12px",
-                        borderRadius: "13px",
+                        padding: "13px 14px 11px",
+                        borderRadius: "14px",
                         border: `1px solid ${C.border}`,
-                        background: "rgba(255,255,255,0.02)",
+                        background: C.surface,
                         cursor: "pointer", textAlign: "left",
                         fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                        position: "relative", overflow: "hidden",
                       }}
                     >
-                      <div style={{ fontSize: "8px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px" }}>
+                      <div style={{ fontSize: "10px", fontWeight: "600", color: C.muted, marginBottom: "8px" }}>
                         {dpCfg.name}
                       </div>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "2px", marginBottom: "9px" }}>
-                        <span style={{ fontSize: "22px", fontWeight: "800", color: tried ? C.text : C.faint, letterSpacing: "-0.6px", lineHeight: 1 }}>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: "2px", marginBottom: "10px" }}>
+                        <span style={{
+                          fontSize: "24px", fontWeight: "600", color: tried ? C.text : C.faint,
+                          lineHeight: 1, fontFamily: "'DM Mono', monospace",
+                        }}>
                           {pct}
                         </span>
-                        <span style={{ fontSize: "11px", color: barCol, fontWeight: "700" }}>%</span>
+                        <span style={{ fontSize: "11px", color: barCol, fontWeight: "600", fontFamily: "'DM Mono', monospace" }}>%</span>
                       </div>
-                      <div style={{ height: "2px", background: "rgba(255,255,255,0.05)", borderRadius: "1px", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${pct}%`, background: barCol, borderRadius: "1px" }} />
+                      <div style={{ height: "3px", borderRadius: "99px", background: C.faint, overflow: "hidden" }}>
+                        <div style={{ height: "100%", borderRadius: "99px", width: `${pct}%`, background: barCol, opacity: tried ? 1 : 0.4 }} />
                       </div>
                     </button>
                   );
@@ -1592,9 +1649,9 @@ export default function App() {
 
             {/* ══ 4. PROGRESS OVERVIEW — inline stats, no card border ══════ */}
             {tot > 0 && (
-              <div className="home-card-4" style={{ marginTop: "8px", marginBottom: "8px" }}>
+              <div className="home-card-4" style={{ marginTop: "6px", marginBottom: "6px" }}>
                 {/* Thin divider */}
-                <div style={{ height: "1px", background: C.borderSoft, marginBottom: "18px" }} />
+                <div style={{ height: "1px", background: C.borderSoft, marginBottom: "14px" }} />
                 {/* Stat row */}
                 <div style={{ display: "flex", alignItems: "center" }}>
                   {[
@@ -1661,13 +1718,11 @@ export default function App() {
             <div style={{ animation: "screenIn 0.28s ease both" }}>
 
               {/* ── PAGE HEADER ────────────────────────────────────────── */}
-              <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
-                <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
-                  Provförberedelse
-                </div>
-                <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+              <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
+                <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
                   Prov
                 </div>
+                <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Provförberedelse</div>
               </div>
 
               {/* ── 1. SENASTE TESTER ──────────────────────────────────── */}
@@ -1814,7 +1869,7 @@ export default function App() {
                       <div style={{
                         fontSize: "10px", fontWeight: "700",
                         color: overallColor, background: `${overallColor}14`,
-                        border: `1px solid ${overallColor}35`, padding: "3px 10px", borderRadius: "20px",
+                        border: `1px solid ${overallColor}35`, padding: "3px 10px", borderRadius: "16px",
                       }}>
                         {overallStatus}
                       </div>
@@ -1897,15 +1952,15 @@ export default function App() {
                               <span style={{
                                 fontSize: "9px", fontWeight: "700", color: barCol,
                                 background: `${barCol}15`, border: `1px solid ${barCol}35`,
-                                padding: "2px 7px", borderRadius: "20px",
+                                padding: "2px 7px", borderRadius: "16px",
                               }}>{dpStatus}</span>
                             </div>
                           </div>
                           <div style={{ position: "relative", height: "4px", marginBottom: "5px" }}>
-                            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.04)", borderRadius: "2px" }} />
-                            <div style={{ position: "absolute", inset: 0, borderRadius: "2px", overflow: "hidden" }}>
+                            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.04)", borderRadius: "16px" }} />
+                            <div style={{ position: "absolute", inset: 0, borderRadius: "16px", overflow: "hidden" }}>
                               <div style={{
-                                height: "100%", borderRadius: "2px", width: `${pct}%`,
+                                height: "100%", borderRadius: "16px", width: `${pct}%`,
                                 background: barCol, transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)",
                               }} />
                             </div>
@@ -1926,10 +1981,10 @@ export default function App() {
               {/* ── 3A. SNABBA TEST ────────────────────────────────────── */}
               <div style={{ marginBottom: "20px" }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <div style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "2px", textTransform: "uppercase", color: C.muted }}>
+                  <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted }}>
                     Snabba test
                   </div>
-                  <div style={{ fontSize: "9px", color: C.faint }}>slumpvist urval</div>
+                  <div style={{ fontSize: "9px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>slumpvist urval</div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {[
@@ -1954,7 +2009,7 @@ export default function App() {
                       onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; e.currentTarget.style.background = C.surface; }}
                     >
                       <div style={{
-                        width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                        width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
                         background: primary ? C.goldBg : "rgba(255,255,255,0.03)",
                         border: `1px solid ${primary ? C.borderGold : C.border}`,
                         display: "flex", alignItems: "center", justifyContent: "center",
@@ -2015,13 +2070,13 @@ export default function App() {
                             <div style={{
                               fontSize: "8px", fontWeight: "700", color: barCol,
                               background: `${barCol}15`, border: `1px solid ${barCol}30`,
-                              padding: "2px 6px", borderRadius: "20px",
+                              padding: "2px 6px", borderRadius: "16px",
                               flexShrink: 0, marginLeft: "4px",
                             }}>{statusLbl}</div>
                           </div>
-                          <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "2px", overflow: "hidden", marginBottom: "14px" }}>
+                          <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "16px", overflow: "hidden", marginBottom: "14px" }}>
                             <div style={{
-                              height: "100%", borderRadius: "2px", width: `${prog.pct}%`,
+                              height: "100%", borderRadius: "16px", width: `${prog.pct}%`,
                               background: barCol, transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)",
                             }} />
                           </div>
@@ -2057,13 +2112,11 @@ export default function App() {
             <div style={{ animation: "screenIn 0.28s ease both" }}>
 
               {/* ── PAGE HEADER ────────────────────────────────────────── */}
-              <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
-                <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
-                  Dagliga utmaningar
-                </div>
-                <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+              <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
+                <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
                   Utmaningar
                 </div>
+                <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Dagliga utmaningar</div>
               </div>
 
               {/* ══ MODE 1: Dagens fråga ════════════════════════════════════ */}
@@ -2074,9 +2127,14 @@ export default function App() {
                   dailyData.answered && !dailyData.correct ? C.redBorder   :
                   C.borderGold
                 }`,
+                borderTop: `2px solid ${
+                  dailyData.answered && dailyData.correct  ? C.green :
+                  dailyData.answered && !dailyData.correct ? C.red   :
+                  C.gold
+                }`,
                 borderRadius: "16px",
                 overflow: "hidden",
-                marginBottom: "32px",
+                marginBottom: "28px",
               }}>
                 {/* Header */}
                 <div style={{
@@ -2101,7 +2159,7 @@ export default function App() {
                       display: "flex", alignItems: "center", gap: "5px",
                       background: dailyData.streak > 0 ? C.goldBg : "rgba(255,255,255,0.03)",
                       border: `1px solid ${dailyData.streak > 0 ? C.borderGold : C.border}`,
-                      borderRadius: "20px", padding: "5px 11px",
+                      borderRadius: "16px", padding: "5px 11px",
                       fontSize: "13px", fontWeight: "700",
                       color: dailyData.streak > 0 ? C.gold : C.muted,
                     }}>
@@ -2120,7 +2178,7 @@ export default function App() {
                   <div style={{ padding: "16px 18px 18px" }}>
                     {dailyQ.image && (
                       <ZoomableImage src={dailyQ.image} style={{
-                        width: "100%", borderRadius: "10px", marginBottom: "14px",
+                        width: "100%", borderRadius: "16px", marginBottom: "14px",
                         border: `1px solid ${C.border}`,
                       }} />
                     )}
@@ -2146,7 +2204,7 @@ export default function App() {
                               display: "flex", alignItems: "center", gap: "11px",
                               padding: "10px 13px",
                               background: s.bg, border: `1px solid ${s.brd}`,
-                              borderRadius: "10px",
+                              borderRadius: "16px",
                               cursor: dailyData.answered ? "default" : "pointer",
                               WebkitTapHighlightColor: "transparent",
                               transition: "background 0.18s, border-color 0.18s",
@@ -2173,7 +2231,7 @@ export default function App() {
                       <div style={{ marginTop: "13px", animation: "popIn 0.45s cubic-bezier(0.34,1.4,0.64,1) both" }}>
                         <div style={{
                           display: "flex", alignItems: "center", gap: "9px",
-                          padding: "10px 13px", borderRadius: "10px",
+                          padding: "10px 13px", borderRadius: "16px",
                           background: dailyData.correct ? C.greenBg : C.redBg,
                           border: `1px solid ${dailyData.correct ? C.greenBorder : C.redBorder}`,
                           marginBottom: dailyQ.explanation ? "9px" : "0",
@@ -2196,7 +2254,7 @@ export default function App() {
                           <div style={{
                             padding: "10px 13px",
                             background: "rgba(201,168,76,0.04)",
-                            borderRadius: "9px",
+                            borderRadius: "16px",
                             border: `1px solid rgba(201,168,76,0.12)`,
                           }}>
                             <p style={{ color: C.textSoft, fontSize: "13px", lineHeight: "1.65", margin: 0 }}>
@@ -2237,23 +2295,18 @@ export default function App() {
                   width: "100%", textAlign: "left", cursor: "pointer",
                   fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                   padding: "0", marginBottom: "10px",
-                  borderRadius: "16px", overflow: "hidden",
-                  border: `1px solid rgba(201,168,76,0.22)`,
-                  background: "linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(201,168,76,0.02) 60%, rgba(9,9,11,0) 100%)",
+                  borderRadius: "20px", overflow: "hidden",
+                  border: `1px solid ${C.borderGold}`,
+                  background: C.goldBg,
+                  boxShadow: "0 4px 24px rgba(240,165,0,0.10)",
                   position: "relative",
                 }}
               >
-                {/* Top shimmer line */}
-                <div style={{
-                  position: "absolute", top: 0, left: "8%", right: "8%", height: "1px",
-                  background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)",
-                  pointerEvents: "none",
-                }} />
 
                 <div style={{ padding: "20px 20px 18px", display: "flex", alignItems: "center", gap: "16px" }}>
                   {/* Icon badge */}
                   <div style={{
-                    width: "50px", height: "50px", borderRadius: "14px", flexShrink: 0,
+                    width: "50px", height: "50px", borderRadius: "16px", flexShrink: 0,
                     background: "rgba(201,168,76,0.1)", border: `1px solid rgba(201,168,76,0.2)`,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     fontSize: "24px",
@@ -2263,10 +2316,11 @@ export default function App() {
 
                   {/* Text block */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: "8px", color: C.gold, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px", opacity: 0.9 }}>
-                      Utmaning
+                    <div className="cat-pill" style={{ marginBottom: "8px" }}>
+                      <span className="cat-pill-dot" />
+                      <span className="cat-pill-text">Utmaning</span>
                     </div>
-                    <div style={{ fontSize: "20px", fontWeight: "800", color: C.text, letterSpacing: "-0.5px", lineHeight: 1, marginBottom: "6px" }}>
+                    <div style={{ fontSize: "22px", fontWeight: "700", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "6px", fontFamily: "'Manrope', sans-serif" }}>
                       Rätt i rad
                     </div>
                     <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5 }}>
@@ -2332,14 +2386,31 @@ export default function App() {
 
           return (
             <div>
+              {/* Quiz progress bar — thin amber strip at very top of content */}
+              <div style={{
+                height: "2px", background: C.faint,
+                marginBottom: "20px",
+                position: "relative",
+              }}>
+                <div style={{
+                  position: "absolute", top: 0, left: 0, bottom: 0,
+                  width: `${((quiz.current) / quiz.questions.length) * 100}%`,
+                  background: C.gold,
+                  transition: "width 0.3s cubic-bezier(0.4,0,0.2,1)",
+                }} />
+              </div>
+
               {/* Top bar */}
               <div style={{
                 display: "flex", justifyContent: "space-between", alignItems: "center",
-                marginBottom: "20px",
+                marginBottom: "24px",
               }}>
                 <button
                   onClick={() => { clearTimeout(timer.current); setView(mode === "rir" ? "utmaningar" : "home"); }}
-                  style={btnGhost}
+                  style={{
+                    ...btnGhost,
+                    fontSize: "13px", padding: "8px 14px",
+                  }}
                 >
                   ← Avbryt
                 </button>
@@ -2348,54 +2419,60 @@ export default function App() {
                   {timeLeft !== null && (
                     <div style={{
                       display: "flex", alignItems: "center", gap: "5px",
-                      background: danger ? "rgba(184,80,88,0.1)" : "rgba(255,255,255,0.04)",
+                      background: danger ? C.redBg : C.surface,
                       border: `1px solid ${danger ? C.redBorder : C.border}`,
-                      borderRadius: "8px", padding: "5px 11px",
-                      fontSize: "14px", fontWeight: "700",
-                      color: danger ? C.redLight : C.text,
-                      fontVariantNumeric: "tabular-nums",
+                      borderRadius: "10px",
+                      padding: "5px 12px",
+                      fontSize: "13px", fontWeight: "600",
+                      color: danger ? C.redLight : C.textSoft,
+                      fontFamily: "'DM Mono', monospace",
                       transition: "all 0.4s",
                     }}>
-                      ⏱ {fmt(timeLeft)}
+                      {fmt(timeLeft)}
                     </div>
                   )}
                   <div style={{
-                    background: C.goldBg, border: `1px solid ${C.borderGold}`,
-                    borderRadius: "8px", padding: "5px 12px",
-                    fontSize: "13px", fontWeight: "700", color: C.gold,
+                    background: C.surface,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: "10px",
+                    padding: "5px 12px",
+                    fontSize: "13px", fontWeight: "600",
+                    fontFamily: "'DM Mono', monospace",
+                    color: C.gold,
                   }}>
                     {quiz.current + 1}
-                    <span style={{ color: C.muted, fontWeight: "500" }}> / {quiz.questions.length}</span>
+                    <span style={{ color: C.muted }}> / {quiz.questions.length}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Progress bar */}
-              <ProgressBar value={quiz.current} total={quiz.questions.length} />
-
               {/* Mode label */}
-              <Label color={C.gold}>{modeLabel}</Label>
+              <div className="cat-pill" style={{ marginBottom: "14px" }}>
+                <span className="cat-pill-dot" />
+                <span className="cat-pill-text">{modeLabel}</span>
+              </div>
 
               {/* Question image */}
               <ZoomableImage
                 src={q.image}
                 style={{
-                  width: "100%", borderRadius: "13px", marginBottom: "20px",
+                  width: "100%", borderRadius: "16px", marginBottom: "18px",
                   border: `1px solid ${C.border}`,
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
                 }}
               />
 
               {/* Question text */}
               <p style={{
-                fontSize: "17px", lineHeight: "1.74", color: C.text,
-                fontWeight: "600", marginBottom: "24px",
+                fontSize: "18px", lineHeight: "1.68", color: C.text,
+                fontWeight: "700", marginBottom: "22px",
+                fontFamily: "'Manrope', sans-serif",
+                letterSpacing: "-0.2px",
               }}>
                 {q.question}
               </p>
 
               {/* Options */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {q.options.map((opt, i) => {
                   const s = optionStyles(i, q.correct, quiz.answered, quiz.answered !== null);
                   return (
@@ -2403,11 +2480,18 @@ export default function App() {
                       className={quiz.answered === null ? "quiz-opt" : ""}
                       onClick={() => answer(i)}
                       style={{
-                        background: s.bg, border: `1px solid ${s.brd}`, borderRadius: "12px",
+                        background: s.bg,
+                        border: `1px solid ${s.brd}`,
+                        borderRadius: "16px",
                         padding: "14px 15px", color: s.col,
                         fontSize: "14px", fontWeight: "500", textAlign: "left",
                         cursor: quiz.answered !== null ? "default" : "pointer",
-                        transition: "background 0.18s cubic-bezier(0.4,0,0.2,1), border-color 0.18s, color 0.18s",
+                        transition: "background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s",
+                        boxShadow: quiz.answered !== null && i === q.correct
+                          ? "0 2px 16px rgba(44,184,122,0.15)"
+                          : quiz.answered === i && i !== q.correct
+                          ? "0 2px 12px rgba(208,72,72,0.12)"
+                          : "none",
                         display: "flex", alignItems: "center", gap: "12px",
                         animation: shakeBtn === i
                           ? "shake 0.45s cubic-bezier(0.36,0.07,0.19,0.97) both"
@@ -2418,11 +2502,12 @@ export default function App() {
                       }}
                     >
                       <OptionBadge letter={["A","B","C","D"][i]} bg={s.badgeBg} border={s.badgeBrd} color={s.badgeCol} />
-                      <span style={{ flex: 1 }}>{opt}</span>
+                      <span style={{ flex: 1, lineHeight: 1.5 }}>{opt}</span>
                       {quiz.answered !== null && s.indicator && (
                         <span style={{
-                          fontSize: "13px", fontWeight: "700", flexShrink: 0,
+                          fontSize: "12px", fontWeight: "700", flexShrink: 0,
                           color: i === q.correct ? C.greenLight : C.redLight,
+                          fontFamily: "'DM Mono', monospace",
                         }}>
                           {s.indicator}
                         </span>
@@ -2434,24 +2519,24 @@ export default function App() {
 
               {/* Explanation + next button */}
               {quiz.answered !== null && (
-                <div ref={explainRef} style={{ animation: "popIn 0.5s cubic-bezier(0.34,1.4,0.64,1) both" }}>
+                <div ref={explainRef} style={{ animation: "popIn 0.4s cubic-bezier(0.34,1.4,0.64,1) both" }}>
                   {q.explanation && (
-                    <div style={{ marginTop: "20px" }}>
+                    <div style={{ marginTop: "18px" }}>
                       <ExplanationBox text={q.explanation} />
                     </div>
                   )}
-                  <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+                  <div style={{ display: "flex", gap: "8px", marginTop: "14px" }}>
                     <button
                       onClick={() => toggleSave(q.id)}
                       style={{
                         ...btnGhost,
                         padding: "16px",
                         flexShrink: 0,
-                        borderColor: savedIds.includes(q.id) ? C.borderGoldStr : C.border,
+                        borderColor: savedIds.includes(q.id) ? C.gold : C.border,
                         color: savedIds.includes(q.id) ? C.gold : C.muted,
                         fontWeight: savedIds.includes(q.id) ? "700" : "500",
                         fontSize: "13px",
-                        transition: "all 0.18s",
+                        transition: "all 0.15s",
                       }}
                     >
                       {savedIds.includes(q.id) ? "🔖 Sparad" : "🔖"}
@@ -2460,10 +2545,11 @@ export default function App() {
                       className="pressable"
                       style={{
                         ...btnGold, flex: 1, padding: "16px",
-                        fontSize: "15px", boxShadow: "0 4px 24px rgba(201,168,76,0.18)",
+                        fontSize: "13px", letterSpacing: "1.5px", textTransform: "uppercase",
+                        fontFamily: "'DM Mono', monospace",
                       }}
                     >
-                      {quiz.current + 1 >= quiz.questions.length ? "Se resultat →" : "Nästa fråga →"}
+                      {quiz.current + 1 >= quiz.questions.length ? "Se resultat →" : "Nästa →"}
                     </button>
                   </div>
                 </div>
@@ -2502,7 +2588,7 @@ export default function App() {
                     Rätt i rad
                   </div>
                   <div className="result-score" style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
-                    <span style={{ fontSize: "58px", fontWeight: "800", color: C.text, lineHeight: 1, letterSpacing: "-2px" }}>
+                    <span style={{ fontSize: "64px", fontWeight: "500", color: C.text, lineHeight: 1, letterSpacing: "-3px", fontFamily: "'DM Mono', monospace" }}>
                       {result.score}
                     </span>
                     <span style={{ fontSize: "18px", fontWeight: "500", color: C.muted }}>
@@ -2546,7 +2632,7 @@ export default function App() {
 
                   {/* Score number */}
                   <div className="result-score" style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
-                    <span style={{ fontSize: "58px", fontWeight: "800", color: C.text, lineHeight: 1, letterSpacing: "-2px" }}>
+                    <span style={{ fontSize: "64px", fontWeight: "500", color: C.text, lineHeight: 1, letterSpacing: "-3px", fontFamily: "'DM Mono', monospace" }}>
                       {result.score}
                     </span>
                     <span style={{ fontSize: "24px", fontWeight: "500", color: C.muted }}>
@@ -2564,7 +2650,7 @@ export default function App() {
                     <div style={{
                       display: "inline-flex", alignItems: "center", gap: "6px",
                       background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
-                      borderRadius: "8px", padding: "6px 14px",
+                      borderRadius: "99px", padding: "6px 14px",
                       fontSize: "11px", color: C.muted,
                       marginTop: "6px",
                     }}>
@@ -2587,7 +2673,7 @@ export default function App() {
                       padding: "11px 14px",
                       background: a.correct ? C.greenBg : C.redBg,
                       border: `1px solid ${a.correct ? C.greenBorder : C.redBorder}`,
-                      borderRadius: "11px", cursor: "pointer",
+                      borderRadius: "16px", cursor: "pointer",
                       width: "100%", textAlign: "left",
                       WebkitTapHighlightColor: "transparent",
                     }}
@@ -2666,7 +2752,7 @@ export default function App() {
                 <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
                 <div style={{
                   background: C.goldBg, border: `1px solid ${C.borderGold}`,
-                  borderRadius: "8px", padding: "5px 13px",
+                  borderRadius: "16px", padding: "5px 13px",
                   fontSize: "13px", fontWeight: "700", color: C.gold,
                 }}>
                   {flashIdx + 1}
@@ -2687,17 +2773,18 @@ export default function App() {
                   <div className="flash-face flash-front" style={{
                     background: C.surface,
                     border: `1px solid ${C.border}`,
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+                    borderTop: `3px solid ${C.gold}`,
                   }}>
                     <div style={{
-                      fontSize: "9px", fontWeight: "700", letterSpacing: "2.5px",
-                      color: C.faint, marginBottom: "18px", textTransform: "uppercase",
+                      fontSize: "9px", fontWeight: "700", letterSpacing: "3px",
+                      color: C.gold, marginBottom: "18px", textTransform: "uppercase",
+                      fontFamily: "'DM Mono', monospace",
                     }}>
                       FRÅGA · Tryck för att vända
                     </div>
                     <ZoomableImage
                       src={q.image}
-                      style={{ width: "100%", borderRadius: "10px", marginBottom: "14px", border: `1px solid ${C.border}` }}
+                      style={{ width: "100%", borderRadius: "16px", marginBottom: "14px", border: `1px solid ${C.border}` }}
                     />
                     <p style={{ fontSize: "16px", lineHeight: "1.72", color: C.text, margin: 0 }}>
                       {q.question}
@@ -2706,13 +2793,14 @@ export default function App() {
 
                   {/* Back */}
                   <div className="flash-face flash-back" style={{
-                    background: "rgba(79,168,112,0.05)",
+                    background: C.greenBg,
                     border: `1px solid ${C.greenBorder}`,
-                    boxShadow: "0 8px 32px rgba(79,168,112,0.08)",
+                    borderTop: `3px solid ${C.green}`,
                   }}>
                     <div style={{
-                      fontSize: "9px", fontWeight: "700", letterSpacing: "2.5px",
+                      fontSize: "9px", fontWeight: "700", letterSpacing: "3px",
                       color: C.greenLight, marginBottom: "18px", textTransform: "uppercase",
+                      fontFamily: "'DM Mono', monospace",
                     }}>
                       SVAR
                     </div>
@@ -2751,7 +2839,7 @@ export default function App() {
                   onClick={() => setFlipped(f => !f)}
                   style={{
                     background: C.goldBg, border: `1px solid ${C.borderGold}`,
-                    borderRadius: "9px", color: C.gold, cursor: "pointer",
+                    borderRadius: "16px", color: C.gold, cursor: "pointer",
                     fontSize: "13px", fontWeight: "700", padding: "13px",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     gap: "6px", WebkitTapHighlightColor: "transparent",
@@ -2882,7 +2970,7 @@ export default function App() {
                             onClick={() => { setStatsSelected(null); setStatsAnswered(false); setStatsQuestion(q); }}
                             style={{
                               display: "flex", alignItems: "center", gap: "10px",
-                              padding: "11px 14px", ...card, borderRadius: "10px",
+                              padding: "11px 14px", ...card, borderRadius: "16px",
                               width: "100%", cursor: "pointer", textAlign: "left",
                               WebkitTapHighlightColor: "transparent",
                             }}
@@ -2904,18 +2992,16 @@ export default function App() {
                 <>
 
                   {/* ── PAGE HEADER ──────────────────────────────────────── */}
-                  <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
-                    <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
-                      Frågebank
-                    </div>
-                    <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+                  <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
+                    <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
                       Frågor
                     </div>
+                    <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Frågebank</div>
                   </div>
 
                   {/* ── 1. MINA FRÅGOR ───────────────────────────────────── */}
                   <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
+                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
                       Mina frågor
                     </div>
 
@@ -2962,7 +3048,7 @@ export default function App() {
                             className="pressable-sm"
                             onClick={() => setFragorFilter("felaktiga")}
                             style={{
-                              flex: 1, padding: "9px 14px", borderRadius: "9px",
+                              flex: 1, padding: "9px 14px", borderRadius: "16px",
                               border: `1px solid ${C.border}`, background: "transparent",
                               color: C.muted, cursor: "pointer", fontSize: "12px", fontWeight: "600",
                               fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
@@ -2974,7 +3060,7 @@ export default function App() {
                             className="pressable-sm"
                             onClick={() => startQuiz("focus")}
                             style={{
-                              flex: 1, padding: "9px 14px", borderRadius: "9px",
+                              flex: 1, padding: "9px 14px", borderRadius: "16px",
                               border: "1px solid rgba(208,112,120,0.35)",
                               background: "rgba(208,112,120,0.1)",
                               color: C.redLight, cursor: "pointer", fontSize: "12px", fontWeight: "700",
@@ -3002,7 +3088,7 @@ export default function App() {
                         }}
                       >
                         <div style={{
-                          width: "30px", height: "30px", borderRadius: "8px", flexShrink: 0,
+                          width: "30px", height: "30px", borderRadius: "16px", flexShrink: 0,
                           background: C.goldBg, border: `1px solid ${C.borderGold}`,
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontSize: "14px",
@@ -3020,7 +3106,7 @@ export default function App() {
                         opacity: 0.45,
                       }}>
                         <div style={{
-                          width: "30px", height: "30px", borderRadius: "8px", flexShrink: 0,
+                          width: "30px", height: "30px", borderRadius: "16px", flexShrink: 0,
                           background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontSize: "14px",
@@ -3035,7 +3121,7 @@ export default function App() {
 
                   {/* ── 2. KUNSKAPSNIVÅ ──────────────────────────────────── */}
                   <div style={{ marginBottom: "22px" }}>
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
+                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
                       Kunskapsnivå
                     </div>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
@@ -3083,7 +3169,7 @@ export default function App() {
 
                   {/* ── 3. FRÅGOR EFTER KATEGORI ─────────────────────────── */}
                   <div>
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>
+                    <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>
                       Frågor efter kategori
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -3101,7 +3187,7 @@ export default function App() {
                           >
                             <div style={{ padding: "13px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
                               <div style={{
-                                width: "34px", height: "34px", borderRadius: "10px", flexShrink: 0,
+                                width: "34px", height: "34px", borderRadius: "16px", flexShrink: 0,
                                 background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
                                 display: "flex", alignItems: "center", justifyContent: "center",
                                 fontSize: "15px",
@@ -3181,7 +3267,7 @@ export default function App() {
                   ? C.greenBg : C.goldBg,
                 border: `1px solid ${checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0
                   ? C.greenBorder : C.borderGold}`,
-                borderRadius: "8px", padding: "5px 12px",
+                borderRadius: "16px", padding: "5px 12px",
                 color: checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0
                   ? C.greenLight : C.gold,
               }}>
@@ -3278,7 +3364,7 @@ export default function App() {
               <div style={{
                 marginTop: "20px", padding: "18px 20px",
                 background: C.greenBg, border: `1px solid ${C.greenBorder}`,
-                borderRadius: "14px", textAlign: "center",
+                borderRadius: "16px", textAlign: "center",
                 animation: "popIn 0.4s cubic-bezier(0.34,1.4,0.64,1) both",
               }}>
                 <div style={{ fontSize: "13px", fontWeight: "700", color: C.greenLight, marginBottom: "3px" }}>
@@ -3297,17 +3383,15 @@ export default function App() {
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
             {/* ══ PAGE HEADER ═════════════════════════════════════════════ */}
-            <div style={{ paddingBottom: "20px", marginBottom: "24px", borderBottom: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: "11px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.85 }}>
-                Statistik & verktyg
-              </div>
-              <div style={{ fontSize: "26px", fontWeight: "800", color: C.text, letterSpacing: "-0.7px", lineHeight: 1 }}>
+            <div style={{ paddingBottom: "20px", marginBottom: "28px" }}>
+              <div style={{ fontSize: "38px", fontWeight: "800", color: C.text, letterSpacing: "-0.9px", lineHeight: 1.05, marginBottom: "5px" }}>
                 Mer
               </div>
+              <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>Statistik & verktyg</div>
             </div>
 
             {/* ══ STATISTIK ═══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Statistik</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Statistik</div>
 
             {/* Unified stats block — accuracy hero row + 3-column secondary */}
             <div style={{ ...card, overflow: "hidden", marginBottom: "10px" }}>
@@ -3322,8 +3406,8 @@ export default function App() {
                   <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "8px", opacity: 0.8 }}>
                     Träffsäkerhet
                   </div>
-                  <div style={{ fontSize: "42px", fontWeight: "800", color: C.gold, lineHeight: 1, letterSpacing: "-2px" }}>
-                    {acc}<span style={{ fontSize: "22px", fontWeight: "700", letterSpacing: "-0.5px" }}>%</span>
+                  <div style={{ fontSize: "48px", fontWeight: "500", color: C.gold, lineHeight: 1, letterSpacing: "-2px", fontFamily: "'DM Mono', monospace" }}>
+                    {acc}<span style={{ fontSize: "22px", fontWeight: "400", letterSpacing: "-0.5px" }}>%</span>
                   </div>
                 </div>
                 {tot > 0 && (
@@ -3369,7 +3453,7 @@ export default function App() {
             </div>
 
             {/* ══ CHECKLISTA ══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Checklista</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Checklista</div>
             {(() => {
               const done  = checklistDone.size;
               const total = CHECKLIST_STEPS.length;
@@ -3388,7 +3472,7 @@ export default function App() {
                 >
                   <div style={{ padding: "15px 18px 14px", display: "flex", alignItems: "center", gap: "14px" }}>
                     <span style={{
-                      width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                      width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
                       background: done === total && total > 0 ? C.greenBg : "rgba(255,255,255,0.04)",
                       border: `1px solid ${done === total && total > 0 ? C.greenBorder : C.border}`,
                       display: "flex", alignItems: "center", justifyContent: "center",
@@ -3425,7 +3509,7 @@ export default function App() {
             })()}
 
             {/* ══ VERKTYG ════════════════════════════════════════════════ */}
-            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Verktyg</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Verktyg</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "36px" }}>
               <button
                 id="ob-flashcards"
@@ -3440,7 +3524,7 @@ export default function App() {
                 }}
               >
                 <span style={{
-                  width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                  width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
                   background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "18px",
@@ -3456,7 +3540,7 @@ export default function App() {
             </div>
 
             {/* ══ INSTÄLLNINGAR ══════════════════════════════════════════ */}
-            <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "1.8px", textTransform: "uppercase", marginBottom: "12px", opacity: 0.75 }}>Inställningar</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "12px", fontFamily: "'DM Mono', monospace" }}>Inställningar</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "8px" }}>
               {/* Reset data row */}
               <button
@@ -3471,7 +3555,7 @@ export default function App() {
                 }}
               >
                 <span style={{
-                  width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+                  width: "36px", height: "36px", borderRadius: "16px", flexShrink: 0,
                   background: "rgba(184,80,88,0.08)", border: "1px solid rgba(184,80,88,0.18)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "16px",
@@ -3512,16 +3596,17 @@ export default function App() {
                 <div
                   onClick={e => e.stopPropagation()}
                   style={{
-                    background: "#141414",
-                    border: `1px solid #2e2020`,
-                    borderRadius: "20px",
+                    background: C.surface,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: "24px",
                     padding: "28px 24px 24px",
                     width: "100%", maxWidth: "360px",
-                    animation: "popIn 0.22s cubic-bezier(0.34,1.3,0.64,1) both",
+                    boxShadow: "0 8px 48px rgba(0,0,0,0.40)",
+                    animation: "popIn 0.24s cubic-bezier(0.34,1.2,0.64,1) both",
                   }}
                 >
                   <div style={{
-                    width: "48px", height: "48px", borderRadius: "14px",
+                    width: "48px", height: "48px", borderRadius: "16px",
                     background: "rgba(200,60,60,0.12)", border: "1px solid rgba(200,60,60,0.22)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     marginBottom: "18px", fontSize: "22px",
@@ -3540,7 +3625,7 @@ export default function App() {
                     <button
                       onClick={() => setShowResetConfirm(false)}
                       style={{
-                        flex: 1, padding: "13px", borderRadius: "12px",
+                        flex: 1, padding: "13px", borderRadius: "16px",
                         border: `1px solid ${C.border}`, background: "transparent",
                         color: C.muted, cursor: "pointer", fontSize: "13px", fontWeight: "600",
                         fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
@@ -3551,7 +3636,7 @@ export default function App() {
                     <button
                       onClick={resetAllProgress}
                       style={{
-                        flex: 1, padding: "13px", borderRadius: "12px",
+                        flex: 1, padding: "13px", borderRadius: "16px",
                         border: "1px solid rgba(200,60,60,0.5)",
                         background: "rgba(200,60,60,0.14)",
                         color: "#e05050",
