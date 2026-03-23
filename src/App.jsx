@@ -1313,144 +1313,89 @@ export default function App() {
         {view === "home" && (
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
-            {/* ══ 1. WELCOME / INTRO ══════════════════════════════════════ */}
-            <div className="home-card-1" style={{ position: "relative", padding: "4px 0 20px", marginBottom: "10px" }}>
-              {/* Ambient glow */}
-              <div style={{
-                position: "absolute", top: "-40px", right: "-40px",
-                width: "220px", height: "220px",
-                background: "radial-gradient(circle, rgba(240,165,0,0.08) 0%, transparent 65%)",
-                pointerEvents: "none",
-              }} />
+            {/* ══ HERO ════════════════════════════════════════════════════ */}
+            <div className="home-card-1" style={{ padding: "6px 0 20px", marginBottom: "4px" }}>
               {tot === 0 ? (
-                <>
+                /* ── New user: centered welcome ── */
+                <div style={{ textAlign: "center" }}>
                   <h1 style={{
-                    fontSize: "30px", fontWeight: "800", color: C.text,
-                    letterSpacing: "-0.7px", lineHeight: 1.1,
-                    margin: "0 0 8px", padding: 0,
+                    fontSize: "34px", fontWeight: "800", color: C.text,
+                    letterSpacing: "-1.1px", lineHeight: 1.05,
+                    margin: "0 0 10px", padding: 0,
                   }}>
-                    Dags att börja plugga.
+                    Klara teorin.<br />
+                    <span style={{ color: C.gold }}>Bli godkänd.</span>
                   </h1>
-                  <p style={{ fontSize: "13px", color: C.muted, lineHeight: 1.6, margin: 0, maxWidth: "260px", fontWeight: "500" }}>
-                    Öva inför taxiförarlegitimationen med riktiga teorifrågor.
+                  <p style={{
+                    fontSize: "13px", color: C.textSoft, lineHeight: 1.65,
+                    margin: "0 auto", maxWidth: "240px", fontWeight: "500",
+                  }}>
+                    Öva med riktiga teorifrågor inför taxiförarlegitimationen.
                   </p>
-                </>
+                </div>
               ) : (
-                <>
-                  <h1 style={{
-                    fontSize: "30px", fontWeight: "800", color: C.text,
-                    letterSpacing: "-0.7px", lineHeight: 1.1,
-                    margin: "0 0 16px", padding: 0,
-                  }}>
-                    {wrongCount > 0 ? "Fortsätt träna." : masterPct >= 80 ? "Du är nästan redo." : "Bra jobbat — framåt."}
-                  </h1>
-                  {/* Stats row: SVG ring + numbers */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    {/* Mastery ring */}
-                    <div style={{ position: "relative", flexShrink: 0, width: "72px", height: "72px" }}>
-                      <svg width="72" height="72" viewBox="0 0 72 72" style={{ display: "block" }}>
-                        <circle cx="36" cy="36" r="28" fill="none" stroke={C.faint} strokeWidth="4.5" />
-                        <circle cx="36" cy="36" r="28" fill="none" stroke={C.surface3} strokeWidth="4.5" strokeDasharray="3 8" strokeLinecap="round" />
-                        <circle cx="36" cy="36" r="28" fill="none"
-                          stroke={masterPct >= 80 ? C.green : C.gold}
-                          strokeWidth="4.5" strokeLinecap="round"
-                          strokeDasharray="175.9"
-                          strokeDashoffset={175.9 * (1 - masterPct / 100)}
-                          style={{
-                            transform: "rotate(-90deg)", transformOrigin: "50% 50%",
-                            transition: "stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)",
-                            filter: masterPct >= 80
-                              ? "drop-shadow(0 0 5px rgba(44,184,122,0.4))"
-                              : "drop-shadow(0 0 5px rgba(240,165,0,0.35))",
-                          }}
-                        />
-                      </svg>
-                      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "13px", fontWeight: "600", lineHeight: 1, color: masterPct >= 80 ? C.greenLight : C.gold }}>
-                          {masterPct}%
-                        </span>
-                      </div>
+                /* ── Returning user: mastery state ── */
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <div style={{ flex: 1 }}>
+                    <h1 style={{
+                      fontSize: "27px", fontWeight: "800", color: C.text,
+                      letterSpacing: "-0.7px", lineHeight: 1.05,
+                      margin: "0 0 7px", padding: 0,
+                    }}>
+                      {wrongCount > 0
+                        ? "Fortsätt träna."
+                        : masterPct >= 80
+                          ? "Du är nästan redo."
+                          : "Bra jobbat."}
+                    </h1>
+                    <div style={{ fontSize: "13px", lineHeight: 1.5 }}>
+                      <span style={{ color: masterPct >= 80 ? C.greenLight : C.textSoft, fontWeight: "700" }}>{mastered}</span>
+                      <span style={{ color: C.textSoft }}> / {QUESTIONS.length} behärskade</span>
                     </div>
-                    {/* Stats */}
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: "10px", color: C.muted, marginBottom: "2px", fontWeight: "600", letterSpacing: "0.3px" }}>Behärskat</div>
-                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "20px", fontWeight: "600", color: C.text, lineHeight: 1, letterSpacing: "-0.5px", marginBottom: "12px" }}>
-                        {mastered}<span style={{ fontSize: "12px", fontWeight: "400", color: C.muted }}>/{QUESTIONS.length}</span>
-                      </div>
-                      <div style={{ fontSize: "10px", color: C.muted, marginBottom: "2px", fontWeight: "600", letterSpacing: "0.3px" }}>Träffsäkerhet</div>
-                      <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "16px", fontWeight: "600", color: acc >= 70 ? C.greenLight : C.textSoft, lineHeight: 1 }}>
-                        {acc}%
-                      </div>
+                    {/* Inline progress bar */}
+                    <div style={{ marginTop: "10px", height: "3px", borderRadius: "99px", background: C.faint, overflow: "hidden", maxWidth: "150px" }}>
+                      <div style={{
+                        height: "100%", borderRadius: "99px",
+                        width: `${masterPct}%`,
+                        background: masterPct >= 80 ? C.greenLight : C.gold,
+                        transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)",
+                      }} />
                     </div>
                   </div>
-                </>
+                  {/* Mastery ring */}
+                  <div style={{ position: "relative", flexShrink: 0, width: "80px", height: "80px" }}>
+                    <svg width="80" height="80" viewBox="0 0 80 80" style={{ display: "block" }}>
+                      <circle cx="40" cy="40" r="32" fill="none" stroke={C.faint} strokeWidth="5" />
+                      <circle cx="40" cy="40" r="32" fill="none"
+                        stroke={masterPct >= 80 ? C.green : C.gold}
+                        strokeWidth="5" strokeLinecap="round"
+                        strokeDasharray="201.1"
+                        strokeDashoffset={201.1 * (1 - masterPct / 100)}
+                        style={{
+                          transform: "rotate(-90deg)", transformOrigin: "50% 50%",
+                          transition: "stroke-dashoffset 0.9s cubic-bezier(0.4,0,0.2,1)",
+                          filter: masterPct >= 80
+                            ? "drop-shadow(0 0 6px rgba(44,184,122,0.5))"
+                            : "drop-shadow(0 0 6px rgba(240,165,0,0.4))",
+                        }}
+                      />
+                    </svg>
+                    <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px" }}>
+                      <span style={{
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: "17px", fontWeight: "600", lineHeight: 1,
+                        color: masterPct >= 80 ? C.greenLight : C.gold,
+                      }}>
+                        {masterPct}%
+                      </span>
+                      <span style={{ fontSize: "8.5px", color: C.muted, fontWeight: "600", letterSpacing: "0.2px" }}>klart</span>
+                    </div>
+                  </div>
+                </div>
               )}
             </div>
 
-            {/* ══ 1b. DAGENS FRÅGA — compact horizontal strip ══ */}
-            <button
-              onClick={() => setView("utmaningar")}
-              className="home-card-1b pressable"
-              style={{
-                width: "100%",
-                marginBottom: "6px",
-                padding: "10px 14px",
-                background: "none",
-                border: `1px solid ${dailyData.answered ? C.greenBorder : C.borderGold}`,
-                borderRadius: "14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                cursor: "pointer",
-                textAlign: "left",
-                WebkitTapHighlightColor: "transparent",
-                fontFamily: "inherit",
-              }}
-            >
-              {/* Streak counter */}
-              <div style={{
-                flexShrink: 0,
-                width: "44px", height: "44px",
-                borderRadius: "12px",
-                background: dailyData.streak > 0 ? C.goldBg : dailyData.answered ? C.greenBg : C.faint,
-                border: `1px solid ${dailyData.streak > 0 ? C.borderGold : dailyData.answered ? C.greenBorder : C.border}`,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "1px",
-              }}>
-                <div style={{
-                  fontSize: "17px",
-                  fontWeight: "600",
-                  lineHeight: 1,
-                  color: dailyData.streak > 0 ? C.gold : dailyData.answered ? C.greenLight : C.muted,
-                  fontFamily: "'DM Mono', monospace",
-                }}>
-                  {dailyData.answered && dailyData.streak === 0 ? "✓" : dailyData.streak}
-                </div>
-                <div style={{
-                  fontSize: "7.5px",
-                  fontWeight: "600",
-                  color: dailyData.streak > 0 ? C.gold : dailyData.answered ? C.green : C.faint,
-                }}>
-                  {dailyData.answered && dailyData.streak === 0 ? "klar" : "streak"}
-                </div>
-              </div>
-
-              {/* Text */}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "13px", fontWeight: "800", color: C.text, marginBottom: "2px", fontFamily: "'Manrope', sans-serif" }}>
-                  Dagens fråga
-                </div>
-                <div style={{ fontSize: "11px", color: C.muted }}>
-                  {dailyData.answered ? "Kom tillbaka imorgon" : "Ny fråga · håll din streak"}
-                </div>
-              </div>
-              <span style={{ color: C.gold, fontSize: "14px", flexShrink: 0 }}>→</span>
-            </button>
-
-            {/* ══ 2. SNABBPROV — always the primary CTA ══════════════════ */}
+            {/* ══ PRIMARY CTA — SNABBPROV ═════════════════════════════════ */}
             <button
               id="ob-snabbprov"
               className="home-card-2 pressable"
@@ -1458,48 +1403,39 @@ export default function App() {
               style={{
                 width: "100%", marginBottom: "6px",
                 padding: "0",
-                borderRadius: "16px", overflow: "hidden",
-                border: `1px solid ${C.borderGold}`,
-                background: C.goldBg,
+                borderRadius: "18px", overflow: "hidden",
+                border: "none",
+                background: goldGrad,
                 display: "block", cursor: "pointer", textAlign: "left",
                 WebkitTapHighlightColor: "transparent",
-                position: "relative",
+                boxShadow: "0 6px 24px rgba(240,165,0,0.30), 0 1px 4px rgba(0,0,0,0.5)",
                 fontFamily: "inherit",
               }}
             >
-              <div style={{ padding: "15px 18px 14px", display: "flex", alignItems: "center", gap: "14px" }}>
+              <div style={{ padding: "16px 18px", display: "flex", alignItems: "center", gap: "14px" }}>
+                <div style={{
+                  width: "40px", height: "40px", flexShrink: 0, borderRadius: "12px",
+                  background: "rgba(0,0,0,0.18)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "17px", color: "rgba(255,255,255,0.9)",
+                }}>▶</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{
-                    fontSize: "20px", fontWeight: "800", color: C.text,
-                    letterSpacing: "-0.4px", lineHeight: 1, marginBottom: "8px",
+                    fontSize: "17px", fontWeight: "800", color: "#09090E",
+                    letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "4px",
                   }}>
-                    Snabbprov
+                    Starta Snabbprov
                   </div>
-                  <div style={{ display: "flex", gap: "5px" }}>
-                    {["15 frågor", "~5 min", "Slumpvis"].map(lbl => (
-                      <div key={lbl} style={{
-                        fontSize: "10px", fontWeight: "500", color: C.muted,
-                        background: C.goldBg,
-                        border: `1px solid ${C.borderGold}`,
-                        padding: "2px 8px", borderRadius: "99px",
-                      }}>{lbl}</div>
-                    ))}
+                  <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.45)" }}>
+                    15 slumpade frågor · ~5 min
                   </div>
                 </div>
-                {/* Arrow */}
-                <div style={{
-                  width: "34px", height: "34px", flexShrink: 0, borderRadius: "10px",
-                  background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 100%)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#090909", fontSize: "16px", fontWeight: "700",
-                  boxShadow: "0 3px 10px rgba(240,165,0,0.25)",
-                }}>→</div>
+                <div style={{ fontSize: "18px", color: "rgba(0,0,0,0.35)", flexShrink: 0 }}>→</div>
               </div>
             </button>
 
-            {/* ══ 3. FOKUSTRÄNING — always present, three states ══════════ */}
-            {wrongCount > 0 ? (
-              /* Active — has wrong questions to train */
+            {/* ══ FOKUSTRÄNING — only when active ═════════════════════════ */}
+            {wrongCount > 0 && (
               <button
                 id="ob-fokustranin"
                 className="home-card-3 pressable"
@@ -1518,179 +1454,233 @@ export default function App() {
               >
                 <div style={{
                   width: "36px", height: "36px", flexShrink: 0, borderRadius: "10px",
-                  background: C.redBg, border: `1px solid ${C.redBorder}`,
+                  background: "rgba(208,72,72,0.18)", border: `1px solid ${C.redBorder}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "16px",
                 }}>🎯</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: "10px", fontWeight: "600", color: C.redLight, marginBottom: "2px" }}>
-                    Felaktiga svar
+                  <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>
+                    Fokusträning
                   </div>
-                  <span style={{ fontSize: "14px", fontWeight: "700", color: C.text, fontFamily: "'Manrope', sans-serif" }}>Fokusträning</span>
-                  <span style={{ fontSize: "11px", color: C.muted, marginLeft: "7px" }}>{wrongCount} kvar</span>
+                  <div style={{ fontSize: "11px", color: C.textSoft }}>
+                    {wrongCount} felaktiga svar att träna på
+                  </div>
                 </div>
                 <div style={{
                   fontSize: "10px", fontWeight: "700", color: C.redLight,
                   border: `1px solid ${C.redBorder}`,
                   padding: "4px 10px", flexShrink: 0,
-                  fontFamily: "'DM Mono', monospace", letterSpacing: "1px",
+                  fontFamily: "'DM Mono', monospace", letterSpacing: "0.5px",
+                  borderRadius: "6px",
                 }}>
                   TRÄNA →
                 </div>
               </button>
-            ) : (
-              /* Ready / empty state — no wrong questions */
-              <div
-                id="ob-fokustranin"
-                className="home-card-3"
-                style={{
-                  width: "100%", marginBottom: "6px",
-                  padding: "10px 14px",
-                  borderRadius: "14px",
-                  border: `1px solid ${C.border}`,
-                  display: "flex", alignItems: "center", gap: "10px",
-                  opacity: tot === 0 ? 0.35 : 1,
-                }}
-              >
-                <div style={{
-                  width: "28px", height: "28px", flexShrink: 0, borderRadius: "8px",
-                  background: tot === 0 ? C.faint : C.greenBg,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "14px",
-                }}>{tot === 0 ? "🔒" : "✅"}</div>
-                <div style={{ flex: 1, fontSize: "12px", color: C.muted }}>
-                  {tot === 0 ? "Fokusträning aktiveras efter ditt första prov" : "Inga missade frågor just nu"}
-                </div>
-                {tot > 0 && (
-                  <span style={{ fontSize: "11px", fontWeight: "600", color: C.greenLight, flexShrink: 0 }}>OK</span>
-                )}
-              </div>
             )}
 
-            {/* ══ 3b. BÖRJA HÄR — new user entry points ══════════════════ */}
-            {tot === 0 && (
-              <div className="home-card-3b" style={{ marginTop: "10px", marginBottom: "6px" }}>
+            {/* ══ DAGENS FRÅGA — featured daily module ════════════════════ */}
+            <button
+              onClick={() => setView("utmaningar")}
+              className="home-card-3b pressable"
+              style={{
+                width: "100%", marginBottom: "6px",
+                padding: "14px 16px",
+                background: dailyData.answered
+                  ? "rgba(44,184,122,0.07)"
+                  : "rgba(240,165,0,0.06)",
+                border: `1px solid ${dailyData.answered ? C.greenBorder : C.borderGold}`,
+                borderRadius: "16px",
+                display: "flex", alignItems: "center", gap: "14px",
+                cursor: "pointer", textAlign: "left",
+                WebkitTapHighlightColor: "transparent",
+                fontFamily: "inherit",
+              }}
+            >
+              {/* Circular streak badge — the visual anchor */}
+              <div style={{
+                flexShrink: 0,
+                width: "54px", height: "54px",
+                borderRadius: "50%",
+                background: dailyData.streak > 0
+                  ? "radial-gradient(circle at 38% 38%, rgba(240,165,0,0.20), rgba(240,165,0,0.07))"
+                  : dailyData.answered
+                    ? "rgba(44,184,122,0.12)"
+                    : C.surface,
+                border: `1.5px solid ${dailyData.streak > 0 ? C.gold : dailyData.answered ? C.green : C.border}`,
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "center",
+                boxShadow: dailyData.streak > 0
+                  ? "0 0 14px rgba(240,165,0,0.18)"
+                  : "none",
+              }}>
                 <div style={{
-                  fontSize: "10px", fontWeight: "700", color: C.muted,
-                  letterSpacing: "0.5px", textTransform: "uppercase",
-                  marginBottom: "8px",
+                  fontSize: "20px", fontWeight: "700", lineHeight: 1,
+                  color: dailyData.streak > 0 ? C.gold : dailyData.answered ? C.greenLight : C.textSoft,
+                  fontFamily: "'DM Mono', monospace",
                 }}>
-                  Välj delprov att börja med
+                  {dailyData.answered && dailyData.streak === 0 ? "✓" : dailyData.streak > 0 ? dailyData.streak : "–"}
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
-                  {[
-                    { dp: 1, label: "Delprov 1", sub: "Säkerhet & beteende", q: DELPROV_CONFIG[1].total },
-                    { dp: 2, label: "Delprov 2", sub: "Lagstiftning", q: DELPROV_CONFIG[2].total },
-                  ].map(({ dp, label, sub, q }) => (
-                    <button key={dp}
-                      className="pressable-sm"
-                      onClick={() => startQuiz(dp)}
-                      style={{
-                        padding: "14px 14px 12px",
-                        borderRadius: "14px",
-                        border: `1px solid ${C.border}`,
-                        background: C.surface,
-                        cursor: "pointer", textAlign: "left",
-                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                      }}
-                    >
-                      <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "5px" }}>
-                        {label}
+                <div style={{
+                  fontSize: "7.5px", fontWeight: "700", marginTop: "2px",
+                  color: dailyData.streak > 0 ? C.goldDark : dailyData.answered ? C.green : C.muted,
+                  letterSpacing: "0.3px",
+                }}>
+                  {dailyData.answered && dailyData.streak === 0 ? "klar" : "streak"}
+                </div>
+              </div>
+
+              {/* Content */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: "14px", fontWeight: "800", letterSpacing: "-0.2px", marginBottom: "4px" }}>
+                  <span style={{ color: C.gold }}>Dagens</span>
+                  <span style={{ color: C.text }}> fråga</span>
+                </div>
+                <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.5 }}>
+                  {dailyData.answered
+                    ? "Klar idag — kom tillbaka imorgon."
+                    : "En ny fråga varje dag. Bygg streak genom att svara rätt."}
+                </div>
+              </div>
+
+              {/* Circular arrow */}
+              <div style={{
+                flexShrink: 0, width: "30px", height: "30px",
+                borderRadius: "50%",
+                background: dailyData.answered ? "rgba(44,184,122,0.12)" : C.goldBg,
+                border: `1px solid ${dailyData.answered ? C.greenBorder : C.borderGold}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: "13px",
+                color: dailyData.answered ? C.greenLight : C.gold,
+              }}>→</div>
+            </button>
+
+            {/* ══ READINESS CARD — returning users ════════════════════════ */}
+            {tot > 0 && (
+              <div className="home-card-4" style={{
+                marginTop: "8px",
+                borderRadius: "16px",
+                background: C.surfaceAlt,
+                border: `1px solid ${C.border}`,
+                position: "relative",
+                overflow: "hidden",
+              }}>
+                {/* Left accent strip — color signals readiness */}
+                <div style={{
+                  position: "absolute", top: 0, left: 0, bottom: 0, width: "3px",
+                  background: masterPct >= 80 ? C.green : masterPct >= 50 ? C.gold : C.textSoft,
+                  opacity: masterPct >= 80 ? 0.9 : 0.6,
+                }} />
+
+                <div style={{ padding: "14px 16px 14px 20px" }}>
+                  {/* Label */}
+                  <div style={{
+                    fontSize: "10px", fontWeight: "700", color: C.textSoft,
+                    letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "10px",
+                  }}>
+                    Din provsäkerhet
+                  </div>
+
+                  {/* Inline stats — secondary weight, not dominant */}
+                  <div style={{ display: "flex", alignItems: "baseline", marginBottom: "10px" }}>
+                    {[
+                      { val: mastered,   unit: " klara",  color: masterPct >= 80 ? C.greenLight : C.textSoft },
+                      { val: `${acc}%`,  unit: " träff",  color: acc >= 70 ? C.textSoft : C.textSoft },
+                      { val: tot,        unit: " övade",  color: C.textSoft },
+                    ].map(({ val, unit, color }, i) => (
+                      <div key={unit} style={{ display: "flex", alignItems: "baseline" }}>
+                        {i > 0 && (
+                          <span style={{ fontSize: "10px", color: C.muted, margin: "0 8px" }}>·</span>
+                        )}
+                        <span style={{ fontSize: "14px", fontWeight: "700", color }}>{val}</span>
+                        <span style={{ fontSize: "10px", color: C.muted, marginLeft: "2px" }}>{unit}</span>
                       </div>
-                      <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, lineHeight: 1.3, marginBottom: "8px" }}>
-                        {sub}
-                      </div>
-                      <div style={{ fontSize: "10px", color: C.muted }}>
-                        {q} frågor →
-                      </div>
-                    </button>
-                  ))}
+                    ))}
+                  </div>
+
+                  {/* Contextual message */}
+                  <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55, marginBottom: "12px" }}>
+                    {masterPct >= 80
+                      ? <><span style={{ color: C.text }}>Imponerande.</span> Du behärskar det mesta — redo att testa?</>
+                      : masterPct >= 50
+                        ? <><span style={{ color: C.gold, fontWeight: "700" }}>{QUESTIONS.length - mastered}</span> frågor kvar tills du når provsäkerhet.</>
+                        : "Fortsätt öva — varje prov gör dig starkare."}
+                  </div>
+
+                  {/* Action */}
+                  <button
+                    onClick={() => setView("prov")}
+                    style={{
+                      background: "none", border: "none", padding: "0",
+                      cursor: "pointer", fontFamily: "inherit",
+                      WebkitTapHighlightColor: "transparent",
+                      display: "flex", alignItems: "center", gap: "4px",
+                    }}
+                  >
+                    <span style={{ fontSize: "12px", fontWeight: "700", color: masterPct >= 80 ? C.greenLight : C.gold }}>
+                      {masterPct >= 80 ? "Ta hela provet →" : "Se Prov →"}
+                    </span>
+                  </button>
                 </div>
               </div>
             )}
 
-            {/* ══ 3c. DELPROV QUICK TILES — only when has data ════════════ */}
-            {tot > 0 && (
-              <div className="home-card-3b" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", marginBottom: "6px" }}>
-                {dpProgress.map(({ dp, cfg: dpCfg, pct, tried }) => {
-                  const barCol = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.faint;
-                  return (
-                    <button key={dp} className="pressable-sm" onClick={() => startQuiz(dp)}
-                      style={{
-                        padding: "13px 14px 11px",
-                        borderRadius: "14px",
-                        border: `1px solid ${C.border}`,
-                        background: C.surface,
-                        cursor: "pointer", textAlign: "left",
-                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                        position: "relative", overflow: "hidden",
-                      }}
-                    >
-                      <div style={{ fontSize: "10px", fontWeight: "600", color: C.muted, marginBottom: "8px" }}>
-                        {dpCfg.name}
-                      </div>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "2px", marginBottom: "10px" }}>
-                        <span style={{
-                          fontSize: "24px", fontWeight: "600", color: tried ? C.text : C.faint,
-                          lineHeight: 1, fontFamily: "'DM Mono', monospace",
-                        }}>
-                          {pct}
-                        </span>
-                        <span style={{ fontSize: "11px", color: barCol, fontWeight: "600", fontFamily: "'DM Mono', monospace" }}>%</span>
-                      </div>
-                      <div style={{ height: "3px", borderRadius: "99px", background: C.faint, overflow: "hidden" }}>
-                        <div style={{ height: "100%", borderRadius: "99px", width: `${pct}%`, background: barCol, opacity: tried ? 1 : 0.4 }} />
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {/* ══ 4. PROGRESS OVERVIEW — inline stats, no card border ══════ */}
-            {tot > 0 && (
-              <div className="home-card-4" style={{ marginTop: "6px", marginBottom: "6px" }}>
-                {/* Thin divider */}
-                <div style={{ height: "1px", background: C.borderSoft, marginBottom: "14px" }} />
-                {/* Stat row */}
-                <div style={{ display: "flex", alignItems: "center" }}>
+            {/* ══ GUIDED JOURNEY + APP PEEK — new users only ══════════════ */}
+            {tot === 0 && (
+              <div className="home-card-4" style={{
+                marginTop: "8px",
+                borderRadius: "16px",
+                background: C.surfaceAlt,
+                border: `1px solid ${C.border}`,
+              }}>
+                <div style={{ padding: "14px 16px" }}>
+                  <div style={{
+                    fontSize: "10px", fontWeight: "700", color: C.textSoft,
+                    letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "12px",
+                  }}>
+                    Så här funkar det
+                  </div>
                   {[
-                    [mastered,  "Behärskade",   C.greenLight],
-                    [`${acc}%`, "Träffsäkerhet", C.text],
-                    [tot,       "Övade totalt",  C.muted],
-                  ].map(([val, label, color], i) => (
-                    <div key={label} style={{
-                      flex: 1, textAlign: "center",
-                      borderLeft: i > 0 ? `1px solid ${C.borderSoft}` : "none",
+                    { n: "1", t: "Gör ett snabbprov", d: "15 frågor — se direkt vad du kan" },
+                    { n: "2", t: "Se vad du missar", d: "Appen spårar felaktiga svar automatiskt" },
+                    { n: "3", t: "Fokusträna svagheterna", d: "Öva tills du behärskar allt" },
+                  ].map(({ n, t, d }, idx, arr) => (
+                    <div key={n} style={{
+                      display: "flex", alignItems: "flex-start", gap: "12px",
+                      marginBottom: idx < arr.length - 1 ? "10px" : "0",
                     }}>
-                      <div style={{ fontSize: "18px", fontWeight: "800", color, letterSpacing: "-0.4px", lineHeight: 1, marginBottom: "5px" }}>
-                        {val}
-                      </div>
-                      <div style={{ fontSize: "9px", fontWeight: "600", color: C.faint, letterSpacing: "0.4px", textTransform: "uppercase" }}>
-                        {label}
+                      <div style={{
+                        width: "22px", height: "22px", flexShrink: 0, borderRadius: "7px",
+                        background: C.goldBg, border: `1px solid ${C.borderGold}`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontFamily: "'DM Mono', monospace", fontSize: "10px", fontWeight: "700", color: C.gold,
+                      }}>{n}</div>
+                      <div style={{ paddingTop: "2px" }}>
+                        <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{t}</div>
+                        <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.4 }}>{d}</div>
                       </div>
                     </div>
                   ))}
                 </div>
-                {/* Footer link */}
+
+                {/* Quiet link to explore */}
                 <button
                   onClick={() => setView("prov")}
                   style={{
-                    marginTop: "14px", paddingTop: "12px",
-                    borderTop: `1px solid ${C.borderSoft}`,
-                    background: "none", border: "none",
-                    width: "100%", cursor: "pointer",
+                    width: "100%", padding: "11px 16px",
+                    background: "none", border: "none", borderTop: `1px solid ${C.border}`,
+                    cursor: "pointer", textAlign: "left", fontFamily: "inherit",
+                    WebkitTapHighlightColor: "transparent",
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                   }}
                 >
-                  <span style={{ fontSize: "11px", color: C.faint }}>
-                    {masterPct >= 80 ? "Nästan redo för prov" : masterPct >= 50 ? `${QUESTIONS.length - mastered} frågor kvar att behärska` : "Fortsätt öva för att nå provnivån"}
+                  <span style={{ fontSize: "11px", color: C.muted }}>
+                    {QUESTIONS.length} teorifrågor ingår
                   </span>
-                  <span style={{ fontSize: "11px", color: C.gold, fontWeight: "600" }}>Se Prov →</span>
+                  <span style={{ fontSize: "11px", color: C.gold, fontWeight: "700" }}>Utforska →</span>
                 </button>
               </div>
             )}
+
           </div>
         )}
 
