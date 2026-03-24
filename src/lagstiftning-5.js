@@ -199,16 +199,16 @@ export const LAGSTIFTNING_5 = [
 {
   id: 216,
   delprov: 2,
-  question: "Du kör i 70 km/tim i situationen på bilden. Vad är säkrast att göra?",
+  question: "Du möter trafik på en landsväg och vill öka säkerhetsmarginalen i sidled. Vad är normalt bäst att göra?",
   options: [
     "Signalera med signalhornet",
-    "Bromsa",
-    "Styra ut mot högerkanten",
+    "Bromsa kraftigt utan att någon omedelbar fara syns",
+    "Hålla väl till höger i körfältet",
     "Signalera med helljuset"
   ],
   correct: 2,
-  image: "https://teori-taxi.com/images/Lagstiftning/218-600x402.png",
-  explanation: "Facit visar att det säkraste är att styra ut mot högerkanten för att öka sidomarginalen och minska risken i situationen."
+  image: null,
+  explanation: "När du möter trafik är det ofta klokt att öka sidomarginalen genom att hålla väl till höger i ditt körfält. Signalhorn och helljus används bara när det behövs för att förebygga eller avvärja fara. Tänk defensivt: skapa marginaler i stället för att stressa upp situationen."
 },
 {
   id: 217,
@@ -221,7 +221,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/219-600x465.png",
-  explanation: "Det här är en skyltfråga. Facit visar att körfältet vid den tiden är reserverat för bussar i linjetrafik, och därför får taxi inte använda det."
+  explanation: "Märket visar ett körfält för fordon i linjetrafik. Tilläggstavlan anger att regleringen gäller mellan 07–09 och 15–18 på vardagar samt mellan 10–14 på lördagar. Eftersom det är lördag klockan 13.00 gäller busskörfältet då, och taxi får inte använda det eftersom ingen tilläggstavla visar att taxi är undantagen eller tillåten."
 },
 {
   id: 218,
@@ -230,11 +230,11 @@ export const LAGSTIFTNING_5 = [
   options: [
     "Nej, det är förbjudet att både stanna och parkera",
     "Ja, det är tillåtet",
-    "Nej, det är enbart tillåtet mellan 18 – 06"
+    "Nej, det är enbart tillåtet mellan 18.00 och 06.00"
   ],
-  correct: 1,
+  correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/220-600x436.png",
-  explanation: "Facit visar att ett kort stopp för att släppa av kund är tillåtet vid den här tidpunkten enligt skyltningen."
+  explanation: "Märket visar förbud mot att stanna och parkera mellan klockan 06.00 och 18.00. Eftersom det är helgfri onsdag klockan 12.00 gäller förbudet då. Du får därför inte stanna där, inte ens för att snabbt släppa av en kund."
 },
 {
   id: 219,
@@ -248,34 +248,34 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/221.png",
-  explanation: "Det här är ett påbudsmärke. Facit visar att det innebär att du måste svänga vänster i korsningen."
+  explanation: "Det här är ett påbudsmärke. Det betyder att du måste köra i den riktning pilen visar. I den här situationen innebär det att du måste svänga vänster. Tänk på skillnaden mellan tillåten körriktning och påbjuden körriktning: här är vänstersvängen inte bara möjlig, utan obligatorisk."
 },
 {
   id: 220,
   delprov: 2,
-  question: "Du ska svänga till höger i korsningen. Cyklisten ska fortsätta rakt fram. Har du väjningsplikt mot cyklisten i den här situationen?",
+  question: "Du ska svänga till höger i korsningen. Cyklisten ska fortsätta rakt fram på cykelbanan. Vad gäller i den här situationen?",
   options: [
-    "Ja, alltid",
-    "Nej, aldrig",
-    "Ja, men enbart om han kliver av cykeln och leder den"
+    "Jag ska lämna cyklisten företräde",
+    "Jag har alltid företräde när jag svänger höger",
+    "Jag behöver bara lämna företräde om cyklisten kliver av och leder cykeln"
   ],
   correct: 0,
   image: "https://teori-taxi.com/images/Lagstiftning/222-600x413.png",
-  explanation: "När du svänger och korsar cyklistens färdväg ska du lämna företräde i den här typen av situation. Därför är rätt svar att du har väjningsplikt."
+  explanation: "När du svänger höger och korsar en cykelbana måste du ta hänsyn till cyklisten och lämna honom företräde i den här situationen. Det viktiga är att tänka på om din färdväg skär cyklistens. När den gör det måste du anpassa hastigheten och låta cyklisten passera säkert."
 },
 {
   id: 221,
   delprov: 2,
-  question: "Vilka av följande personer har möjlighet att få taxiförarlegitimation?",
+  question: "Vem uppfyller grundkraven för att kunna få taxiförarlegitimation?",
   options: [
-    "En 20-åring som har körkort med behörighet B sedan två år",
-    "En 19-åring som har körkort med behörighet B sedan ett år",
-    "En 21-åring som har körkort med behörighet B sedan två år",
-    "En 25-åring som har körkort med behörighet B sedan ett år"
+    "En 20-åring som har haft körkort med behörighet B i två år",
+    "En 19-åring som har haft körkort med behörighet B i två år",
+    "En 21-åring som har haft körkort med behörighet B i ett år",
+    "En 25-åring som har haft körkort med behörighet B i ett år"
   ],
-  correct: 2,
+  correct: 0,
   image: null,
-  explanation: "För taxiförarlegitimation krävs minst 20 års ålder och att man har haft B-körkort i minst två år. I provets facit är alternativet med 21-åring och två års B-behörighet markerat som rätt."
+  explanation: "För att kunna få taxiförarlegitimation krävs som huvudregel att du har fyllt 20 år och har haft körkort med behörighet B i minst två år. Därför är 20-åringen med två års B-behörighet rätt svar här. Tänk på att både ålderskravet och körkortstiden måste vara uppfyllda samtidigt."
 },
 {
   id: 222,
@@ -289,7 +289,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Taxiförarlegitimationen ska vara placerad så att den är väl synlig för passagerarna. Den ska inte bara finnas i bilen eller vara lätt att ta fram."
+  explanation: "Taxiförarlegitimationen ska inte bara finnas med i bilen, utan vara väl synlig för passagerarna. Syftet är att kunden tydligt ska kunna se vem som kör. Tänk därför: legitimationen ska kunna ses utan att passageraren behöver be om den."
 },
 {
   id: 223,
@@ -303,7 +303,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Om legitimationen inte är placerad på föreskrivet sätt är den typiska påföljden enligt provets facit böter."
+  explanation: "Om taxiförarlegitimationen inte är placerad på det sätt som reglerna kräver kan påföljden bli böter, närmare bestämt penningböter. Regeln finns för att passageraren tydligt ska kunna identifiera föraren under resan."
 },
 {
   id: 224,
@@ -312,16 +312,16 @@ export const LAGSTIFTNING_5 = [
   options: ["3 år", "5 år", "7 år", "10 år"],
   correct: 3,
   image: null,
-  explanation: "I det här provmaterialet är 10 år markerat som rätt svar. Jag vill samtidigt flagga att dagens Transportstyrelse-regel säger fem års giltighetstid, så den här frågan verkar bygga på äldre provregler."
+  explanation: "En taxiförarlegitimation ska förnyas inom tio år efter att den har utfärdats eller senast förnyats med nya uppgifter. Det är lätt att blanda ihop detta med andra behörigheter i körkortssystemet, men för taxiförarlegitimation är huvudregeln tio år."
 },
 {
   id: 225,
   delprov: 2,
-  question: "Din taxiförarlegitimation kan bli återkallad om du begår ett brott. För hur lång tid blir den minst återkallad?",
+  question: "Om din taxiförarlegitimation återkallas på grund av brottslig gärning eller andra allvarliga missförhållanden, hur lång är den minsta återkallelsetiden?",
   options: ["1 år", "2 år", "3 år", "4 år", "5 år"],
   correct: 2,
   image: null,
-  explanation: "Enligt facit i det här provet är minsta återkallelsetid tre år."
+  explanation: "Om en taxiförarlegitimation återkallas på grund av brottslig gärning eller andra allvarliga missförhållanden ska en olämplighetstid bestämmas. Den minsta tiden är tre år. Tänk på att mindre allvarliga fall i stället kan leda till varning, så frågan gäller just när återkallelse faktiskt beslutas."
 },
 {
   id: 226,
@@ -336,33 +336,33 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Förlust av taxiförarlegitimation ska anmälas till Transportstyrelsen."
+  explanation: "Om din taxiförarlegitimation kommer bort ska du anmäla det till Transportstyrelsen. Det är Transportstyrelsen som hanterar förlustanmälan och utfärdande av ny legitimation."
 },
 {
   id: 227,
   delprov: 2,
-  question: "Vilka av följande personer har möjlighet att få taxiförarlegitimation?",
+  question: "Vem uppfyller grundkraven för att kunna få taxiförarlegitimation?",
   options: [
-    "En 20-åring som har körkort med behörighet B sedan två år",
-    "En 21-åring som har körkort med behörighet B sedan ett år",
-    "En 21-åring som har körkort med behörighet D sedan 1 månad"
+    "En 20-åring som har haft körkort med behörighet B i två år",
+    "En 21-åring som har haft körkort med behörighet B i ett år",
+    "En 19-åring som har haft körkort med behörighet B i två år"
   ],
-  correct: 2,
+  correct: 0,
   image: null,
-  explanation: "I det här provets facit är alternativet med 21-åring och D-behörighet markerat som rätt. Jag vill dock flagga att dagens Transportstyrelse-regel säger att kravet normalt uppfylls med minst två års B-behörighet, eller med D-behörighet enligt nuvarande regelverk."
+  explanation: "För att kunna få taxiförarlegitimation ska du som huvudregel ha fyllt 20 år och ha haft B-körkort i minst två år. Därför är 20-åringen med två års B-behörighet rätt svar här. Tänk på att både ålderskravet och körkortstiden måste vara uppfyllda samtidigt."
 },
 {
   id: 228,
   delprov: 2,
   question: "Vad innebär begreppet personbil?",
   options: [
-    "Att bilen är inrättad för högst 8 passagerare",
+    "Att bilen är inrättad för högst 8 passagerare utöver föraren",
     "Att bilen väger högst 3500 kg",
     "Att bilen får användas endast till att skjutsa passagerare"
   ],
-  correct: 1,
+  correct: 0,
   image: null,
-  explanation: "I det här provet är viktgränsen markerad som rätt svar. Samtidigt är den juridiska definitionen mer detaljerad än bara vikten, så här följer jag originalfacit."
+  explanation: "En personbil är ett fordon som är konstruerat för persontransport och har högst åtta sittplatser utöver förarplatsen. Viktgränsen 3,5 ton hör i andra sammanhang ihop med körkortsbehörighet och vissa fordonsklasser, men den definierar inte i sig vad en personbil är."
 },
 {
   id: 229,
@@ -376,7 +376,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Med B-behörighet får du köra personbil och lätt lastbil med totalvikt på högst 3,5 ton. Därför är personbil med totalvikt på 3,1 ton rätt svar."
+  explanation: "Med behörighet B får du köra personbil och lätt lastbil med totalvikt på högst 3,5 ton. Därför är en personbil med totalvikt på 3,1 ton tillåten. De andra alternativen kräver annan behörighet eller faller utanför vad B-behörigheten normalt omfattar."
 },
 {
   id: 230,
@@ -390,21 +390,21 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Taxitrafik bedrivs med personbil eller lätt lastbil. Därför är lätta lastbilar rätt svar."
+  explanation: "Taxitrafik bedrivs med personbil eller lätt lastbil. Därför är lätta lastbilar rätt svar. Andra fordonstyper, som bussar eller tunga lastbilar, hör inte till den vanliga definitionen av taxitrafik."
 },
 {
   id: 231,
   delprov: 2,
-  question: "För vilken av dessa transporter krävs det att du har taxiförarlegitimation?",
+  question: "För vilken typ av trafik krävs taxiförarlegitimation?",
   options: [
-    "En persontransport med motorcykel",
-    "En persontransport med en personbil i linjetrafik",
-    "En persontransport med en buss som tar 9–17 passagerare",
-    "En persontransport med en buss som tar fler än 17 passagerare"
+    "När du kör motorcykel med passagerare mot betalning",
+    "När du kör personbil eller lätt lastbil i taxitrafik",
+    "När du kör buss i beställningstrafik",
+    "När du kör buss i linjetrafik"
   ],
   correct: 1,
   image: null,
-  explanation: "Taxiförarlegitimation krävs för taxitrafik med personbil eller lätt lastbil. Därför är persontransport med personbil rätt svar här."
+  explanation: "Taxiförarlegitimation krävs för att köra personbil eller lätt lastbil i taxitrafik. Frågan handlar alltså om taxi, inte om motorcykel- eller busstrafik. Ett bra sätt att tänka är att koppla taxiförarlegitimation till just taxitrafik med personbil eller lätt lastbil."
 },
 {
   id: 232,
@@ -417,7 +417,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Taxiförarlegitimationen ska vara placerad så att passagerare i både fram- och baksäte tydligt kan se den."
+  explanation: "Taxiförarlegitimationen ska vara placerad så att den är väl synlig för passagerare i både fram- och baksätet. Syftet är att alla passagerare tydligt ska kunna se vem som kör bilen."
 },
 {
   id: 233,
@@ -432,63 +432,63 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 3,
   image: null,
-  explanation: "När bilen används i taxitrafik ska taxametern vara i funktion. Därför är rätt svar att den inte får vara avstängd."
+  explanation: "Om fordonet används i taxitrafik och är utrustat med taxameter ska taxametern vara i funktion vid varje köruppdrag. Det gäller även om resan körs till fast pris. Tänk därför: fast pris ändrar inte kravet på att taxametern ska användas."
 },
 {
   id: 234,
   delprov: 2,
   question: "Vilket alternativ anger två dokument som du måste ha med dig när du kör taxitrafik?",
   options: [
-    "Taxiförarlegitimation – Bilens registreringsbevis",
-    "Kopia av trafiktillståndet – Körkort",
-    "Taxiförarlegitimation – Kontroll- och plomberingsrapport för taxametern",
-    "Yrkestrafikmärke – Kopia av trafiktillståndet"
+    "Taxiförarlegitimation – bilens registreringsbevis",
+    "Kopia av trafiktillståndet – körkort",
+    "Taxiförarlegitimation – kontrollrapport för taxametern",
+    "Yrkestrafikmärke – kopia av trafiktillståndet"
   ],
   correct: 2,
   image: null,
-  explanation: "Du ska ha med dig taxiförarlegitimationen och taxameterns kontroll- och plomberingsrapport i original."
+  explanation: "När du kör taxitrafik ska du ha med dig en giltig taxiförarlegitimation. Du ska också ha med den senaste kontrollrapporten för taxametern i original. Därför är alternativet med taxiförarlegitimation och kontrollrapport rätt."
 },
 {
   id: 235,
   delprov: 2,
   question: "Vilket av följande dokument ska du ha med när du kör taxitrafik?",
   options: [
-    "Kontroll- och plomberingsrapport från senaste besiktning av taxametern",
+    "Kontrollrapport från den senaste taxameterbesiktningen",
     "Det senast utfärdade registreringsbeviset",
     "Protokoll från fordonets senaste kontrollbesiktning",
     "Anställningsintyg från arbetsgivaren"
   ],
   correct: 0,
   image: null,
-  explanation: "Det dokument du måste ha med dig är kontroll- och plomberingsrapporten från den senaste taxameterbesiktningen."
+  explanation: "När du kör taxitrafik ska den senaste kontrollrapporten för taxametern finnas med i fordonet i original. Det är ett särskilt dokumentkrav som hör ihop med kontrollen av taxameterutrustningen."
 },
 {
   id: 236,
   delprov: 2,
-  question: "Du upptäcker att en plombering på din taxameter är bruten. Vad gäller?",
+  question: "Du upptäcker att en plombering på taxametern är bruten. Vad gäller?",
   options: [
-    "Jag får endast använda bilen för köruppdrag mot fast pris",
-    "Jag får avsluta ett påbörjat körpass, men därefter måste en godkänd verkstad plombera taxametern innan jag använder bilen i taxitrafik",
-    "En verkstad som är ackrediterad av SWEDAC måste plombera taxametern innan jag får använda bilen i taxitrafik",
-    "Svensk Bilprovning måste plombera taxametern innan jag får använda bilen i taxitrafik"
+    "Jag får använda bilen i taxitrafik om jag kör till fast pris",
+    "Jag får avsluta dagens körpass men måste sedan anmäla felet",
+    "Taxametern måste kontrolleras och plomberas på nytt av ett ackrediterat besiktningsorgan innan bilen får användas i taxitrafik",
+    "Det räcker att jag själv noterar felet i körpassrapporten"
   ],
   correct: 2,
   image: null,
-  explanation: "Om plomberingen är bruten får bilen inte användas i taxitrafik förrän taxametern har plomberats på nytt av en SWEDAC-ackrediterad verkstad."
+  explanation: "Ett taxifordon får bara användas i taxitrafik om taxametern är kontrollerad och plomberad enligt reglerna. Om en plombering är bruten måste utrustningen kontrolleras och plomberas på nytt av ett ackrediterat besiktningsorgan innan bilen används igen i taxitrafik. Tänk därför: bruten plombering betyder inte 'kör klart passet', utan att utrustningen inte längre uppfyller kraven."
 },
 {
   id: 237,
   delprov: 2,
-  question: "Var kan vägkontroll av taxametern ske?",
+  question: "Var kan en vägkontroll av taxametern ske?",
   options: [
     "Enbart vid taxiföretagets lokaler",
     "Både vid taxiföretagets lokaler och på vägen när jag kör taxitrafik",
-    "Enbart på vägen när jag kör i taxitrafik",
-    "Enbart på vägen, när jag kör i taxitrafik, förutsatt att jag inte har någon kund i bilen"
+    "På vägen när fordonet används i taxitrafik",
+    "Enbart på vägen och bara om jag inte har kund i bilen"
   ],
-  correct: 1,
+  correct: 2,
   image: null,
-  explanation: "Enligt facit kan kontrollen ske både vid taxiföretagets lokaler och ute på vägen när bilen används i taxitrafik."
+  explanation: "En vägkontroll är just en kontroll som sker på väg. Polismyndigheten utför kontroller på väg av att fordon används enligt taxireglerna. Därför är det rätt att en vägkontroll av taxametern kan ske när fordonet används i taxitrafik, inte att detta också definieras som kontroll vid företagets lokaler."
 },
 {
   id: 238,
@@ -502,7 +502,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 1,
   image: null,
-  explanation: "Taxametern ska enligt den här frågan besiktas senast inom ett år från föregående besiktning."
+  explanation: "Taxametern ska besiktas senast ett år från installationen eller från den senaste besiktningen. Därför är ett år rätt svar. Ett bra minnessätt är att tänka att taxametern har ett eget årligt besiktningskrav, skilt från bilens vanliga kontrollbesiktning."
 },
 {
   id: 239,
@@ -516,49 +516,49 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 3,
   image: null,
-  explanation: "Den normala regeln i provet är att taxametern ska besiktas varje år, senast ett år efter föregående taxameterbesiktning."
+  explanation: "Taxametern ska normalt besiktas varje år, senast ett år efter föregående besiktning. Det är ett särskilt krav för taxameterutrustningen och är inte samma sak som bilens vanliga kontrollbesiktning."
 },
 {
   id: 240,
   delprov: 2,
-  question: "Var ska taxameterns kontroll- och plomberingsrapport förvaras?",
+  question: "Var ska taxameterns kontrollrapport förvaras?",
   options: [
-    "Hos länsstyrelsen",
-    "Hos vägverket",
+    "Hos Transportstyrelsen",
+    "Hos Polismyndigheten",
     "I fordonet",
     "Hos tillståndshavaren"
   ],
   correct: 2,
   image: null,
-  explanation: "Kontroll- och plomberingsrapporten ska finnas i fordonet."
+  explanation: "Den senaste kontrollrapporten för taxametern ska medföras i fordonet i original. Den ska kunna visas upp vid kontroll. Tänk därför: rapporten ska inte ligga kvar på kontoret, utan finnas i bilen."
 },
 {
   id: 241,
   delprov: 2,
-  question: "När ska du erbjuda kunden kvitto från taxametern?",
+  question: "När ska du erbjuda kunden kvitto eller följesedel från taxametern?",
   options: [
-    "Vid alla typer av köruppdrag",
+    "Efter varje avslutat köruppdrag",
     "Endast när kunden begär det",
     "Endast vid körningar med företagskunder",
     "Endast vid körningar med fast pris"
   ],
   correct: 0,
   image: null,
-  explanation: "Efter varje avslutat köruppdrag ska kunden erbjudas kvitto från taxametern. Därför är rätt svar att det gäller vid alla typer av köruppdrag."
+  explanation: "Efter varje avslutat köruppdrag ska kunden erbjudas ett kvitto från taxametern, eller en följesedel om resan ska faktureras. Det gäller alltså inte bara vissa typer av kunder eller betalningssätt. Tänk: varje avslutad resa ska följas av kvitto eller följesedel."
 },
 {
   id: 242,
   delprov: 2,
-  question: "Efter vilka körningar måste du skriva ut kvitto eller följesedel från taxametern?",
+  question: "Efter vilka körningar ska kunden erbjudas kvitto eller följesedel från taxametern?",
   options: [
     "Alla körningar utom skolskjutsning",
     "Alla körningar utom körning med fast pris",
-    "Alla körningar utom färdtjänstuppdraget",
+    "Alla körningar utom färdtjänstuppdrag",
     "Alla körningar"
   ],
   correct: 3,
   image: null,
-  explanation: "Efter varje avslutat köruppdrag ska ett kvitto eller en följesedel skrivas ut från taxametern. Därför är rätt svar alla körningar."
+  explanation: "Efter varje avslutat köruppdrag ska kunden erbjudas kvitto eller, om resan ska faktureras, en följesedel. Det gäller även körningar med fast pris. Kvitto eller följesedel får lämnas i pappersform eller elektroniskt om kunden kan ta emot och läsa uppgifterna."
 },
 {
   id: 243,
@@ -572,7 +572,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 1,
   image: null,
-  explanation: "I den här frågan är rätt svar förarkoden och datum för körningen. Det är uppgifter som enligt provets facit ska finnas med på taxikvittot."
+  explanation: "På ett taxikvitto ska det finnas uppgifter som gör resan spårbar och som visar vem som har kört. Förarkod och datum är därför exempel på uppgifter som alltid ska finnas med. Tänk på att ett taxikvitto ska hjälpa kunden att i efterhand kunna identifiera både resa och förare."
 },
 {
   id: 244,
@@ -580,27 +580,27 @@ export const LAGSTIFTNING_5 = [
   question: "Vilket alternativ anger två uppgifter som alltid ska finnas med på ett taxikvitto?",
   options: [
     "Fordonets yrkestrafiknummer och inkört belopp under körpasset",
-    "Tidpunkten då köruppdraget påbörjats och avslutas",
+    "Tidpunkten då köruppdraget påbörjades och avslutades",
     "Framkörningsavgiften och beställningscentralens namn",
     "Antalet registrerade körningar under körpasset och taxiföretagets telefonnummer"
   ],
   correct: 1,
   image: null,
-  explanation: "Starttid och sluttid för köruppdraget är enligt facit de två uppgifter som alltid ska finnas med här."
+  explanation: "Ett taxikvitto ska innehålla uppgifter som tydligt visar när resan började och slutade. Starttid och sluttid är därför viktiga obligatoriska uppgifter. De hjälper både kunden och företaget att i efterhand kunna koppla kvittot till rätt resa."
 },
 {
   id: 245,
   delprov: 2,
   question: "En kund betalar sin resa kontant. Hur ska du göra med taxameterkvittot?",
   options: [
-    "Jag ska alltid överlämna kvittot till kunden",
-    "I det fall kunden begär kvitto är jag skyldig att skriva ut en kopia för egen räkning",
+    "Jag ska alltid överlämna kvittot till kunden även om kunden tackar nej",
+    "Jag behöver bara skriva ut kvitto om kunden begär det",
     "Jag ska alltid erbjuda kunden kvittot",
     "Jag är skyldig att bevara kvarvarande kvitton minst en månad"
   ],
   correct: 2,
   image: null,
-  explanation: "Vid kontant betalning ska kunden alltid erbjudas kvittot. Därför är det rätta svaret att du ska erbjuda kunden kvittot."
+  explanation: "När resan är avslutad ska kunden erbjudas ett kvitto från taxametern. Vid kontant betalning är det alltså inte valfritt för föraren att hoppa över kvittot. Tänk: kunden ska alltid få möjlighet att ta emot kvittot, även om kunden sedan väljer att inte behålla det."
 },
 {
   id: 246,
@@ -615,7 +615,7 @@ export const LAGSTIFTNING_5 = [
   ],
   correct: 0,
   image: null,
-  explanation: "Kopior av körpassrapporter för de två senaste dygnen som fordonet använts i taxitrafik ska kunna visas upp vid kontroll."
+  explanation: "Du ska kunna visa upp kopior av körpassrapporter för de två senaste dygnen som fordonet har använts i taxitrafik. Tänk på att frågan gäller hur långt bak kontrollen minst kan omfatta, inte hur länge företaget i övrigt sparar uppgifter."
 },
 {
   id: 247,
@@ -624,40 +624,40 @@ export const LAGSTIFTNING_5 = [
   options: [
     "Den ska vara tryckt på reflekterande material som är läsbart i mörker",
     "Den ska vara läsbar från varje passagerarplats i fordonet",
-    "Den ska vara fastsatt i den nedre vänstra hörnet av fordonets vindruta",
+    "Den ska vara fastsatt i det nedre vänstra hörnet av fordonets vindruta",
     "Den ska finnas tillgänglig i pappersform så att kunden kan få ett exemplar"
   ],
   correct: 1,
   image: null,
-  explanation: "Prisinformationen inne i bilen ska kunna läsas från varje passagerarplats. Därför är det alternativet rätt."
+  explanation: "Prisinformationen inne i taxin ska vara läsbar från varje passagerarplats. Syftet är att alla passagerare enkelt ska kunna ta del av prisuppgifterna före eller under färden."
 },
 {
   id: 248,
   delprov: 2,
   question: "Vilket påstående är riktigt om prisinformationen på taxibilar?",
   options: [
-    "Den ska vara fastsatt i den nedre vänstra hörnet av fordonets vindruta",
-    "Den ska illustreras med symboler fastställda av vägverket",
-    "Den ska vara tryckt på reflekterande material som är läsbart i mörker",
-    "Den ska vara läsbar utifrån om man står minst två meter från sidan på fordonet"
+    "Den ska vara fastsatt i det nedre vänstra hörnet av fordonets vindruta",
+    "Den ska illustreras med symboler fastställda av Vägverket",
+    "Den ska vara väl synlig på fordonets utsida och finnas på både höger och vänster sida",
+    "Den behöver bara finnas på en sida av fordonet"
   ],
-  correct: 3,
+  correct: 2,
   image: null,
-  explanation: "Prisinformationen på utsidan ska vara tydligt läsbar utifrån. I den här frågan är rätt svar att den ska kunna läsas när man står minst två meter från sidan av fordonet."
+  explanation: "Prisinformationen ska vara väl synlig på taxifordonets utsida och finnas på både höger och vänster sida. Tänk på att frågan gäller den grundläggande placeringsregeln, inte äldre eller mer osäkra detaljpåståenden."
 },
 {
   id: 249,
   delprov: 2,
   question: "Hur många kopior av kvitton måste du kunna visa upp för en polisman vid en kontroll?",
   options: [
-    "På senaste köruppdraget",
+    "På det senaste köruppdraget",
     "På de sju senaste köruppdragen",
     "På de fem senaste köruppdragen",
     "På de två senaste köruppdragen"
   ],
   correct: 0,
   image: null,
-  explanation: "Vid kontroll ska kopia av kvitto eller följesedel för det senaste avslutade köruppdraget kunna skrivas ut och lämnas över."
+  explanation: "Vid kontroll ska du kunna skriva ut och lämna över kopia av kvitto eller följesedel för det senaste avslutade köruppdraget. Frågan gäller alltså inte flera tidigare resor, utan just den senast avslutade."
 },
 {
   id: 250,
@@ -669,8 +669,8 @@ export const LAGSTIFTNING_5 = [
     "Det är ett fastställt belopp utöver grundavgiften som ska registreras före resan",
     "Det är ett fastställt belopp som ska registreras när köruppdraget påbörjas"
   ],
-  correct: 2,
+  correct: 3,
   image: null,
-  explanation: "I den här frågan är rätt svar att fast pris är ett fastställt belopp utöver grundavgiften som ska registreras före resan."
+  explanation: "Fast pris är en tariff som består av ett i förväg fastställt belopp för en i förväg bestämd typ av köruppdrag. När du kör till fast pris ska priset registreras i taxametern när köruppdraget påbörjas. Det är alltså inte ett extra belopp ovanpå grundavgiften."
 },
 ]
