@@ -4,14 +4,14 @@ export const SAKERHET_2 = [
   "delprov": 1,
   "question": "Hur påverkas i allmänhet en förare som använder mobiltelefon under körning?",
   "options": [
-    "En förare som har stor körvana blir inte påverkad",
+    "En förare som har stor körvana påverkas inte",
     "Om föraren använder handsfree-utrustning påverkas inte körningen",
-    "Föraren får en förlängd stoppsträcka när han eller hon bromsar",
+    "Föraren får längre reaktionstid och därmed längre stoppsträcka",
     "Förarens körförmåga påverkas inte vid körning på motorväg"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Mobilanvändning försämrar uppmärksamheten och kan göra att stoppsträckan blir längre."
+  "explanation": "Mobilanvändning tar uppmärksamhet från trafiken. Även med handsfree kan föraren bli distraherad. När reaktionstiden blir längre hinner bilen färdas längre innan bromsningen börjar, och då blir stoppsträckan längre."
 },
 {
   "id": 352,
@@ -25,12 +25,12 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "En bältesstol ger bättre sidostöd och minskar risken att barnet glider åt sidan."
+  "explanation": "En bältesstol har ryggstöd och sidostöd som hjälper barnet att sitta stabilt och hålla rätt position i bilbältet. Det är en fördel jämfört med en bälteskudde, särskilt om barnet somnar eller rör sig mycket under färden."
 },
 {
   "id": 353,
   "delprov": 1,
-  "question": "Du kör taxi och upptäcker att bilen drar snett. Vad kan orsaken vara?",
+  "question": "Du kör taxi och märker att bilen plötsligt drar snett. Vilken av följande är den mest sannolika orsaken?",
   "options": [
     "Drivremmen till styrservopumpen har gått av",
     "Det har släppt en balansvikt från ett framhjul",
@@ -39,7 +39,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Om bilen drar snett är en vanlig orsak punktering eller för lågt lufttryck i ett framdäck."
+  "explanation": "Om bilen plötsligt börjar dra åt ena sidan är en sannolik orsak att ett framdäck har punktering eller för lågt lufttryck. Det påverkar hur bilen rullar och styr. En tappad balansvikt brukar i stället främst ge vibrationer."
 },
 {
   "id": 354,
@@ -53,7 +53,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Nödhjul har ofta särskilda begränsningar för hastighet och ibland även körsträcka."
+  "explanation": "Ett nödhjul är bara avsett för tillfällig användning. Det har normalt särskilda begränsningar för hastighet, och ibland även för körsträcka. Följ alltid märkningen på nödhjulet och bilens instruktionsbok."
 },
 {
   "id": 355,
@@ -62,27 +62,27 @@ export const SAKERHET_2 = [
   "options": [
     "Ja, men det räcker att främre axeln har dubbdäck",
     "Ja, men det räcker att bakre axeln har dubbdäck",
-    "Ja, bägge axlarna måste ha dubbdäck",
+    "Ja, båda axlarna måste ha dubbdäck",
     "Ja, men bara ett hjul per axel måste ha dubbdäck",
     "Nej"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Enligt facit ska båda axlarna på släpvagnen ha dubbdäck i den här situationen."
+  "explanation": "Om bilen har dubbdäck och det råder vinterväglag måste även den kopplade släpvagnen ha dubbdäck. På en tvåaxlig släpvagn innebär det att båda axlarna ska vara utrustade med dubbdäck."
 },
 {
   "id": 356,
   "delprov": 1,
-  "question": "Vilken av dessa sjukdomar räknas till de psykotiska sjukdomarna?",
+  "question": "Vilken av dessa sjukdomar räknas till psykossjukdomarna?",
   "options": [
     "Schizofreni",
-    "Neuros",
+    "Paniksyndrom",
     "Fobi",
-    "Demens"
+    "Demenssjukdom"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Schizofreni hör till de psykotiska sjukdomarna."
+  "explanation": "Schizofreni är en psykossjukdom. En psykos innebär att personen kan uppleva verkligheten förändrad, till exempel genom vanföreställningar eller hallucinationer. Fobi och paniksyndrom är inte psykossjukdomar, och demens är ett annat sjukdomstillstånd även om vissa personer med demens kan få förvirring eller andra psykiska symtom."
 },
 {
   "id": 357,
@@ -97,26 +97,26 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "För lågt lufttryck ökar rullmotståndet och därmed också bränsleförbrukningen."
+  "explanation": "För lågt lufttryck ökar däckens rullmotstånd. Då måste bilen arbeta mer, vilket kan öka bränsleförbrukningen. För lågt lufttryck kan också ge sämre vägegenskaper och leda till snabbare eller ojämnt däckslitage."
 },
 {
   "id": 358,
   "delprov": 1,
-  "question": "Vilket av följande däck kan användas i trafik utan fara?",
+  "question": "Vilket av följande däck kan i sig vara normalt att köra med?",
   "options": [
-    "Ett varmt däck med ett lufttryck som är något högre än rekommenderat",
+    "Ett varmt däck med ett lufttryck som är något högre än det rekommenderade kalltrycket",
     "Ett varmt däck med ett lufttryck som är mycket lägre än rekommenderat",
-    "Ett rotationsbundet däck som monterats fel",
-    "Ett däck som har för låg dimension i förhållande till belastningen"
+    "Ett rotationsbundet däck som monterats åt fel håll",
+    "Ett däck med för låg dimension eller för lågt belastningsindex för fordonet"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Ett varmt däck får naturligt något högre lufttryck än när det är kallt."
+  "explanation": "Lufttrycket stiger när däcket blir varmt under körning. Därför kan ett varmt däck ha något högre tryck än det rekommenderade kalltrycket utan att det är fel. Däremot är för lågt lufttryck, felmonterat rotationsbundet däck eller däck med fel dimension eller för låg belastningsförmåga en säkerhetsrisk."
 },
 {
   "id": 359,
   "delprov": 1,
-  "question": "Du kör en vuxen kund som plötsligt får tungt att andas. Det hörs att andningen är försvårad. Vilken är den troligaste orsaken?",
+  "question": "Du kör en vuxen kund som plötsligt får tungt att andas och andningen låter försvårad. Vilket av följande tillstånd stämmer bäst med symtomen?",
   "options": [
     "Kunden har fått ett astmaanfall",
     "Kunden har drabbats av afasi",
@@ -125,7 +125,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Försvårad och tung andning hos en vuxen tyder här mest på ett astmaanfall."
+  "explanation": "Astma kan ge anfall med tung, försvårad och pipande eller väsande andning. Afasi är en störning i tal eller språk, inte ett andningsproblem. Falsk krupp ses främst hos barn. I verkligheten kan plötsliga andningsbesvär vara akuta, så vid allvarliga symtom ska du snabbt se till att kunden får hjälp och vid behov larma 112."
 },
 {
   "id": 360,
@@ -139,7 +139,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Du ska inte lyfta med bara ryggen, eftersom det ökar risken för skador."
+  "explanation": "Du bör inte lyfta enbart med ryggen, eftersom det ökar risken för belastningsskador. Håll i stället bördan nära kroppen, använd ben och höfter i lyftet och undvik att vrida ryggen samtidigt som du lyfter."
 },
 {
   "id": 361,
@@ -153,7 +153,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Bromsvätska tar upp fukt med tiden och ska bytas så att kokpunkten inte blir för låg."
+  "explanation": "Bromsvätska tar upp fukt med tiden. Då sjunker kokpunkten, vilket kan försämra bromsarnas funktion vid hård belastning. Därför ska bromsvätskan bytas enligt bilens serviceintervall, inte bara fyllas på."
 },
 {
   "id": 362,
@@ -167,21 +167,21 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "En förare kan dömas även under 0,2 promille om körningen ändå inte kan ske på ett säkert sätt."
+  "explanation": "Ja. I Sverige finns både en fast promillegräns och en påverkanregel. Även om alkoholhalten är under 0,2 promille kan en förare dömas för rattfylleri om han eller hon ändå är så påverkad att fordonet inte kan framföras på ett betryggande sätt."
 },
 {
   "id": 363,
   "delprov": 1,
-  "question": "Vilken ordningsföljd är rätt beträffande åtgärder vid trafikolycka?",
+  "question": "Vilken ordningsföljd stämmer bäst om du är först på en trafikolycksplats?",
   "options": [
-    "1. Värna andra trafikanter\n2. Ringa SOS Alarm 112\n3. Ge första hjälpen\n4. Överblicka olycksplatsen",
-    "1. Överblicka olycksplatsen\n2. Värna andra trafikanter\n3. Ge första hjälpen\n4. Ringa SOS Alarm 112",
-    "1. Ge första hjälpen\n2. Överblicka olycksplatsen\n3. Ringa SOS Alarm 112\n4. Värna andra trafikanter",
-    "1. Ringa SOS Alarm 112\n2. Värna andra trafikanter\n3. Överblicka olycksplatsen\n4. Ge första hjälpen"
+    "1. Stanna på en säker plats och varna andra trafikanter\n2. Skaffa en överblick över läget\n3. Ring 112\n4. Hjälp de skadade",
+    "1. Ring 112 direkt\n2. Hjälp de skadade\n3. Varna andra trafikanter\n4. Skaffa en överblick",
+    "1. Hjälp de skadade först\n2. Skaffa en överblick\n3. Varna andra trafikanter\n4. Ring 112",
+    "1. Skaffa en överblick\n2. Hjälp de skadade\n3. Ring 112\n4. Varna andra trafikanter"
   ],
-  "correct": 1,
+  "correct": 0,
   "image": null,
-  "explanation": "Du ska först skapa dig en överblick, sedan varna andra, hjälpa de skadade och larma."
+  "explanation": "Om du kommer först till en olycksplats ska du först stanna så säkert som möjligt och varna andra trafikanter så att inte fler skadas. Därefter skaffar du en överblick över vad som hänt, larmar 112 och hjälper de skadade. Tänk alltid på din egen säkerhet först."
 },
 {
   "id": 364,
@@ -195,21 +195,21 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Katalysatorn blir mycket varm och kan antända lättantändligt material under bilen."
+  "explanation": "Katalysatorn blir mycket varm under körning och även en stund efter att motorn har stängts av. Därför kan torrt gräs, papper, löv eller annat lättantändligt material under bilen börja brinna. Tänk också på att en katalysator fungerar bäst när den blivit varm."
 },
 {
   "id": 365,
   "delprov": 1,
-  "question": "Vilket påstående är riktigt om kravet på användning av bilbälte för taxiförare vid godstransport?",
+  "question": "Vilket påstående är riktigt om bälteskravet för en taxiförare som kör godstransport?",
   "options": [
     "Det finns inget krav om transporten sker med lätt lastbil",
     "Det finns inget krav om transporten sker med minibuss",
-    "Det finns inget undantag från bälteskravet vid godstransport",
+    "Det finns inget generellt undantag från bälteskravet vid godstransport",
     "Det finns krav men enbart om transporten sker med personbil"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Facit anger att det inte finns något undantag från bälteskravet vid godstransport."
+  "explanation": "Det finns inget generellt undantag från bälteskravet bara för att transporten gäller gods. Huvudregeln är att bilbälte ska användas när fordonet är utrustat med bilbälte. De undantag som finns är begränsade, till exempel vid backning eller när fordonet inte är i rörelse."
 },
 {
   "id": 366,
@@ -223,7 +223,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Vid stopp på en farlig plats som före ett backkrön ska varningstriangel sättas ut."
+  "explanation": "Ja. Eftersom bilen har blivit stående på en plats med skymd sikt och hastighetsgränsen är högre än 50 km/h ska varningstriangel sättas ut. Syftet är att varna andra trafikanter i god tid så att de hinner reagera och bromsa."
 },
 {
   "id": 367,
@@ -237,20 +237,20 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Trafikfarlig medicin kan påverka flera viktiga förmågor samtidigt och försämra körningen."
+  "explanation": "Trafikfarlig medicin kan påverka flera viktiga funktioner samtidigt, till exempel reaktionsförmåga, uppmärksamhet, trötthet och omdöme. Därför kan du fungera sämre som förare även om du själv inte märker påverkan tydligt."
 },
 {
   "id": 368,
   "delprov": 1,
   "question": "Du har använt taxin till att köra din hund till veterinären. Kan det påverka nästa kund?",
   "options": [
-    "Ja, kunden kan få svåra allergiska besvär",
+    "Ja, kunden kan få allergiska besvär",
     "Nej, inte om jag kört en så kallad allergivänlig hund",
     "Nej, inte om jag dammsuger bilen före nästa kund"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Djur kan lämna allergener i bilen som kan ge besvär för nästa kund."
+  "explanation": "Ja. Pälsdjur lämnar allergener efter sig, till exempel från hud, saliv och hår. De kan finnas kvar i bilen och ge besvär för nästa kund, särskilt om personen är känslig eller har astma. Städning hjälper, men tar inte alltid bort allt."
 },
 {
   "id": 369,
@@ -264,7 +264,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": "https://teori-taxi.com/images/Sakerhet/69-1.png",
-  "explanation": "Enligt facit är det bild D som visar rätt teknik i den här situationen."
+  "explanation": "Den här frågan bör tas bort eller ersättas. Bilden visar inte någon trappa och stöder därför inte frågetexten på ett tillräckligt tydligt sätt. Det går inte att kvalitetssäkra facit fullt ut när bild och fråga inte matchar."
 },
 {
   "id": 370,
@@ -278,34 +278,34 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Omkring 30 km/h brukar anges som högsta hastighet där de flesta oskyddade trafikanter kan överleva en påkörning."
+  "explanation": "Omkring 30 km/h brukar anges som den högsta hastighet där de flesta oskyddade trafikanter kan överleva en påkörning. Vid högre hastigheter ökar risken för dödliga eller mycket svåra skador kraftigt."
 },
 {
   "id": 371,
   "delprov": 1,
-  "question": "Barn som är 120 cm, var sitter han säkrast?",
+  "question": "Ett barn som är 120 cm långt ska åka bil. Vad är viktigast att tänka på?",
   "options": [
-    "I baksätet",
-    "I framsätet",
-    "Han sitter lika säkert i både fram- och baksätet"
+    "Barnet kan sitta var som helst utan särskild skyddsanordning",
+    "Barnet ska använda en särskild skyddsanordning, och ska inte sitta på passagerarplats med aktiv krockkudde",
+    "Barnet sitter alltid säkrast i framsätet"
   ],
-  "correct": 0,
+  "correct": 1,
   "image": null,
-  "explanation": "Barn sitter normalt säkrast i baksätet."
+  "explanation": "Barn som är kortare än 135 cm ska använda en särskild skyddsanordning, till exempel bältesstol eller bälteskudde. Ett barn som är 120 cm långt ska inte sitta på passagerarplats med aktiv krockkudde. Därför är det viktigaste att rätt skydd används och att barnet inte placeras framför en aktiv krockkudde."
 },
 {
   "id": 372,
   "delprov": 1,
-  "question": "När ska du använda dig av Heimlich manöver?",
+  "question": "När kan tryck mot magen användas som en del av första hjälpen?",
   "options": [
     "När en person är chockad",
-    "När en person satt något i halsen",
+    "När en vuxen eller ett barn över 1 år har satt något i halsen och inte kan hosta effektivt",
     "När ett barn lider av falsk krupp",
     "När en person drabbats av ångest"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Heimlichmanövern används när någon har satt något i halsen och luftvägen är blockerad."
+  "explanation": "Om en vuxen eller ett barn över 1 år har satt något i halsen och inte kan hosta effektivt används ryggslag och tryck mot magen för att försöka få bort det som blockerar luftvägen. Om personen blir medvetslös ska du larma 112 och börja med hjärt-lungräddning."
 },
 {
   "id": 373,
@@ -314,17 +314,17 @@ export const SAKERHET_2 = [
   "options": [
     "Kontrollera andningen",
     "Larma ambulans",
-    "Placera honom i stabilt sidoläge (framstupa sidoläge)",
+    "Placera personen i stabilt sidoläge",
     "Ge konstgjord andning"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Det första du ska göra är att kontrollera om personen andas."
+  "explanation": "Det första du ska göra är att kontrollera om personen andas normalt. Om personen inte andas normalt ska du larma 112 och börja med hjärt-lungräddning. Om personen andas normalt men är medvetslös kan du lägga personen i stabilt sidoläge."
 },
 {
   "id": 374,
   "delprov": 1,
-  "question": "Hur många år bör ett barn minst vara för att du ska låta det sitta i en bältesstol eller på en bälteskudde i stället för i en bakåtvänd bilbarnstol?",
+  "question": "Hur gammalt bör ett barn ungefär minst vara innan det sitter i bältesstol eller på bälteskudde i stället för i en bakåtvänd bilbarnstol?",
   "options": [
     "Ca 1 år",
     "Ca 2 år",
@@ -333,35 +333,35 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Barn bör sitta bakåtvänt så länge som möjligt, ungefär till 4 års ålder."
+  "explanation": "Barn bör sitta bakåtvänt så länge som möjligt, eftersom det ger bäst skydd för huvud och nacke. Som tumregel bör barnet vara ungefär 4 år innan det vänds framåt, och många rekommendationer säger 4–5 år eller längre om stolen fortfarande passar."
 },
 {
   "id": 375,
   "delprov": 1,
-  "question": "Du får ett uppdrag där du ska köra en synskadad person. Hur bör du bemöta kunden?",
+  "question": "Du får ett uppdrag där du ska köra en person med synnedsättning. Hur bör du bemöta kunden?",
   "options": [
     "Jag öppnar dörren och ber kunden stiga in",
     "Jag gör inget, utan låter kunden känna sig fram",
     "Jag frågar om jag kan vara till hjälp",
-    "Jag tar kunden i armen och leder in honom i bilen"
+    "Jag tar kunden i armen och leder in personen i bilen"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Det bästa är att fråga om kunden vill ha hjälp, så att hjälpen kan anpassas efter behov."
+  "explanation": "Det bästa är att först fråga om kunden vill ha hjälp och hur hjälpen i så fall ska ges. På så sätt visar du respekt och kan anpassa hjälpen efter personens behov i stället för att anta vad som behövs."
 },
 {
   "id": 376,
   "delprov": 1,
   "question": "Du tar en rökpaus utanför din taxi. Kan det påverka din nästa kunds hälsa?",
   "options": [
-    "Ja, kunden kan få allergiska besvär",
+    "Ja, kunden kan få besvär i luftvägarna eller astmabesvär",
     "Ja, kunden kan få ett epileptiskt anfall",
-    "Nej, passiv rökning är inte hälsofarligt",
+    "Nej, rök utanför bilen påverkar inte kunden",
     "Nej, om inte röken har blåst in i bilen"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Röklukt och rester från rök kan ge besvär för känsliga kunder."
+  "explanation": "Ja. Cigarettrök och röklukt kan ge besvär för känsliga personer, till exempel hosta, irritation i luftvägarna eller astmabesvär. Även om du röker utanför bilen kan lukt och ämnen finnas kvar på kläder och i närmiljön och påverka nästa kund."
 },
 {
   "id": 377,
@@ -375,21 +375,21 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Mobilanvändning tar uppmärksamhet från trafiken och ökar risken för misstag."
+  "explanation": "Mobilanvändning tar uppmärksamhet från trafiken. När du blir mindre uppmärksam ökar risken att du missar faror, reagerar för sent eller gör felbedömningar i trafiken."
 },
 {
   "id": 378,
   "delprov": 1,
-  "question": "Du har en bil som är registrerad 2006 och ska byta däck på den. Du funderar på att byta till en annan däckdimension. Får du välja vilken dimension du vill?",
+  "question": "Du har en bil som är registrerad 2006 och ska byta till en annan däckdimension. Får du välja vilken dimension du vill?",
   "options": [
     "Ja, men enbart om däcken uppfyller belastningskraven",
     "Ja, men enbart om däcken är typgodkända",
     "Ja, om däcken är typgodkända och uppfyller belastningskraven",
     "Nej"
   ],
-  "correct": 2,
+  "correct": 3,
   "image": null,
-  "explanation": "Däcken måste vara godkända och samtidigt klara rätt belastning för bilen."
+  "explanation": "Nej. Du får inte välja vilken dimension som helst. Alternativa däckdimensioner får bara användas om flera krav är uppfyllda, till exempel rätt belastningsförmåga, rätt hastighetskapacitet, tillräcklig frigång och att hastighetsmätaren inte visar fel."
 },
 {
   "id": 379,
@@ -403,12 +403,12 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/80-600x433.png",
-  "explanation": "När barnsäkerhetslåset är aktiverat kan dörren inte öppnas inifrån utan bara utifrån."
+  "explanation": "När barnsäkerhetslåset är aktiverat kan bakdörren inte öppnas med det invändiga handtaget. Dörren kan då bara öppnas utifrån, vilket minskar risken att ett barn öppnar dörren under färd."
 },
 {
   "id": 380,
   "delprov": 1,
-  "question": "En förare som talar i mobiltelefonen har ofta sämre reaktionsförmåga än vanligt. Normal reaktionstid är ca 1 sekund. Hur lång blir reaktionssträckan i 70 km/tim om det i stället tar 2 sekunder att reagera?",
+  "question": "En förare som talar i mobiltelefonen har ofta sämre reaktionsförmåga än vanligt. Normal reaktionstid är cirka 1 sekund. Hur lång blir reaktionssträckan i 70 km/tim om det i stället tar 2 sekunder att reagera?",
   "options": [
     "Ca 25 m",
     "Ca 39 m",
@@ -418,12 +418,12 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "70 km/h är ungefär 19 meter per sekund, så på 2 sekunder blir reaktionssträckan cirka 39 meter."
+  "explanation": "70 km/h motsvarar ungefär 19,4 meter per sekund. Om det tar 2 sekunder att reagera hinner bilen rulla nästan 39 meter innan bromsningen ens börjar. Därför är rätt svar cirka 39 meter."
 },
 {
   "id": 381,
   "delprov": 1,
-  "question": "Vilken sjukdom beskrivs i texten på bilden?",
+  "question": "Vilket tillstånd beskrivs i texten på bilden?",
   "options": [
     "Fobi",
     "Apati",
@@ -433,7 +433,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": "https://teori-taxi.com/images/Sakerhet/82-600x430.png",
-  "explanation": "Enligt facit beskriver texten fobi, alltså en starkt överdriven rädsla."
+  "explanation": "Texten beskriver fobi, alltså en stark och ofta oförklarlig rädsla eller ångest inför vissa situationer, företeelser eller saker. Apati handlar om likgiltighet eller brist på känslomässigt engagemang, och afasi är en språkstörning."
 },
 {
   "id": 382,
@@ -441,12 +441,12 @@ export const SAKERHET_2 = [
   "question": "Du har en körning med en person som har diabetes. Under körningen blir personen blek, kallsvettig och irriterad. Vad bör du göra i första hand?",
   "options": [
     "Se till att personen får i sig sitt insulin",
-    "Försöka få personen att äta något sött",
+    "Försöka få personen att äta eller dricka något sött",
     "Köra personen direkt till sjukhus"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Symtomen tyder på lågt blodsocker, så personen bör få i sig något sött direkt om det går."
+  "explanation": "Symtomen tyder på lågt blodsocker, så personen bör snabbt få i sig något sött om personen är vaken och kan svälja. Exempel kan vara druvsocker, juice eller söt läsk. Ge inte insulin i det läget, eftersom det kan sänka blodsockret ännu mer."
 },
 {
   "id": 383,
@@ -459,7 +459,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Tröttheten brukar vara störst under nattens senare del, därför är sista timmen mest riskfylld här."
+  "explanation": "Risken för trötthet ökar under nattens senare del. På en resa som slutar kl. 03.00 är därför den sista timmen mest riskfylld, eftersom kroppens vakenhet normalt är sämre då."
 },
 {
   "id": 384,
@@ -474,21 +474,21 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Bilbältet är det viktigaste skyddet vid en frontalkrock."
+  "explanation": "Bilbältet är den viktigaste skyddsutrustningen i bilen vid en kollision. Det håller kroppen på plats och minskar risken för mycket allvarliga skador. Krockkuddar är viktiga, men de fungerar som ett komplement till bilbältet."
 },
 {
   "id": 385,
   "delprov": 1,
-  "question": "Vid vilken ålder brukar barn normalt börja bete sig trafiksäkert?",
+  "question": "Som grov tumregel, vid vilken ålder kan barn börja klara att gå själva i måttligt trafikerade miljöer?",
   "options": [
-    "7 år",
-    "9 år",
-    "12 år",
-    "14 år"
+    "Cirka 7 år",
+    "Cirka 9-10 år",
+    "Cirka 12 år",
+    "Cirka 14 år"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Barn brukar först vid ungefär 9 års ålder börja kunna uppträda mer trafiksäkert."
+  "explanation": "Det går inte att ange en exakt ålder som passar alla barn och alla trafikmiljöer. Men som grov tumregel brukar man säga att barn kan börja gå själva i måttligt trafikerade miljöer vid ungefär 9-10 års ålder. Det beror också på barnets mognad och hur trafiken ser ut där barnet rör sig."
 },
 {
   "id": 386,
@@ -501,21 +501,21 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "En cykel bak på bilen ger normalt mindre luftmotstånd än om den placeras på taket."
+  "explanation": "En cykel som transporteras bak på bilen ger normalt mindre luftmotstånd än en cykel på taket. Det brukar ge lägre bränsleförbrukning och mindre miljöpåverkan."
 },
 {
   "id": 387,
   "delprov": 1,
-  "question": "Du kör en person som plötsligt får molande värk från bröstet ut mot armarna. Vilken är den troligaste orsaken?",
+  "question": "Du kör en person som plötsligt får molande värk eller tryck över bröstet som strålar ut i armarna. Vad bör du i första hand misstänka?",
   "options": [
     "Personen har satt något i halsen",
-    "Personen har fått en hjärtinfarkt",
+    "Personen kan ha drabbats av hjärtinfarkt",
     "Personen har fått ett epileptiskt anfall",
     "Personen har fått astma"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Molande bröstsmärta som strålar ut i armarna är ett typiskt tecken på hjärtinfarkt."
+  "explanation": "Bröstsmärta eller tryck som strålar ut i armarna är ett typiskt varningstecken på hjärtinfarkt. Det är ett allvarligt tillstånd som kräver snabb hjälp. Om symtomen är tydliga eller personen blir försämrad ska du larma 112."
 },
 {
   "id": 388,
@@ -529,46 +529,46 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Du ska lyfta med rak rygg och hålla godset nära kroppen för att minska belastningen."
+  "explanation": "När du lyfter tungt bör du hålla godset nära kroppen och undvika att böja eller vrida ryggen mer än nödvändigt. Då minskar belastningen på rygg och axlar. Av de givna alternativen är det därför bäst att lyfta med rak rygg och godset nära kroppen."
 },
 {
   "id": 389,
   "delprov": 1,
-  "question": "Bilföraren ska svänga till höger i situationen på bilden. Hur ska han göra?",
+  "question": "Bilföraren ska svänga till höger i situationen på bilden. Hur ska föraren göra?",
   "options": [
-    "Han måste lämna företräde åt de gående",
-    "Han måste inte lämna företräde åt de gående, men bör ändå göra det",
-    "Han ska köra med låg hastighet och vara beredd på att de gående kan gå ut i gatan, trots att de har rött ljus"
+    "Föraren måste lämna företräde åt de gående",
+    "Föraren måste inte lämna företräde åt de gående, men bör ändå göra det",
+    "Föraren ska köra med låg hastighet och vara beredd på att de gående kan gå ut i gatan, trots att de har rött ljus"
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/90-1-600x501.png",
-  "explanation": "Även om de gående har rött måste föraren köra försiktigt och vara beredd på att någon ändå går ut."
+  "explanation": "Vid ett signalreglerat övergångsställe gäller trafiksignalerna. Om de gående har rött ljus har föraren inte samma väjningsplikt som vid ett obevakat övergångsställe. Men föraren måste ändå svänga försiktigt och vara beredd på att någon kan gå ut i körbanan."
 },
 {
   "id": 390,
   "delprov": 1,
-  "question": "Varför har barn svårt för att bete sig trafiksäkert?",
+  "question": "Varför har barn ofta svårt att bete sig trafiksäkert?",
   "options": [
-    "För att de är korta och impulsiva och inte har fullt utvecklad syn",
+    "För att de är korta och impulsiva och inte har fullt utvecklad förmåga att uppfatta trafiken",
     "För att de är korta och inte har fullt utvecklad hörsel och syn",
     "För att de är impulsiva och inte har fullt utvecklad hörsel"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Barn är ofta impulsiva, korta och har inte fullt utvecklad förmåga att uppfatta trafiken."
+  "explanation": "Barn är ofta impulsiva, kortare än vuxna och har svårare att uppfatta och tolka trafiken. De har också svårare att bedöma hastighet, avstånd och risker. Därför kan de reagera oväntat i trafiken och behöver extra hänsyn."
 },
 {
   "id": 391,
   "delprov": 1,
   "question": "Hur bör du uppträda om en kund börjar bete sig argt eller hotfullt?",
   "options": [
-    "Jag höjer rösten för att kunden ska förstå att den beter sig illa",
+    "Jag höjer rösten för att kunden ska förstå att beteendet är fel",
     "Jag tittar åt ett annat håll och låtsas inte höra",
     "Jag är lugn och saklig"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Ett lugnt och sakligt bemötande minskar ofta risken att situationen trappas upp."
+  "explanation": "Ett lugnt och sakligt bemötande minskar ofta risken att situationen trappas upp. Genom att behålla lugnet och tala tydligt ökar chansen att kunden lugnar sig."
 },
 {
   "id": 392,
@@ -582,7 +582,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "En skadad eller chockad person bör inte få något att dricka."
+  "explanation": "Nej. En skadad eller chockad person bör inte få något att dricka. Personen kan behöva akut vård, riskera att kräkas eller behöva opereras, och då är det bättre att magen är tom."
 },
 {
   "id": 393,
@@ -596,7 +596,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Tung last långt bak påverkar bilens balans och försämrar köregenskaperna."
+  "explanation": "Tung last långt bak påverkar bilens balans och tyngdpunkt. Det kan ge sämre stabilitet och förändra bilens köregenskaper, särskilt vid svängar och inbromsning."
 },
 {
   "id": 394,
@@ -610,7 +610,7 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Tung last ska placeras så långt fram och så lågt som möjligt för bättre stabilitet."
+  "explanation": "Tung last ska placeras så långt fram och så lågt som möjligt. Då blir bilen stabilare och risken minskar att lasten rör sig farligt vid kraftig bromsning eller kollision."
 },
 {
   "id": 395,
@@ -624,12 +624,12 @@ export const SAKERHET_2 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Motorvärmare kan vara lönsam redan vid ungefär +10 grader eftersom kallstarter då fortfarande ökar förbrukningen."
+  "explanation": "Motorvärmare kan löna sig redan vid ungefär +10 grader. Kallstarter ökar bränsleförbrukningen, och en förvärmd motor minskar både förbrukning och utsläpp."
 },
 {
   "id": 396,
   "delprov": 1,
-  "question": "Din kund är gravt hörselskadad. Hur bör du göra för att kunden ska ha så stor chans som möjligt att uppfatta vad du säger?",
+  "question": "Din kund har en grav hörselnedsättning. Hur bör du göra för att kunden ska ha så stor chans som möjligt att uppfatta vad du säger?",
   "options": [
     "Jag talar så nära kundens öra eller hörapparat som möjligt",
     "Jag talar så högt jag kan",
@@ -638,12 +638,12 @@ export const SAKERHET_2 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Ögonkontakt och synliga munrörelser gör det lättare för en hörselskadad person att uppfatta vad du säger."
+  "explanation": "Det bästa är att kunden ser ditt ansikte och dina munrörelser. Tala tydligt, ha ögonkontakt och undvik att bara höja rösten. Det gör det lättare för personen att uppfatta vad du säger."
 },
 {
   "id": 397,
   "delprov": 1,
-  "question": "Vätskenivån i bilbatteriet är för låg. Vilken vätska ska du fylla på med?",
+  "question": "Vätskenivån i ett öppningsbart bilbatteri av äldre typ är för låg. Vilken vätska ska du fylla på med?",
   "options": [
     "Svavelsyra",
     "Destillerat vatten",
@@ -652,20 +652,20 @@ export const SAKERHET_2 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "I ett sådant batteri fyller man på med destillerat vatten, inte syra."
+  "explanation": "I ett öppningsbart blybatteri fyller man på med destillerat eller demineraliserat vatten, inte med syra. Många moderna bilbatterier är däremot slutna och ska normalt inte fyllas på alls."
 },
 {
   "id": 398,
   "delprov": 1,
   "question": "Sömnen har stor betydelse för fordonsförare. Vad är riktigt beträffande sömnstörningar och nattarbete?",
   "options": [
-    "Problemen ökar oavsett kön efter 45 års ålder",
-    "Problemen ökar vanligast för kvinnor över 45 års ålder",
-    "Problemen ökar vanligast för män över 45 års ålder"
+    "Risken för sömnstörningar kan öka med stigande ålder",
+    "Problemen ökar vanligast bara för kvinnor över 45 års ålder",
+    "Problemen ökar vanligast bara för män över 45 års ålder"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Sömnproblem i samband med nattarbete ökar generellt efter ungefär 45 års ålder."
+  "explanation": "Nattarbete kan störa dygnsrytmen och öka risken för sömnproblem. Risken kan öka med stigande ålder, men frågan bör inte låsas till ett visst kön eller en exakt åldersgräns utan tydligt stöd."
 },
 {
   "id": 399,
@@ -674,12 +674,12 @@ export const SAKERHET_2 = [
   "options": [
     "Jag använder bra däck",
     "Jag kör en bil utrustad med ABS-bromsar",
-    "Jag tar ansvar och kör med goda marginaler",
+    "Jag tar ansvar, visar hänsyn och kör med goda marginaler",
     "Jag håller alltid angiven hastighet"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Det viktigaste är att ta ansvar och köra med goda säkerhetsmarginaler."
+  "explanation": "Nollvisionen bygger på att trafikanter tar ansvar, visar hänsyn och följer reglerna. Att köra med goda marginaler är därför det bredaste och bästa alternativet här. Hastigheten är viktig, men säker körning handlar om mer än bara det."
 },
 {
   "id": 400,
@@ -693,6 +693,6 @@ export const SAKERHET_2 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Ett igensatt luftfilter försämrar lufttillförseln och kan öka bränsleförbrukningen."
+  "explanation": "Ett igensatt luftfilter minskar lufttillförseln till motorn. Det kan ge sämre förbränning, sämre motorgång och högre bränsleförbrukning."
 },
 ]

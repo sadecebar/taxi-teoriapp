@@ -2,16 +2,16 @@ export const SAKERHET_1 = [
     {
   "id": 301,
   "delprov": 1,
-  "question": "Fyra personer ska åka från centrum till flygplatsen en söndagsmorgon kl. 05.30. Sträckan är 5 km. Vad blir priset för resan enligt prisinformationens jämförpris?",
+  "question": "Vad betyder taxins jämförpris?",
   "options": [
-    "Ca 135 kronor",
-    "Ca 160 kronor",
-    "Ca 170 kronor",
-    "Ca 185 kronor"
+    "Det är priset för den aktuella resan oavsett hur lång tid den tar",
+    "Det är priset för en typresa på 10 kilometer som tar 15 minuter inklusive grundavgift",
+    "Det är priset per kilometer exklusive grundavgift",
+    "Det är alltid det lägsta pris som taxibilen får ta ut"
   ],
-  "correct": 0,
+  "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/1-1-600x388.png",
-  "explanation": "Jämförpriset för en så kort resa hamnar ungefär på 135 kronor enligt källmaterialet."
+  "explanation": "Jämförpriset används för att kunden lättare ska kunna jämföra olika taxibilar. Det visar inte exakt vad just din resa kommer att kosta, utan priset för en standardiserad typresa på 10 kilometer som tar 15 minuter inklusive grundavgift. Den verkliga kostnaden kan bli både lägre eller högre beroende på tariff, körsträcka, tid och eventuella tillägg."
 },
 {
   "id": 302,
@@ -20,16 +20,16 @@ export const SAKERHET_1 = [
   "options": [
     "Jag som förare",
     "14-åringen själv",
-    "Mamma som vårdnadshavare"
+    "Mamman som vårdnadshavare"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Föraren ansvarar för att passagerare under 15 år använder bilbälte."
+  "explanation": "Föraren ansvarar för att passagerare under 15 år använder bilbälte eller annan särskild skyddsanordning. Som taxiförare ska du därför kontrollera att den 14-åriga passageraren sitter fastspänd innan du kör."
 },
 {
   "id": 303,
   "delprov": 1,
-  "question": "Ett barn som är 6 år ska åka i din taxi. Vilken typ av säkerhetsutrustning är lämpligast för detta barn?",
+  "question": "Ett barn som är 6 år ska åka i din taxi. Vilken typ av säkerhetsutrustning är normalt mest lämplig av följande alternativ?",
   "options": [
     "Babyskydd",
     "Bälteskudde",
@@ -37,21 +37,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Ett barn i den åldern använder normalt bälteskudde så att bilbältet sitter rätt."
+  "explanation": "Av de här alternativen är bälteskudde normalt mest lämplig för ett barn i den åldern. Det viktiga är att barnet sitter så att bilbältet hamnar rätt över höft och axel. I praktiken är det barnets längd och storlek som avgör, och barn som är kortare än 135 cm ska använda en särskild skyddsanordning."
 },
 {
   "id": 304,
   "delprov": 1,
-  "question": "Vad är riktigt om vad du som taxiförare får berätta om vad som hänt i din bil?",
+  "question": "Vilket påstående är mest riktigt om taxiförares tystnadsplikt?",
   "options": [
-    "Jag är skyldig att berätta vad som har hänt i bilen om en journalist frågar",
-    "Om jag ska vittna i en rättegång har jag rätt att låta bli att berätta sådant som har hänt i bilen",
-    "Jag har samma tystnadsplikt som en läkare eller advokat",
-    "Vilken tystnadsplikt jag har framgår vanligen av en överenskommelse med åkeriet eller beställningscentralen"
+    "Jag är skyldig att berätta för en journalist vad som har hänt i bilen om jag får frågor",
+    "Jag har samma lagstadgade tystnadsplikt som läkare och advokater",
+    "Jag får alltid vägra att vittna om allt som har hänt i bilen",
+    "Taxiförare har inte samma lagstadgade tystnadsplikt som vissa yrkesgrupper, men sekretess och lojalitetsregler kan följa av avtal eller arbetsgivarens regler"
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Taxiförare har inte samma lagstadgade tystnadsplikt som läkare eller advokater. Den framgår ofta av avtal eller interna regler."
+  "explanation": "Taxiförare har normalt inte samma särskilda lagstadgade tystnadsplikt som exempelvis läkare eller advokater. Däremot kan arbetsgivare, åkeri eller beställningscentral ha regler om sekretess och hur information om kunder och körningar får hanteras. Du ska därför vara mycket försiktig med att lämna ut uppgifter om vad som sagts eller hänt under en körning."
 },
 {
   "id": 305,
@@ -65,7 +65,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Mönsterdjupet är viktigast eftersom däcken måste kunna leda bort vatten från vägbanan."
+  "explanation": "Av de här alternativen är däckens mönsterdjup viktigast, eftersom däcken måste kunna leda bort vatten från vägbanan. Ju sämre mönsterdjup, desto lättare tappar däcket kontakten med vägen. Även hastighet och mängden vatten spelar stor roll, men de finns inte med bland svarsalternativen."
 },
 {
   "id": 306,
@@ -79,35 +79,35 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Gummihandskar är viktigast för att minska risken för kontakt med blod och smitta."
+  "explanation": "Gummihandskar är viktigast av de här alternativen, eftersom de minskar risken för direktkontakt med blod. När du hjälper en blödande person ska du samtidigt försöka undvika stänk mot ögon och slemhinnor. Tänk först på din egen säkerhet, stoppa blödningen och larma 112 om skadan är allvarlig."
 },
 {
   "id": 307,
   "delprov": 1,
-  "question": "Du misstänker att din kund är drogpåverkad. Han uppträder hotfullt mot dig. Vad gäller?",
+  "question": "Du misstänker att din kund är drogpåverkad och kunden uppträder hotfullt mot dig. Hur bör du agera?",
   "options": [
-    "Jag får avbryta transporten och avvisa kunden",
-    "Jag måste fullfölja transporten om kunden begär det",
-    "Jag måste tillkalla polis för att avvisa kunden",
-    "Jag måste åka med kunden till närmaste sjukhus"
+    "Avbryta körningen på en säker plats och prioritera din egen säkerhet",
+    "Alltid fullfölja transporten om kunden kräver det",
+    "Fortsätta köra tills kunden lugnar ner sig",
+    "Köra kunden till sjukhus även om situationen känns hotfull"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Om kunden uppträder hotfullt får du avbryta transporten för din egen säkerhet."
+  "explanation": "Din egen och andras säkerhet går först. Om en kund uppträder hotfullt ska du inte utsätta dig själv för onödig risk. Avbryt körningen på en säker plats om situationen tillåter det, ta dig ur en farlig situation och kontakta polis eller trafikledning vid behov. Frågan bör ses som en säkerhetsfråga, inte som en exakt juridisk regel om transportplikt."
 },
 {
   "id": 308,
   "delprov": 1,
-  "question": "Du får en körning där kunden är vuxen och har cerebral pares (CP). Vad innebär detta?",
+  "question": "Du får en körning där kunden är vuxen och har cerebral pares (CP). Vad kan detta innebära?",
   "options": [
     "Kunden kan ha svårt att ta emot information",
-    "Kunden kan ha okontrollerade rörelser",
-    "Kunden saknar begrepp om att använda pengar",
-    "Kunden har dålig lokalkännedom"
+    "Kunden kan ha ofrivilliga eller svårstyrda rörelser",
+    "Kunden saknar förståelse för pengar",
+    "Kunden har alltid dålig lokalkännedom"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Cerebral pares påverkar ofta rörelseförmågan och kan ge ofrivilliga eller okontrollerade rörelser."
+  "explanation": "Cerebral pares påverkar främst rörelseförmågan, och vissa personer kan ha ofrivilliga eller svårstyrda rörelser. Besvären varierar mycket mellan olika personer, så du ska inte utgå från mer än vad du faktiskt ser och får veta. Som förare är det viktigt att vara lugn, respektfull och ge kunden den tid och hjälp som behövs."
 },
 {
   "id": 309,
@@ -119,9 +119,9 @@ export const SAKERHET_1 = [
     "Köra direkt men med lätt gaspådrag",
     "Tomgångsköra minst 3 minuter"
   ],
-  "correct": 3,
+  "correct": 2,
   "image": null,
-  "explanation": "Originalfacit anger tomgångskörning minst 3 minuter. Frågan verkar kunna bygga på äldre material, men facit följs här."
+  "explanation": "För att minska miljöpåverkan ska du undvika onödig tomgångskörning. En kall motor släpper ut mer föroreningar, och tomgång ökar både utsläpp och bränsleförbrukning. Det bästa av de här alternativen är därför att köra iväg direkt och köra mjukt med lätt gaspådrag tills motorn blivit varm."
 },
 {
   "id": 310,
@@ -135,7 +135,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Det viktigaste är att skydda personen från att skada sig under anfallet."
+  "explanation": "Det viktigaste är att skydda personen från att skada sig under anfallet, till exempel genom att lägga något mjukt under huvudet och se till att omgivningen är säker. Du ska inte hålla fast personen och inte stoppa något i munnen. När anfallet är över kan personen läggas i stabilt sidoläge. Ring 112 om anfallet drar ut på tiden, upprepas eller om personen inte återhämtar sig som vanligt."
 },
 {
   "id": 311,
@@ -149,7 +149,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Gråvit motorolja tyder oftast på att kylvatten har blandats med oljan."
+  "explanation": "Gråvit eller mjölkig motorolja tyder oftast på att vatten eller kylvätska har blandats med oljan. Det kan vara tecken på ett allvarligt fel, till exempel läckage mellan kylsystemet och motorn. Om du upptäcker detta ska bilen kontrolleras så snart som möjligt, eftersom smörjförmågan försämras och motorn kan skadas."
 },
 {
   "id": 312,
@@ -163,21 +163,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Katalysatorn måste bli varm innan den renar avgaserna effektivt."
+  "explanation": "Katalysatorn måste bli varm innan den kan rena avgaserna effektivt. Vid kallstart och korta körningar fungerar reningen därför sämre än när motorn och avgassystemet har kommit upp i arbetstemperatur. Det är också därför kallstarter ger högre utsläpp."
 },
 {
   "id": 313,
   "delprov": 1,
-  "question": "Hur länge får du använda dubbdäck på din taxi om det inte är vinterväglag eller förväntas bli det?",
+  "question": "Hur länge får du normalt använda dubbdäck på din taxi om det inte är vinterväglag eller förväntas bli det?",
   "options": [
-    "Till och med 28 februari",
+    "Till och med 15 mars",
     "Till och med 31 mars",
-    "Till och med första vardagen efter påsk",
+    "Till och med 15 april",
     "Till och med 30 april"
   ],
-  "correct": 3,
+  "correct": 2,
   "image": null,
-  "explanation": "Dubbdäck får normalt användas till och med 15 april. Originalfacit anger 30 april, så frågan verkar bygga på äldre regler men facit följs här."
+  "explanation": "Dubbdäck får normalt användas från 1 oktober till och med 15 april. Om det är eller befaras bli vinterväglag får dubbdäck användas även annan tid. När du får en däckfråga är det viktigt att skilja på reglerna för när vinterdäck krävs och reglerna för när dubbdäck får användas."
 },
 {
   "id": 314,
@@ -191,21 +191,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Snabbare blinkning är ett vanligt tecken på att en glödlampa i blinkerssystemet har gått sönder."
+  "explanation": "Snabbare blinkning på ena sidan är ett vanligt tecken på att en blinkerslampa är trasig. När en lampa slutar fungera förändras belastningen i kretsen, och då blinkar signalen ofta snabbare. Som förare bör du kontrollera belysningen direkt, eftersom fungerande riktningsvisare är viktiga för trafiksäkerheten."
 },
 {
   "id": 315,
   "delprov": 1,
-  "question": "Vad menas med demenstillstånd?",
+  "question": "Vad menas med en demenssjukdom?",
   "options": [
-    "Minnessvårigheter orsakade av sjukdom i hjärnan",
+    "Svårigheter med minne, tänkande och förståelse på grund av sjukdom eller skada i hjärnan",
     "Ökad rädsla för andra människor",
-    "Sömnlöshet och oro",
-    "Nedsatt rörelseförmåga på grund av ålder"
+    "Sömnlöshet och oro utan påverkan på hjärnan",
+    "Nedsatt rörelseförmåga enbart på grund av ålder"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Demens innebär bland annat minnessvårigheter på grund av sjukdom i hjärnan."
+  "explanation": "En demenssjukdom påverkar hjärnans funktioner, till exempel minne, tänkande, orientering och förmågan att förstå omgivningen. Det handlar alltså inte bara om att glömma saker, utan om en bredare kognitiv påverkan som kan göra vardagen svårare. Som taxiförare är det viktigt att möta personer med demenssjukdom lugnt, tydligt och respektfullt."
 },
 {
   "id": 316,
@@ -219,7 +219,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/16-600x424.png",
-  "explanation": "Lampan visar fel på ABS-systemet, alltså att det låsningsfria bromssystemet inte fungerar som det ska."
+  "explanation": "Bilden visar ABS-lampan. Om den tänds under färd betyder det normalt att det låsningsfria bromssystemet har ett fel och inte fungerar som det ska. Vanliga bromsar kan fortfarande fungera, men du förlorar ABS-funktionen som hjälper dig att behålla styrförmågan vid hård inbromsning."
 },
 {
   "id": 317,
@@ -232,21 +232,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Bild och text kräver att du tittar bort från vägen mer än talad information."
+  "explanation": "Navigationssystem som kräver att du läser bild eller text stör normalt mer än talad information. Som förare måste du hålla blicken på vägen så mycket som möjligt. Talad vägledning kan också distrahera, men den kräver inte samma visuella uppmärksamhet som en skärm med text och bild."
 },
 {
   "id": 318,
   "delprov": 1,
-  "question": "Hur stor andel av personbilsförarna som dör i trafikolyckor varje år beräknas ha alkohol i kroppen?",
+  "question": "Hur stor andel av alla omkomna i vägtrafiken i Sverige omkom under 2024 i en alkoholrelaterad olycka?",
   "options": [
-    "5–10%",
-    "15–20%",
-    "25–30%",
-    "55–60%"
+    "Cirka 5 procent",
+    "Cirka 10 procent",
+    "Cirka 18 procent",
+    "Cirka 35 procent"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "En betydande andel av de omkomna personbilsförarna har alkohol i kroppen, här anges 25–30 procent."
+  "explanation": "Enligt Trafikverkets djupstudier omkom 18 procent av alla omkomna i vägtrafiken under 2024 i en alkoholrelaterad olycka. Exakta procentsiffror kan ändras mellan olika år, men det viktiga att förstå är att alkohol fortfarande är en stor riskfaktor i dödsolyckor."
 },
 {
   "id": 319,
@@ -260,7 +260,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Starka dofter kan vara besvärliga för känsliga personer och kan utlösa astmabesvär."
+  "explanation": "Starka dofter kan vara besvärliga för känsliga personer och kan utlösa astmabesvär eller astmaanfall. I en taxi sitter kunden nära doftkällan och kan inte alltid påverka miljön själv. Som taxiförare är det därför klokt att undvika starka dofter i bilen."
 },
 {
   "id": 320,
@@ -274,21 +274,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Reumatism ger ofta värk, stelhet och svullnader i lederna."
+  "explanation": "Reumatiska sjukdomar ger ofta värk, stelhet och svullnad i lederna. Besvären kan göra det svårt att röra sig, kliva i och ur bilen eller sitta bekvämt under resan. Som förare är det bra att köra mjukt och ge kunden tid vid in- och urstigning."
 },
 {
   "id": 321,
   "delprov": 1,
   "question": "Du tar en rökpaus utanför din taxi. Kan det påverka din nästa kunds hälsa?",
   "options": [
-    "Ja, kunden kan få allergiska besvär",
-    "Nej, passiv rökning är inte hälsofarligt",
-    "Nej, om inte röken har blåst in i bilen",
-    "Ja, kunden kan få ett epileptiskt anfall"
+    "Ja, rökdoft på kläder och i bilen kan ge besvär, till exempel luftvägs- eller astmabesvär",
+    "Nej, om du röker utanför bilen påverkas kunden inte alls",
+    "Nej, om inte synlig rök har kommit in i bilen",
+    "Ja, det kan utlösa ett epileptiskt anfall"
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Röklukt och rester från rök kan ge besvär för känsliga kunder, till exempel allergiker."
+  "explanation": "Ja. Även om du röker utanför bilen kan rökdoft finnas kvar på kläder och i bilens miljö. Det kan ge besvär för känsliga kunder, särskilt personer med astma eller doftöverkänslighet. Som taxiförare bör du därför tänka på att bilen ska vara så fri som möjligt från rök och starka lukter."
 },
 {
   "id": 322,
@@ -302,7 +302,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Säkerhetsmarginaler ger dig mer tid och utrymme att hantera risker i trafiken."
+  "explanation": "Du minskar risken för olyckor genom att köra med säkerhetsmarginaler. Det betyder bland annat att hålla avstånd, anpassa hastigheten och ge dig själv tid att upptäcka och hantera risker. Säker körning handlar inte om snabba reaktioner i sista stund, utan om att undvika att hamna i farliga situationer från början."
 },
 {
   "id": 323,
@@ -316,7 +316,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "En förare kan dömas även under 0,2 promille om körningen ändå inte kan ske på ett säkert sätt."
+  "explanation": "Ja. En förare kan dömas för rattfylleri även om alkoholhalten är under 0,2 promille, om påverkan ändå är så tydlig att personen inte kan köra på ett betryggande sätt. Det är därför viktigt att förstå att lagen inte bara handlar om en siffra, utan också om faktisk körförmåga."
 },
 {
   "id": 324,
@@ -325,26 +325,26 @@ export const SAKERHET_1 = [
   "options": [
     "Jag stannar bilen och uppmanar passageraren att ta en insulininjektion",
     "Jag stannar bilen och öppnar dörren så att passageraren får frisk luft",
-    "Jag stannar bilen och uppmanar passageraren att äta något som innehåller socker",
+    "Jag stannar bilen och uppmanar passageraren att äta eller dricka något som innehåller socker",
     "Jag försöker få kontakt med det sjukhus vi är på väg till och kör dit så fort som möjligt"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Vid tecken på lågt blodsocker bör personen snabbt få något sött om han kan svälja."
+  "explanation": "Det här tyder på lågt blodsocker, vilket kan bli allvarligt snabbt. Om personen är vaken och kan svälja ska du stanna bilen och hjälpa personen att få i sig något sött, till exempel druvsocker, juice eller annan sockerhaltig dryck. Om personen blir medvetslös ska du inte ge något att äta eller dricka, utan ringa 112."
 },
 {
   "id": 325,
   "delprov": 1,
-  "question": "Hur ska du agera mot en kund som har Parkinsons sjukdom?",
+  "question": "Hur ska du bäst bemöta en kund som har Parkinsons sjukdom?",
   "options": [
     "Jag frågar om kunden har några speciella önskemål om hjälp",
-    "Jag ser till att kunden sitter med stöd för armarna",
+    "Jag ser alltid till att kunden sitter med stöd för armarna",
     "Jag kontrollerar om kunden har något signalmärke eller hälsokort på sig",
-    "Jag ringer omedelbart till 112"
+    "Jag ringer omedelbart 112"
   ],
-  "correct": 1,
+  "correct": 0,
   "image": null,
-  "explanation": "Facit anger att kunden bör sitta med stöd för armarna, vilket kan ge bättre stabilitet och trygghet under resan."
+  "explanation": "Parkinsons sjukdom kan ge olika symtom hos olika personer, till exempel skakningar, stelhet eller långsammare rörelser. Därför ska du inte utgå från att alla behöver samma hjälp. Det bästa är att lugnt fråga kunden vilken hjälp som önskas och sedan anpassa dig efter personens behov."
 },
 {
   "id": 326,
@@ -357,7 +357,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/26-1.png",
-  "explanation": "När barn finns i närheten ska du sänka hastigheten och vara beredd på att bromsa direkt."
+  "explanation": "När barn finns nära vägen ska du vara extra försiktig. Barn kan plötsligt springa ut eller ändra riktning utan att först bedöma trafiken. Därför är det säkraste att sänka hastigheten redan innan något händer och vara beredd att bromsa direkt."
 },
 {
   "id": 327,
@@ -366,12 +366,12 @@ export const SAKERHET_1 = [
   "options": [
     "Hälla den i ett kommunalt avlopp, eftersom den då avskiljs på reningsverket",
     "Bränna upp den",
-    "Lämna in den till en miljöstation, eftersom den klassas som miljöfarligt avfall",
+    "Lämna in den till en miljöstation eller återvinningscentral, eftersom den klassas som miljöfarligt avfall",
     "Spara och använda den som smörjmedel, exempelvis till cykelkedjan"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Använd motorolja är miljöfarligt avfall och ska lämnas till en miljöstation."
+  "explanation": "Använd motorolja, även kallad spillolja, är miljöfarligt avfall och ska lämnas till en miljöstation eller återvinningscentral. Den får inte hällas i avloppet eller slängas bland vanligt avfall, eftersom den kan skada både människor och miljö."
 },
 {
   "id": 328,
@@ -384,7 +384,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Krockkudden är ett extra skydd och fungerar bäst tillsammans med bilbältet."
+  "explanation": "Ja. Krockkudden är ett komplement till bilbältet, inte en ersättning. Bilbältet håller kvar kroppen i rätt läge och krockkudden dämpar sedan smällen. Utan bilbälte fungerar skyddet sämre och skaderisken ökar kraftigt."
 },
 {
   "id": 329,
@@ -397,22 +397,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Starka dofter kan utlösa astmabesvär eller andra känslighetsreaktioner hos passagerare."
+  "explanation": "Det viktigaste skälet är att starka dofter kan ge besvär hos känsliga passagerare. För personer med astma eller doftöverkänslighet kan parfym och andra starka lukter orsaka hosta, andningsbesvär eller i vissa fall ett astmaanfall. Därför bör en taxi vara så doftneutral som möjligt."
 },
 {
   "id": 330,
   "delprov": 1,
-  "question": "Bussen har stannat vid en hållplats och du ska köra rakt fram i situationen på bilden. Vilket kan bli det första olyckstillbud som du ska vara beredd på?",
+  "question": "Bussen har stannat vid en hållplats och du ska köra rakt fram i situationen på bilden. Vilken är den första viktiga risken du ska vara beredd på?",
   "options": [
-    "Att fotgängare går ut på det andra övergångsstället",
     "Att trafik kommer från höger i korsningen",
     "Att fotgängare går ut framför bussen",
-    "Att fotgängare går ut på det första övergångsstället",
-    "Att bussen lämnar hållplatsen utan att tydligt visa sina avsikter"
+    "Att bussen lämnar hållplatsen utan att tydligt visa sina avsikter",
+    "Att fotgängare längre fram går ut på ett övergångsställe"
   ],
-  "correct": 2,
+  "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/30.png",
-  "explanation": "Den största första risken är ofta att någon går ut framför bussen där sikten är skymd."
+  "explanation": "När en buss står vid en hållplats kan den skymma sikten. Då finns en tydlig risk att en fotgängare plötsligt går ut framför bussen utan att du ser personen i tid. Därför ska du sänka farten, vara beredd att bromsa och läsa av området framför och runt bussen mycket noggrant."
 },
 {
   "id": 331,
@@ -426,21 +425,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "En passagerare som är kortare än 140 cm kan skadas av airbagen även vid låg hastighet."
+  "explanation": "En person som är kortare än 140 cm riskerar att skadas av en aktiv krockkudde på passagerarplatsen, även vid låg hastighet. Det här handlar om hur kroppen träffas av krockkudden när den löses ut, inte bara om bilens fart. Tänk också på att reglerna om särskild skyddsanordning för barn utgår från 135 cm, medan rekommendationen om aktiv krockkudde ofta anges med 140 cm."
 },
 {
   "id": 332,
   "delprov": 1,
-  "question": "Din kund har nedsatt rörelseförmåga och du kan inte köra ända fram till hotellets entré. Hur ska du hantera kundens bagage?",
+  "question": "Din kund har nedsatt rörelseförmåga och du kan inte köra ända fram till hotellets entré. Hur bör du hantera kundens bagage?",
   "options": [
-    "Jag frågar kunden var han vill ha det",
-    "Jag bär fram det till hotellets entré",
-    "Jag ställer det utanför bilen",
-    "Jag bär in det till receptionen"
+    "Jag frågar kunden var han eller hon vill ha bagaget",
+    "Jag bär alltid fram det till hotellets entré",
+    "Jag ställer det utanför bilen utan att fråga",
+    "Jag bär alltid in det till receptionen"
   ],
-  "correct": 2,
+  "correct": 0,
   "image": null,
-  "explanation": "Originalfacit anger att bagaget ska bäras in till receptionen."
+  "explanation": "Det bästa är att först fråga kunden hur bagaget ska hanteras. Personer med nedsatt rörelseförmåga kan behöva olika mycket hjälp, och det är inte alltid rätt att utgå från samma lösning för alla. Som taxiförare ska du ge trygg, säker och respektfull service utifrån kundens behov och situation."
 },
 {
   "id": 333,
@@ -452,9 +451,9 @@ export const SAKERHET_1 = [
     "Bild C",
     "Bild D"
   ],
-  "correct": 3,
+  "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/33-1-600x479.png",
-  "explanation": "Rätt bild visar att bältet sitter tätt över höften och snett över bröstet."
+  "explanation": "Bild B är bäst. Ett bilbälte ska sitta tätt mot kroppen, med diagonalbältet över bröstet och höftbältet långt ner över höften och låren. Om bältet hamnar över magen eller sitter fel över axeln ger det sämre skydd och kan orsaka allvarligare skador vid en krock."
 },
 {
   "id": 334,
@@ -467,7 +466,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Starka känslor och oro kan försämra koncentrationen och därmed körförmågan."
+  "explanation": "Ja. Starka känslor, oro och stress kan göra det svårare att koncentrera sig och fatta bra beslut i trafiken. Säker körning kräver fullt fokus, och därför kan även psykisk belastning påverka körförmågan negativt."
 },
 {
   "id": 335,
@@ -481,7 +480,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Vid kraftig blödning ska du försöka stoppa blödningen med tryck och hålla den skadade kroppsdelen högt."
+  "explanation": "Vid en kraftig blödning ska du försöka stoppa blödningen så snabbt som möjligt, till exempel med tryck och ett tryckförband. Det är också bra att hålla den skadade kroppsdelen högt för att minska blödningen. Lämna inte såret öppet om det blöder kraftigt, och ring 112 om situationen är allvarlig."
 },
 {
   "id": 336,
@@ -494,7 +493,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Breda däck ger ofta högre rullmotstånd, vilket kan öka bränsleförbrukningen."
+  "explanation": "Ja. Breda däck ger normalt högre rullmotstånd än smalare standarddäck, vilket innebär att bilen behöver mer energi för att rulla. Det kan i sin tur öka bränsleförbrukningen och miljöpåverkan."
 },
 {
   "id": 337,
@@ -508,35 +507,35 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": "https://teori-taxi.com/images/Sakerhet/37-1.png",
-  "explanation": "Enligt facit är det spärren vid A som ska frigöras för att fälla ihop rollatorn."
+  "explanation": "Spärren som ska frigöras för att fälla ihop rollatorn är markerad med A. När du hjälper en kund med hjälpmedel är det viktigt att först identifiera lås- eller frigöringsmekanismen, så att rollatorn kan fällas ihop säkert utan att något skadas."
 },
 {
   "id": 338,
   "delprov": 1,
-  "question": "Vilken är den största risken i situationen på bilden?",
+  "question": "Vilken risk är viktigast att vara beredd på i situationen på bilden?",
   "options": [
-    "Barnet i korsningen kan cykla omkull",
-    "Det kan komma en bil från vänster i korsningen",
-    "Det kan komma ytterligare ett barn från höger i korsningen",
-    "Det kan komma en bil från höger i korsningen"
+    "Att barnet på cykeln plötsligt ändrar riktning eller fortsätter ut i din väg",
+    "Att en bil från vänster kör för fort",
+    "Att vägen är hal på grund av skymningen",
+    "Att gatubelysningen är för svag"
   ],
-  "correct": 3,
+  "correct": 0,
   "image": "https://teori-taxi.com/images/Sakerhet/38-1-600x419.png",
-  "explanation": "Enligt facit är den största risken att en bil kommer från höger i korsningen."
+  "explanation": "Den viktigaste risken är den oskyddade trafikanten som redan finns i eller nära din färdväg. Barn kan vara svåra att förutse och kan snabbt ändra riktning eller fortsätta ut i vägen. När sikten dessutom är begränsad ska du sänka farten och vara beredd att bromsa direkt."
 },
 {
   "id": 339,
   "delprov": 1,
-  "question": "Vilken sjukdom beskrivs i texten på bilden?",
+  "question": "Vilket psykiskt tillstånd beskrivs i texten på bilden?",
   "options": [
     "Afasi",
     "Apati",
     "Allergi",
     "Psykos"
   ],
-  "correct": 0,
+  "correct": 3,
   "image": "https://teori-taxi.com/images/Sakerhet/39.png",
-  "explanation": "Afasi innebär svårigheter att tala eller förstå språk, ofta efter skada i hjärnan."
+  "explanation": "Texten beskriver psykos. Vid psykos är personens förmåga att uppfatta och tolka verkligheten störd. Det kan till exempel innebära att personen hör, ser eller tror saker som andra inte uppfattar på samma sätt. Afasi handlar däremot om språksvårigheter, inte om störd verklighetsuppfattning."
 },
 {
   "id": 340,
@@ -545,12 +544,12 @@ export const SAKERHET_1 = [
   "options": [
     "Omedelbart lämna in bilen på verkstad eftersom man inte får fylla på sådan vätska själv",
     "Fortsätta köra som vanligt och låta verkstaden fylla på bromsvätska vid den ordinarie servicen",
-    "Själv fylla på med bromsvätska enligt instruktionsboken",
+    "Fylla på rätt bromsvätska enligt instruktionsboken och kontrollera orsaken till den låga nivån",
     "Själv fylla på med samma sorts olja som finns i motorn"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Bromsvätska ska fyllas på med rätt typ enligt bilens instruktionsbok."
+  "explanation": "Du ska använda rätt bromsvätska enligt bilens instruktionsbok, men det räcker inte att bara fylla på. En låg nivå kan bero på slitna bromsbelägg eller i värsta fall ett läckage i bromssystemet. Eftersom bromsarna är en säkerhetskritisk funktion måste orsaken kontrolleras snarast."
 },
 {
   "id": 341,
@@ -564,7 +563,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "En vit käpp visar vanligtvis att personen är synskadad."
+  "explanation": "En vit käpp visar vanligtvis att personen har en synnedsättning. Som taxiförare bör du därför vara tydlig när du talar, presentera dig lugnt och erbjuda hjälp på ett respektfullt sätt utan att ta över mer än kunden vill."
 },
 {
   "id": 342,
@@ -578,7 +577,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Etanol blandas in i bensin som ett förnybart inslag."
+  "explanation": "Etanol blandas in i vanlig bensin i Sverige som ett förnybart inslag. Det är därför viktigt att skilja på etanol, som används som biodrivmedelskomponent, och bensen, som är ett skadligt ämne i bensin och inte ett förnybart bränsle."
 },
 {
   "id": 343,
@@ -592,7 +591,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Du bör köra iväg direkt och lugnt, eftersom lång tomgångskörning ökar utsläppen."
+  "explanation": "Du bör köra iväg direkt och lugnt. Lång tomgångskörning efter kallstart ökar utsläppen och slösar bränsle. Det bästa är därför att starta bilen och sedan köra mjukt med lätt gaspådrag tills motorn blivit varm."
 },
 {
   "id": 344,
@@ -606,7 +605,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Om kylarfläkten inte fungerar kan motorn bli för varm, särskilt vid låg fart eller stillastående."
+  "explanation": "En trasig kylarfläkt kan göra att motorn blir för varm, särskilt vid låg fart eller stillastående när fartvinden inte räcker för att kyla kylaren. Det finns även andra möjliga orsaker till hög motortemperatur, men av alternativen här är fel på kylarfläkten det tydligt bästa svaret."
 },
 {
   "id": 345,
@@ -620,7 +619,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Stabilt sidoläge hjälper till att hålla luftvägarna fria och minskar risken för kvävning."
+  "explanation": "Den viktigaste anledningen är att hålla luftvägarna fria och minska risken att personen kvävs. I stabilt sidoläge minskar risken att tungan faller bakåt eller att kräkning och slem blockerar luftvägarna. Lägg bara personen i sidoläge om personen andas normalt."
 },
 {
   "id": 346,
@@ -634,7 +633,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "En passagerare bör vara minst 140 cm för att sitta säkert framför en aktiv airbag."
+  "explanation": "En person bör vara minst 140 cm lång för att sitta säkert framför en aktiv krockkudde på passagerarplatsen. Det beror på att en krockkudde löses ut med stor kraft och kan skada en för kort person även vid en relativt låg hastighet. Tänk på att detta är en säkerhetsgräns, inte samma sak som alla andra regler om barnskydd."
 },
 {
   "id": 347,
@@ -648,21 +647,21 @@ export const SAKERHET_1 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "En fobi är en stark och överdriven rädsla för något specifikt."
+  "explanation": "En fobi är en mycket stark och överdriven rädsla för något särskilt, till exempel en viss situation, plats, sak eller ett djur. Rädslan kan vara så stark att personen försöker undvika det helt. Som taxiförare är det viktigt att bemöta sådana reaktioner lugnt och respektfullt."
 },
 {
   "id": 348,
   "delprov": 1,
-  "question": "Din kund har demens, vad innebär det?",
+  "question": "Din kund har en demenssjukdom. Vad innebär det?",
   "options": [
-    "Kunden har talsvårigheter",
+    "Kunden har alltid talsvårigheter",
     "Kunden har nedsatt rörelseförmåga",
-    "Kunden har minnessvårigheter",
+    "Kunden kan ha svårigheter med minne, tänkande och att förstå sin omgivning",
     "Kunden har svåra allergier"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Demens innebär ofta minnessvårigheter och andra problem med hjärnans funktioner."
+  "explanation": "En demenssjukdom påverkar hjärnans funktioner, till exempel minne, tänkande, orientering och förmågan att förstå omgivningen. Därför kan kunden behöva ett lugnt, tydligt och respektfullt bemötande. Frågan bör ses som nära besläktad med tidigare demensfrågor i frågebanken."
 },
 {
   "id": 349,
@@ -676,7 +675,7 @@ export const SAKERHET_1 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "En säkring med för lågt amperetal löser lättare ut och går därför sönder oftare."
+  "explanation": "En säkring med för lågt amperetal löser ut lättare än den ska. Då finns det större risk att säkringen går sönder igen även om resten av systemet är felfritt. Därför ska du alltid använda den säkringstyp och det amperetal som bilen är avsedd för."
 },
 {
   "id": 350,
@@ -690,6 +689,6 @@ export const SAKERHET_1 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Tillräckligt frostskydd i kylarvätskan minskar risken för frysskador i kylsystemet."
+  "explanation": "Du bör kontrollera att frostskyddet i kylarvätskan är tillräckligt. Om kylvätskan fryser kan det orsaka allvarliga och dyra skador på kylsystemet och i värsta fall motorn. Rätt blandning skyddar också mot korrosion och hjälper kylsystemet att fungera som det ska."
 },
 ]

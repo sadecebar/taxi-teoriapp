@@ -2,17 +2,17 @@ export const SAKERHET_3 = [
     {
   "id": 401,
   "delprov": 1,
-  "question": "På vilket sätt bör du i första hand hjälpa en person som är omtöcknad på grund av diabetes?",
+  "question": "På vilket sätt bör du i första hand hjälpa en person som verkar omtöcknad på grund av lågt blodsocker vid diabetes?",
   "options": [
-    "Placera i stabilt sidoläge",
+    "Placera personen i stabilt sidoläge",
     "Utför Heimlichmanöver",
     "Se till att personen genast blir förd till sjukhus",
-    "Ge något sött att äta",
+    "Ge något sött att äta eller dricka om personen kan svälja",
     "Lossa kläderna kring halsen"
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Vid lågt blodsocker bör personen i första hand få något sött om han eller hon kan svälja."
+  "explanation": "Vid lågt blodsocker bör personen snabbt få i sig något sött, till exempel druvsocker, juice eller söt läsk, om personen är vaken och kan svälja. Om personen inte kan svälja eller blir medvetslös ska du larma 112."
 },
 {
   "id": 402,
@@ -25,12 +25,12 @@ export const SAKERHET_3 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Fråga först kunden hur du ska bete dig, eftersom ledarhunden arbetar och inte ska störas i onödan."
+  "explanation": "Fråga först kunden hur du ska uppträda mot hunden. Ledarhunden arbetar och ska inte störas i onödan. Genom att fråga kunden visar du respekt och kan anpassa ditt bemötande på rätt sätt."
 },
 {
   "id": 403,
   "delprov": 1,
-  "question": "Varningslampan tänds när du kör. När du kontrollerar behållaren för bromsvätska, ser du att nivån är under minimum. Vad ska du göra?",
+  "question": "Varningslampan tänds när du kör. När du kontrollerar behållaren för bromsvätska ser du att nivån är under minimum. Vad ska du göra?",
   "options": [
     "Jag bogserar bilen till närmaste verkstad",
     "Jag ser till att bilen bärgas till en verkstad",
@@ -39,7 +39,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/104-600x438.png",
-  "explanation": "Om bromsvätskan är under miniminivå ska bilen inte köras utan bärgas till verkstad."
+  "explanation": "Om bromsvätskan ligger under miniminivån ska bilen inte köras vidare. Det kan tyda på läckage eller annat allvarligt fel i bromssystemet. Därför ska bilen bärgas till verkstad."
 },
 {
   "id": 404,
@@ -53,12 +53,12 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Regelbunden service hjälper bilen att fungera effektivt och kan minska bränsleförbrukningen."
+  "explanation": "Regelbunden service hjälper bilen att fungera effektivt. Till exempel kan rena filter och rätt underhåll bidra till lägre bränsleförbrukning. Att värma upp motorn på tomgång är däremot inte ett bra sätt att spara bränsle."
 },
 {
   "id": 405,
   "delprov": 1,
-  "question": "Du kör en kund som plötsligt faller ihop och får kramper. Vilken är den troligaste orsaken?",
+  "question": "Du kör en kund som plötsligt faller ihop och får kramper. Vad bör du i första hand misstänka?",
   "options": [
     "Kunden har fått ett epileptiskt anfall",
     "Kunden är berusad",
@@ -67,7 +67,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Kramper och plötsligt ihopfallande tyder oftast på ett epileptiskt anfall."
+  "explanation": "Plötsligt ihopfallande tillsammans med kramper stämmer bäst med ett epileptiskt anfall. I verkligheten kan kramper ha flera orsaker, men av de givna alternativen är epileptiskt anfall det mest sannolika."
 },
 {
   "id": 406,
@@ -81,21 +81,21 @@ export const SAKERHET_3 = [
   ],
   "correct": 3,
   "image": "https://teori-taxi.com/images/Sakerhet/107-1.png",
-  "explanation": "Lampan varnar för att motortemperaturen är för hög."
+  "explanation": "Lampan varnar för att motorns temperatur är för hög. Om en sådan varningslampa tänds måste du ta varningen på allvar, eftersom motorn kan överhettas."
 },
 {
   "id": 407,
   "delprov": 1,
-  "question": "På din taxibil är däcken märkta M+S. Vad betyder denna märkning?",
+  "question": "Vad betyder märkningen M+S på ett däck?",
   "options": [
-    "De är anpassade till körning med medelstor belastning",
-    "De är anpassade speciellt för taxikörning",
-    "De är anpassade till körning på vinterväglag",
-    "De är anpassade till körning på sommarväglag"
+    "Däcket är anpassat till medelstor belastning",
+    "Däcket är särskilt anpassat för taxikörning",
+    "Märkningen betyder Mud and Snow",
+    "Däcket är anpassat enbart till sommarväglag"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "M+S står för Mud and Snow och visar att däcket är avsett för vinterliknande väglag."
+  "explanation": "M+S står för Mud and Snow. Märkningen har koppling till körning i vinterliknande förhållanden, men man ska inte automatiskt utgå från att M+S ensam alltid uppfyller dagens svenska krav för vinterdäck på alla fordon."
 },
 {
   "id": 408,
@@ -109,7 +109,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 0,
   "image": null,
-  "explanation": "Bromsvätska tar upp vatten med tiden, vilket försämrar bromsarnas funktion."
+  "explanation": "Bromsvätska tar upp vatten med tiden. Då sjunker kokpunkten, vilket kan försämra bromsarnas funktion. Därför behöver bromsvätskan bytas med jämna mellanrum."
 },
 {
   "id": 409,
@@ -149,7 +149,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/112-1.png",
-  "explanation": "Rätt bild visar att bältet sitter tätt över höften och snett över bröstet."
+  "explanation": "Rätt bild visar att diagonalbandet ligger över bröstet och att höftbandet sitter lågt över höfterna och låren. Då ger bilbältet bäst skydd vid en kollision."
 },
 {
   "id": 412,
@@ -163,7 +163,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Tryck huvudet bakåt mot nackskyddet och håll huvudet rakt för att minska risken för nackskada."
+  "explanation": "Vid en påkörning bakifrån är risken stor för nackskador. För att minska risken bör du hålla huvudet rakt och pressa det bakåt mot nackskyddet i stället för att vrida eller böja det framåt."
 },
 {
   "id": 413,
@@ -177,7 +177,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/114-1-600x446.png",
-  "explanation": "I den här situationen är risken för vilt det viktigaste att anpassa hastigheten efter."
+  "explanation": "Bilden visar en typisk landsväg genom skog där risken för vilt kan vara hög, särskilt i låg sol och vid tider då djur ofta rör sig. Därför bör du i första hand anpassa hastigheten efter risken för vilt."
 },
 {
   "id": 414,
@@ -190,12 +190,12 @@ export const SAKERHET_3 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Enligt facit ska släpet ha dubbdäck i den här situationen."
+  "explanation": "Om dragbilen har dubbdäck och det är vinterväglag måste även släpvagnen ha dubbdäck. Därför är rätt svar enbart dubbdäck."
 },
 {
   "id": 415,
   "delprov": 1,
-  "question": "Vilken grupp av förare har oftare svårt att hinna med att överblicka trafiken i korsningar?",
+  "question": "Vilken grupp av förare kan oftare ha svårt att snabbt överblicka trafiken i korsningar?",
   "options": [
     "Män 18–24 år",
     "Kvinnor 18–24 år",
@@ -204,7 +204,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Äldre förare kan oftare ha svårare att snabbt överblicka komplexa trafiksituationer."
+  "explanation": "Äldre förare kan oftare få svårare att snabbt överblicka komplexa trafiksituationer som korsningar. Det betyder inte att alla äldre förare kör sämre, men gruppen kan oftare behöva mer tid i sådana miljöer."
 },
 {
   "id": 416,
@@ -219,68 +219,68 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Den viktigaste anledningen är att minska risken för allvarliga olyckor, särskilt för oskyddade trafikanter."
+  "explanation": "Den viktigaste anledningen är trafiksäkerhet. Lägre hastighet minskar risken för svåra och dödliga skador, särskilt där gående och cyklister finns."
 },
 {
   "id": 417,
   "delprov": 1,
-  "question": "När ska du byta ut bilbarnstolen mot till exempel en bilbälteskudde?",
+  "question": "När är det normalt dags att byta från en bakåtvänd bilbarnstol till bältesstol eller bälteskudde?",
   "options": [
     "När barnet kan sitta utan stöd",
     "När barnet väger 15 kg",
     "När barnet fyllt 3 år",
-    "När barnets huvud är i höjd med bilbarnstolens överkant"
+    "När barnet har vuxit ur den bakåtvända stolen enligt stolens maxgränser, vanligtvis tidigast vid 4–5 års ålder"
   ],
   "correct": 3,
   "image": null,
-  "explanation": "När barnets huvud når upp till bilbarnstolens överkant är det dags att byta till nästa skydd."
+  "explanation": "Barn bör sitta bakåtvänt så länge som möjligt, minst till 4–5 års ålder och gärna längre om stolen fortfarande passar. Byte ska ske när barnet har vuxit ur den bakåtvända stolen enligt stolens godkända maxgränser."
 },
 {
   "id": 418,
   "delprov": 1,
-  "question": "Din taxibil har krockkudde både på förarplatsen och passagerarplatsen fram. Vilket alternativ är rätt?",
+  "question": "Din taxibil har aktiv krockkudde på passagerarplatsen fram. Vilket alternativ är rätt?",
   "options": [
     "En bilbarnstol i framsätet måste vara framåtvänd",
     "Jag ska sitta så nära krockkudden som möjligt",
-    "Personer som är kortare än 135 cm ska sitta i baksätet",
+    "Barn under 140 cm bör inte sitta på passagerarplatsen med aktiv krockkudde",
     "Krockkudden kan i vissa fall ersätta bilbältet"
   ],
   "correct": 2,
   "image": null,
-  "explanation": "Korta personer bör sitta i baksätet eftersom en aktiv airbag kan innebära ökad skaderisk."
+  "explanation": "Barn under 140 cm bör inte sitta på passagerarplatsen om krockkudden är aktiv, om inte biltillverkaren anger något annat. Krockkudden ersätter aldrig bilbältet."
 },
 {
   "id": 419,
   "delprov": 1,
-  "question": "Vid vilket av följande tillfällen ska taxametern besiktas när du bytt däck?",
+  "question": "Hur ofta ska taxameterutrustningen normalt besiktas?",
   "options": [
-    "När spårvidden ändras med mer än 5 procent",
-    "När bromssträckans längd påverkas med mer än 5 procent",
-    "När mätningen av vägsträckan ändras med mer än 5 procent",
-    "När jag bytt från odubbade vinterdäck till dubbdäck"
+    "Senast ett år från installationen eller från den senaste besiktningen",
+    "Bara när däcken byts",
+    "Bara när bilen byter ägare",
+    "Endast om taxametern slutar skriva ut kvitto"
   ],
-  "correct": 2,
+  "correct": 0,
   "image": null,
-  "explanation": "Taxametern ska besiktas om däckbytet påverkar vägsträckemätningen med mer än 5 procent."
+  "explanation": "Taxameterutrustningen ska normalt besiktas senast ett år från installationen eller från den senaste besiktningen. Det är viktigt för att säkerställa att utrustningen mäter och fungerar korrekt."
 },
 {
   "id": 420,
   "delprov": 1,
-  "question": "Du har bytt däck på bilen. Vad ska du göra med de utslitna däcken?",
+  "question": "Du har bytt däck på bilen i samband med köp av nya däck. Vad ska du göra med de utslitna däcken?",
   "options": [
     "Lämna dem till däckförsäljaren för återvinning",
     "Slänga dem bland de brännbara soporna",
     "Slänga dem bland grovsoporna",
     "Jag måste själv lämna dem till en miljöstation"
   ],
-  "correct": 3,
+  "correct": 0,
   "image": null,
-  "explanation": "Originalfacit anger att däcken ska lämnas till en miljöstation."
+  "explanation": "När du köper nya däck ska däckförsäljaren utan ersättning kunna ta emot samma mängd uttjänta däck för återvinning. Däcken ska inte slängas bland vanliga sopor."
 },
 {
   "id": 421,
   "delprov": 1,
-  "question": "Din kund behöver rollator när han går och ska ha med rollatorn på resan. Hur gör du?",
+  "question": "Din kund behöver rollator när hen går och ska ha med rollatorn på resan. Hur gör du?",
   "options": [
     "Jag erbjuder kunden hjälp in i bilen och tar sedan hand om rollatorn",
     "Jag tar hand om rollatorn och ber kunden sätta sig i bilen",
@@ -288,21 +288,21 @@ export const SAKERHET_3 = [
   ],
   "correct": 0,
   "image": "https://teori-taxi.com/images/Sakerhet/122.png",
-  "explanation": "Hjälp först kunden tryggt in i bilen och ta sedan hand om rollatorn."
+  "explanation": "Hjälp först kunden tryggt in i bilen. Därefter tar du hand om rollatorn och placerar den säkert. På så sätt minskar du risken att kunden blir osäker eller tappar balansen."
 },
 {
   "id": 422,
   "delprov": 1,
-  "question": "Du kör en person som plötsligt får väldiga smärtor i armar och rygg. Personen bär denna symbol runt halsen. Vad bör du omedelbart göra?",
+  "question": "Du kör en person med känd hjärtsjukdom. Personen får plötsligt kraftiga smärtor som strålar ut i armar och rygg. Vad bör du omedelbart göra?",
   "options": [
     "Se till att personen sitter med stöd för armarna",
     "Ge personen andningshjälp med mun-mot-mun-metoden",
     "Lossa kläderna runt halsen",
     "Larma 112"
   ],
-  "correct": 2,
-  "image": "https://teori-taxi.com/images/Sakerhet/123-1.png",
-  "explanation": "Facit anger att du först ska lossa kläderna runt halsen för att underlätta andning och minska obehag."
+  "correct": 3,
+  "image": null,
+  "explanation": "Kraftiga smärtor som strålar ut i armar och rygg kan vara tecken på ett akut hjärtproblem. Då ska du omedelbart larma 112. Att bara lossa kläder eller ändra sittställning räcker inte som första åtgärd."
 },
 {
   "id": 423,
@@ -311,12 +311,12 @@ export const SAKERHET_3 = [
   "options": [
     "Tala lugnande och försöka få kundens uppmärksamhet riktad mot något annat",
     "Larma ambulans genom att ringa 112",
-    "Lyfta ut kunden ur bilen och placera honom eller henne i stabilt sidoläge (framstupa sidoläge)",
-    "Öppna bildörren så kunden får frisk luft och ta fram eventuell medicin"
+    "Lyfta ut kunden ur bilen och placera hen i stabilt sidoläge",
+    "Öppna bildörren så kunden får luft och hjälp till med eventuell astmamedicin"
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Vid astmaanfall bör du ge frisk luft och hjälpa personen med eventuell medicin."
+  "explanation": "Vid ett astmaanfall bör du hjälpa kunden att få luft och hjälpa till med eventuell astmamedicin om sådan finns. Om andningen är kraftigt påverkad eller inte förbättras ska du larma 112."
 },
 {
   "id": 424,
@@ -330,7 +330,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Skrapande bromsljud tyder ofta på slitna bromsbelägg som behöver kontrolleras."
+  "explanation": "Skrapande bromsljud tyder ofta på slitna bromsbelägg eller att metall ligger mot bromsskivan. Därför bör bromsbeläggens skick kontrolleras så snart som möjligt."
 },
 {
   "id": 425,
@@ -344,7 +344,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": "https://teori-taxi.com/images/Sakerhet/126-1.png",
-  "explanation": "Enligt facit är det märke B som står för neurologisk sjukdom."
+  "explanation": "Den här frågan bör tas bort eller ersättas. Bilden innehåller inte tydliga och trovärdiga medicinska symboler, och den går därför inte att kvalitetssäkra mot facit."
 },
 {
   "id": 426,
@@ -358,7 +358,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 3,
   "image": null,
-  "explanation": "Tidiga uppväxlingar och hög växel vid låg belastning minskar ofta bränsleförbrukningen."
+  "explanation": "För att köra bränslesnålt bör du växla upp tidigt och köra på så hög växel som situationen tillåter, utan att motorn belastas för hårt. Då arbetar motorn effektivare och bränsleförbrukningen minskar ofta."
 },
 {
   "id": 427,
@@ -373,7 +373,7 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Mobilsamtal tar uppmärksamhet från trafiken och kan ge längre reaktionstid."
+  "explanation": "Samtal i mobiltelefon och annan distraktion tar uppmärksamhet från trafiken och kan göra att du reagerar senare än normalt. Det ökar risken att du hinner upptäcka faror för sent."
 },
 {
   "id": 428,
@@ -387,12 +387,12 @@ export const SAKERHET_3 = [
   ],
   "correct": 2,
   "image": "https://teori-taxi.com/images/Sakerhet/129-1-600x400.png",
-  "explanation": "En takbox ökar luftmotståndet och därmed också bränsleförbrukningen."
+  "explanation": "En takbox ökar luftmotståndet, särskilt i högre hastigheter. Det gör att bilen drar mer bränsle än nödvändigt, även när takboxen är tom. Därför bör den tas av när den inte används."
 },
 {
   "id": 429,
   "delprov": 1,
-  "question": "Du får en kund som bär denna symbol. Vilket symtom kan sjukdomen ge?",
+  "question": "Du får en kund som har epilepsi. Vilket symtom kan sjukdomen ge?",
   "options": [
     "Kunden kan drabbas av hjärtsvikt",
     "Kunden kan få svårt att andas",
@@ -400,21 +400,21 @@ export const SAKERHET_3 = [
     "Kunden kan få kramper och muskelryckningar"
   ],
   "correct": 3,
-  "image": "https://teori-taxi.com/images/Sakerhet/130.png",
-  "explanation": "Enligt facit är symtomet kramper och muskelryckningar."
+  "image": null,
+  "explanation": "Epilepsi är en sjukdom som kan ge olika typer av anfall. Ett anfall kan bland annat innebära kramper, ryckningar eller att personen förlorar delar av sitt medvetande under en stund."
 },
 {
   "id": 430,
   "delprov": 1,
-  "question": "Du får ett köruppdrag där kunden är kraftigt alkoholpåverkad men på gott humör. Vad bör du göra?",
+  "question": "Du får ett köruppdrag där kunden är kraftigt alkoholpåverkad. Vad bör du göra om du bedömer att situationen kan bli osäker?",
   "options": [
-    "Jag begär förskottsbetalning och fullföljer uppdraget",
-    "Jag kontaktar sambandscentralen och talar om namn på personen",
-    "Jag nekar kunden att åka med",
-    "Jag ber kunden att ta med sig en nykter person"
+    "Jag begär förskottsbetalning och fullföljer uppdraget ändå",
+    "Jag följer företagets säkerhetsrutiner och kontaktar beställningscentral eller arbetsledning vid behov",
+    "Jag måste alltid neka kunden att åka med",
+    "Jag ber kunden att ta med sig en nykter person och kör sedan direkt"
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Facit anger att du ska kontakta sambandscentralen och informera om personen."
+  "explanation": "Om en kraftigt alkoholpåverkad kund gör att du bedömer situationen som osäker bör du följa företagets säkerhetsrutiner och vid behov kontakta beställningscentral eller arbetsledning. Frågan är omskriven eftersom det gamla facit såg ut att bygga på en äldre eller lokal rutin snarare än en tydlig allmän regel."
 },
 ]
