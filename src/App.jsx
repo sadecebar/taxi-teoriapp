@@ -25,6 +25,14 @@ const DELPROV_CONFIG = {
   2: { name: "Delprov 2", sub: "Lagstiftning",        total: 50, countedQ: 46, passMark: 34, time: 50 },
 };
 
+// ─── Quick Test recency config ────────────────────────────────────────────────
+// How many recent Quick Tests to remember for weighting purposes.
+const QUICK_HISTORY_SIZE = 8;
+// Weight multiplier per "age slot" (index 0 = appeared in last test, index 1 = 2 tests ago, …).
+// 1.0 means full weight (no penalty). Values below 1.0 reduce selection probability.
+// Extend or shorten this array to tune the fade-out curve.
+const QUICK_RECENCY_WEIGHTS = [0.05, 0.20, 0.40, 0.60, 0.80, 1.0, 1.0, 1.0];
+
 // ─── Checklist steps ──────────────────────────────────────────────────────────
 const CHECKLIST_STEPS = [
   { title: "Säkerställ att grundkraven är uppfyllda",                app: false,
@@ -541,7 +549,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
                 WebkitTapHighlightColor: "transparent",
               }}
             >
-              <OptionBadge letter={["A","B","C","D"][i]} bg={s.badgeBg} border={s.badgeBrd} color={s.badgeCol} />
+              <OptionBadge letter={"ABCDE"[i]} bg={s.badgeBg} border={s.badgeBrd} color={s.badgeCol} />
               <span style={{ flex: 1 }}>{opt}</span>
               {showAnswers && s.indicator && (
                 <span style={{
@@ -797,6 +805,14 @@ function isTaxiregelQuestion(q) {
   return /taxiförarlegitimation|taxameter|trafiktillstånd|prisinformation|taxetabell|jämförpris|summatariff|plombering|kontrollrapport|yrkesmässig taxitrafik|förarbevis/.test(text);
 }
 
+// ─── Navigering question predicate ───────────────────────────────────────────
+// Navigation questions live in navigering-1.js and use IDs starting at 431.
+// All are delprov: 1, so we exclude them from the general "Fordon & säkerhet"
+// category to give them their own dedicated category.
+function isNavigeringQuestion(q) {
+  return q.delprov === 1 && q.id >= 431;
+}
+
 /** Clean geometric SVG icons for the bottom navigation */
 function NavIcon({ name, active = false, size = 22 }) {
   const sw = active ? "1.8" : "1.5";
@@ -890,6 +906,12 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem(`taxi-teori-history-${INSTALL_ID}`) || "[]"); }
     catch { return []; }
   });
+  // Stores arrays of question IDs from the last QUICK_HISTORY_SIZE quick tests.
+  // Shape: [[id, id, …], [id, id, …], …]  — index 0 = most recent.
+  const [quickTestHistory, setQuickTestHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`taxi-teori-quick-hist-${INSTALL_ID}`) || "[]"); }
+    catch { return []; }
+  });
   const SAVED_KEY = `taxi-teori-saved-${INSTALL_ID}`;
   const [savedIds, setSavedIds] = useState(() => {
     try { return JSON.parse(localStorage.getItem(`taxi-teori-saved-${INSTALL_ID}`) || "[]"); }
@@ -966,6 +988,8 @@ export default function App() {
     setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
     setQuizHistory([]);
     try { localStorage.removeItem(`taxi-teori-history-${INSTALL_ID}`); } catch {}
+    setQuickTestHistory([]);
+    try { localStorage.removeItem(`taxi-teori-quick-hist-${INSTALL_ID}`); } catch {}
     setSavedIds([]);
     try { localStorage.removeItem(`taxi-teori-saved-${INSTALL_ID}`); } catch {}
     try { localStorage.removeItem(`taxi-teori-daily-${INSTALL_ID}`); } catch {}
@@ -1092,13 +1116,56 @@ export default function App() {
     return QUESTIONS.filter(q => q.delprov === m);
   };
 
+  // Weighted random selection without replacement.
+  // `pool` is the candidate question array; `history` is [[id,…], [id,…], …]
+  // with index 0 being the most recently played quick test.
+  const weightedPickQuestions = (pool, history, n) => {
+    // Build a lookup: questionId → best (lowest) recency index across all history slots.
+    const recencyIndex = new Map();
+    history.forEach((ids, slotIdx) => {
+      ids.forEach(id => {
+        if (!recencyIndex.has(id) || recencyIndex.get(id) > slotIdx) {
+          recencyIndex.set(id, slotIdx);
+        }
+      });
+    });
+
+    // Assign weights — items not in history get 1.0 (full weight).
+    const items = pool.map(q => ({
+      q,
+      w: recencyIndex.has(q.id)
+        ? (QUICK_RECENCY_WEIGHTS[recencyIndex.get(q.id)] ?? 1.0)
+        : 1.0,
+    }));
+
+    const result = [];
+    while (result.length < n && items.length > 0) {
+      const total = items.reduce((sum, it) => sum + it.w, 0);
+      let r = Math.random() * total;
+      let chosen = items.length - 1; // fallback to last item
+      for (let i = 0; i < items.length; i++) {
+        r -= items[i].w;
+        if (r <= 0) { chosen = i; break; }
+      }
+      result.push(items[chosen].q);
+      items.splice(chosen, 1);
+    }
+    return result;
+  };
+
   const startQuiz = (m) => {
     clearTimeout(timer.current);
     if (QUESTIONS.length === 0) return;
     const baseMode = (m === 10 || m === 20 || m === 30) ? "all" : m;
-    let qs = [...getQs(baseMode)].sort(() => Math.random() - 0.5);
+    let qs;
+    if (m === "quick") {
+      // Use recency-weighted selection so recently-seen questions are less likely to reappear.
+      qs = weightedPickQuestions(QUESTIONS, quickTestHistory, 15);
+    } else {
+      qs = [...getQs(baseMode)].sort(() => Math.random() - 0.5);
+    }
     if (qs.length === 0) return;
-    if (m === "quick" || m === "focus" || m === "bilder") qs = qs.slice(0, 15);
+    if (m === "focus" || m === "bilder") qs = qs.slice(0, 15);
     if (m === 1)       qs = qs.slice(0, 70);
     if (m === 2)       qs = qs.slice(0, 50);
     if (m === "rir")   qs = qs.slice(0, 200);
@@ -1138,6 +1205,13 @@ export default function App() {
     const newHistory = [record, ...quizHistory].slice(0, 10);
     setQuizHistory(newHistory);
     try { localStorage.setItem(`taxi-teori-history-${INSTALL_ID}`, JSON.stringify(newHistory)); } catch {}
+    if (mode === "quick") {
+      // Prepend the IDs from this test and keep only QUICK_HISTORY_SIZE slots.
+      const ids = answers.map(a => a.id);
+      const newQuickHist = [ids, ...quickTestHistory].slice(0, QUICK_HISTORY_SIZE);
+      setQuickTestHistory(newQuickHist);
+      try { localStorage.setItem(`taxi-teori-quick-hist-${INSTALL_ID}`, JSON.stringify(newQuickHist)); } catch {}
+    }
     if (mode === "rir") {
       const newBest = Math.max(rirBest, score);
       setRirBest(newBest);
@@ -1148,10 +1222,12 @@ export default function App() {
   };
 
   // ── Derived stats ─────────────────────────────────────────────────────────
-  const tot      = Object.values(stats).reduce((a, b) => a + b.c + b.w, 0);
-  const corr     = Object.values(stats).reduce((a, b) => a + b.c, 0);
+  // All counts are derived from QUESTIONS (not raw stats entries) to avoid
+  // orphaned stats for deleted/replaced question IDs skewing the numbers.
+  const tot      = QUESTIONS.reduce((a, q) => { const s = stats[q.id] || { c: 0, w: 0 }; return a + s.c + s.w; }, 0);
+  const corr     = QUESTIONS.reduce((a, q) => { const s = stats[q.id] || { c: 0, w: 0 }; return a + s.c; }, 0);
   const acc      = tot > 0 ? Math.round(corr / tot * 100) : 0;
-  const mastered = Object.values(stats).filter(s => s.c >= 2 && s.c > s.w).length;
+  const mastered = QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.c >= 2 && s.c > s.w; }).length;
 
   const dpProgress = [1, 2].map(dp => {
     const qs        = QUESTIONS.filter(q => q.delprov === dp);
@@ -2233,7 +2309,7 @@ export default function App() {
                               display: "flex", alignItems: "center", justifyContent: "center",
                               fontSize: s.indicator ? "12px" : "11px", fontWeight: "700", color: s.badgeCol,
                             }}>
-                              {s.indicator || ["A","B","C","D"][i]}
+                              {s.indicator || "ABCDE"[i]}
                             </span>
                             <span style={{ fontSize: "13px", color: s.col, lineHeight: 1.4 }}>{opt}</span>
                           </button>
@@ -2590,7 +2666,7 @@ export default function App() {
                         WebkitTapHighlightColor: "transparent",
                       }}
                     >
-                      <OptionBadge letter={["A","B","C","D"][i]} bg={s.badgeBg} border={s.badgeBrd} color={s.badgeCol} />
+                      <OptionBadge letter={"ABCDE"[i]} bg={s.badgeBg} border={s.badgeBrd} color={s.badgeCol} />
                       <span style={{ flex: 1, lineHeight: 1.5 }}>{opt}</span>
                       {quiz.answered !== null && s.indicator && (
                         <span style={{
@@ -2971,10 +3047,11 @@ export default function App() {
           };
 
           const categories = [
-            { key: "fordon",       label: "Fordon & säkerhet", icon: "🔧", qs: QUESTIONS.filter(q => q.delprov === 1) },
+            { key: "fordon",       label: "Fordon & säkerhet", icon: "🔧", qs: QUESTIONS.filter(q => q.delprov === 1 && !isNavigeringQuestion(q)) },
             { key: "trafikregler", label: "Trafikregler",       icon: "🚦", qs: QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q)) },
             { key: "taxiregler",   label: "Taxiregler",         icon: "📋", qs: QUESTIONS.filter(isTaxiregelQuestion) },
             { key: "vilotid",      label: "Vilotid & tidbok",   icon: "⏱️", qs: QUESTIONS.filter(isVilotidQuestion) },
+            { key: "navigering",   label: "Navigering",         icon: "🗺️", qs: QUESTIONS.filter(isNavigeringQuestion) },
             { key: "bilder",       label: "Bildfrågor",         icon: "🖼️", qs: QUESTIONS.filter(q => q.image) },
           ].map(cat => {
             const masteredCount = cat.qs.filter(q => getQuestionStatus(q) === "behärskad").length;
@@ -2992,10 +3069,11 @@ export default function App() {
             if (!fragorFilter) return [];
             if (fragorFilter === "felaktiga")    return QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.w > 0 && s.c === 0; });
             if (fragorFilter === "sparade")      return QUESTIONS.filter(q => savedIds.includes(q.id));
-            if (fragorFilter === "fordon")       return QUESTIONS.filter(q => q.delprov === 1);
+            if (fragorFilter === "fordon")       return QUESTIONS.filter(q => q.delprov === 1 && !isNavigeringQuestion(q));
             if (fragorFilter === "trafikregler") return QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q));
             if (fragorFilter === "taxiregler")   return QUESTIONS.filter(isTaxiregelQuestion);
             if (fragorFilter === "vilotid")      return QUESTIONS.filter(isVilotidQuestion);
+            if (fragorFilter === "navigering")   return QUESTIONS.filter(isNavigeringQuestion);
             if (fragorFilter === "bilder")       return QUESTIONS.filter(q => q.image);
             return QUESTIONS.filter(q => getQuestionStatus(q) === fragorFilter);
           })();
@@ -3011,6 +3089,7 @@ export default function App() {
             "trafikregler": "Trafikregler",
             "taxiregler":   "Taxiregler",
             "vilotid":      "Vilotid & tidbok",
+            "navigering":   "Navigering",
             "bilder":       "Bildfrågor",
           }[fragorFilter] || "";
 
