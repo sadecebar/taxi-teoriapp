@@ -231,8 +231,8 @@
 .bottom-nav {
   display: none;
   flex-shrink: 0;
-  background: rgba(13, 13, 20, 0.97);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
   padding-top: 6px;
   padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
@@ -465,7 +465,7 @@
     transform: scale(1.003);
   }
   .bottom-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--nav-btn-hover);
   }
   .bottom-nav-btn.active:hover {
     background: rgba(240, 165, 0, 0.15);
@@ -534,15 +534,15 @@
 /* ─── Smooth elevated card ─────────────────────────────────────────────────── */
 
 .module {
-  background: #141421;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--module-bg);
+  border: 1px solid var(--module-border);
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.22);
 }
 
 .module-amber {
-  background: #141421;
+  background: var(--module-bg);
   border: 1px solid rgba(240, 165, 0, 0.18);
   border-radius: 18px;
   overflow: hidden;
@@ -553,7 +553,7 @@
 
 .module-row {
   padding: 15px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--module-row-border);
   display: flex;
   align-items: center;
   gap: 14px;
@@ -580,7 +580,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--progress-track);
   z-index: 100;
 }
 
@@ -620,7 +620,7 @@
 
 .h-rule {
   height: 1px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--rule-color);
   margin: 20px 0;
 }
 

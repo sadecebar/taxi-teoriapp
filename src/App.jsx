@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, createContext, useContext } from "react";
 import { createPortal } from "react-dom";
 import "./App.css";
 import OnboardingTour from "./OnboardingTour.jsx";
@@ -62,12 +62,13 @@ const CHECKLIST_STEPS = [
 ];
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
-const C = {
+const DARK_THEME = {
   // Surfaces
   bg:            "#0D0D14",
   surface:       "#141421",
   surfaceAlt:    "#1A1A28",
   surface3:      "#202030",
+  headerBg:      "rgba(13,13,20,0.96)",
 
   // Borders — soft, glass-like
   border:        "rgba(255,255,255,0.08)",
@@ -101,7 +102,50 @@ const C = {
   redBorder:     "rgba(208,72,72,0.25)",
 };
 
-const goldGrad = `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 55%, ${C.goldDark} 100%)`;
+const LIGHT_THEME = {
+  // Surfaces
+  bg:            "#F5F4EF",
+  surface:       "#FFFFFF",
+  surfaceAlt:    "#F0EFE9",
+  surface3:      "#E8E7DF",
+  headerBg:      "rgba(245,244,239,0.96)",
+
+  // Borders
+  border:        "rgba(0,0,0,0.08)",
+  borderSoft:    "rgba(0,0,0,0.04)",
+  borderGold:    "rgba(240,165,0,0.18)",
+  borderGoldStr: "rgba(240,165,0,0.38)",
+
+  // Text
+  text:          "#18171E",
+  textSoft:      "#5A5866",
+  muted:         "#9898A8",
+  faint:         "#C5C4BD",
+
+  // Amber (brand) — identical in both themes
+  gold:          "#F0A500",
+  goldLight:     "#FFBE2E",
+  goldDark:      "#B07800",
+  goldBg:        "rgba(240,165,0,0.10)",
+  goldBgHover:   "rgba(240,165,0,0.16)",
+
+  // Correct
+  green:         "#2CB87A",
+  greenLight:    "#4CD99A",
+  greenBg:       "rgba(44,184,122,0.10)",
+  greenBorder:   "rgba(44,184,122,0.22)",
+
+  // Wrong
+  red:           "#D04848",
+  redLight:      "#E05050",
+  redBg:         "rgba(208,72,72,0.08)",
+  redBorder:     "rgba(208,72,72,0.20)",
+};
+
+const goldGrad = "linear-gradient(135deg, #FFBE2E 0%, #F0A500 55%, #B07800 100%)";
+
+// ─── Theme context (lets helper components outside App() read C/btn styles) ───
+const ThemeContext = createContext(null);
 
 // ─── Utility ──────────────────────────────────────────────────────────────────
 function fmt(s) {
@@ -146,7 +190,7 @@ function initDailyData(installId) {
  * Returns styling properties for a quiz / practice option button
  * based on whether it's correct, chosen, and whether the answer has been revealed.
  */
-function optionStyles(i, correctIdx, chosenIdx, revealed) {
+function optionStyles(C, i, correctIdx, chosenIdx, revealed) {
   const isCorrect = i === correctIdx;
   const isChosen  = i === chosenIdx;
 
@@ -177,7 +221,7 @@ function optionStyles(i, correctIdx, chosenIdx, revealed) {
 
   return {
     bg: C.surface, brd: C.border, col: C.textSoft,
-    badgeBg: "rgba(255,255,255,0.03)", badgeCol: C.muted, badgeBrd: C.border,
+    badgeBg: C.surfaceAlt, badgeCol: C.muted, badgeBrd: C.border,
     indicator: null,
   };
 }
@@ -398,6 +442,7 @@ function Logo({ size = 36 }) {
 
 /** Small section label */
 function Label({ children, color }) {
+  const { C } = useContext(ThemeContext);
   return (
     <div style={{
       fontSize: "11px", fontWeight: "600", letterSpacing: "0.2px",
@@ -411,6 +456,7 @@ function Label({ children, color }) {
 
 /** Filled progress bar */
 function ProgressBar({ value, total }) {
+  const { C } = useContext(ThemeContext);
   const pct = total > 0 ? (value / total) * 100 : 0;
   return (
     <div style={{ height: "4px", borderRadius: "99px", background: C.faint, marginBottom: "22px", overflow: "hidden" }}>
@@ -441,6 +487,7 @@ function OptionBadge({ letter, bg, border, color }) {
 
 /** Explanation block shown after answering */
 function ExplanationBox({ text }) {
+  const { C } = useContext(ThemeContext);
   if (!text) return null;
   return (
     <div style={{
@@ -473,6 +520,7 @@ function ExplanationBox({ text }) {
 
 /** Bottom-sheet overlay used for both result popup and stats popup */
 function Popup({ onClose, children }) {
+  const { C } = useContext(ThemeContext);
   return createPortal(
     <div
       onClick={onClose}
@@ -491,7 +539,7 @@ function Popup({ onClose, children }) {
           borderRadius: "24px 24px 0 0",
           border: `1px solid ${C.border}`,
           borderBottom: "none",
-          padding: "12px 20px 44px",
+          padding: "12px 20px max(44px, env(safe-area-inset-bottom, 0px))",
           width: "100%", maxWidth: "580px",
           animation: "slideUp 0.28s cubic-bezier(0.34,1.1,0.64,1) both",
           maxHeight: "88dvh", overflowY: "auto",
@@ -516,6 +564,7 @@ function Popup({ onClose, children }) {
  * - interactive (stats practice): onSelectOption provided, revealed starts false
  */
 function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSaved, onToggleSave }) {
+  const { C, btnGold, btnGhost } = useContext(ThemeContext);
   const isViewOnly = !onSelectOption;
   const showAnswers = revealed || isViewOnly;
 
@@ -535,7 +584,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "18px" }}>
         {q.options.map((opt, i) => {
-          const s = optionStyles(i, q.correct, chosen, showAnswers);
+          const s = optionStyles(C, i, q.correct, chosen, showAnswers);
           return (
             <button key={i}
               onClick={() => !showAnswers && onSelectOption && onSelectOption(i)}
@@ -606,6 +655,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
  * Headline mastery % → thick stacked bar → animated status rows.
  */
 function MasteryBar({ questions, getStatus }) {
+  const { C } = useContext(ThemeContext);
   if (!questions.length) return null;
 
   const counts = { "ej övad": 0, "öva mer": 0, "på väg": 0, "behärskad": 0 };
@@ -619,7 +669,7 @@ function MasteryBar({ questions, getStatus }) {
     { key: "behärskad", color: C.green,   barColor: C.green,   label: "Behärskad" },
     { key: "på väg",    color: C.gold,    barColor: C.gold,    label: "På väg"    },
     { key: "öva mer",   color: C.red,     barColor: C.red,     label: "Öva mer"   },
-    { key: "ej övad",   color: C.muted,   barColor: "#2c2c2c", label: "Ej övad"   },
+    { key: "ej övad",   color: C.muted,   barColor: C.surface3, label: "Ej övad"  },
   ];
 
   return (
@@ -734,6 +784,7 @@ function MasteryBar({ questions, getStatus }) {
  * Shows user's score vs. pass mark as a visual indicator.
  */
 function ScoreBar({ score, total, passMark }) {
+  const { C } = useContext(ThemeContext);
   const scorePct = total > 0 ? (score / total) * 100 : 0;
   const passPct  = passMark && total > 0 ? (passMark / total) * 100 : null;
   const passed   = passMark ? score >= passMark : scorePct >= 70;
@@ -847,31 +898,35 @@ function NavIcon({ name, active = false, size = 22 }) {
   return null;
 }
 
-// ─── Shared style presets ─────────────────────────────────────────────────────
-const card    = {
-  background: C.surface,
-  border: `1px solid ${C.border}`,
-  borderRadius: "18px",
-  boxShadow: "0 2px 20px rgba(0,0,0,0.22)",
-};
-const btnGold = {
-  background: goldGrad, border: "none", borderRadius: "14px",
-  fontWeight: "700", color: "#090909", cursor: "pointer",
-  display: "inline-flex", alignItems: "center", justifyContent: "center",
-  gap: "8px", letterSpacing: "0.3px", WebkitTapHighlightColor: "transparent",
-  boxShadow: "0 4px 20px rgba(240,165,0,0.20)",
-};
-const btnGhost = {
-  background: "transparent", border: `1px solid ${C.border}`,
-  color: C.muted, padding: "8px 16px", borderRadius: "14px",
-  cursor: "pointer", fontSize: "13px", fontWeight: "500",
-  display: "inline-flex", alignItems: "center", gap: "6px",
-  WebkitTapHighlightColor: "transparent",
-  transition: "border-color 0.15s, color 0.15s, transform 0.11s, opacity 0.11s",
-};
-
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
+  // ── Theme ────────────────────────────────────────────────────────────────
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('taxi-teori-theme') || 'light'; } catch { return 'light'; }
+  });
+  const C = theme === 'dark' ? DARK_THEME : LIGHT_THEME;
+  const card = {
+    background: C.surface,
+    border: `1px solid ${C.border}`,
+    borderRadius: "18px",
+    boxShadow: "0 2px 20px rgba(0,0,0,0.22)",
+  };
+  const btnGold = {
+    background: goldGrad, border: "none", borderRadius: "14px",
+    fontWeight: "700", color: "#090909", cursor: "pointer",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    gap: "8px", letterSpacing: "0.3px", WebkitTapHighlightColor: "transparent",
+    boxShadow: "0 4px 20px rgba(240,165,0,0.20)",
+  };
+  const btnGhost = {
+    background: "transparent", border: `1px solid ${C.border}`,
+    color: C.muted, padding: "8px 16px", borderRadius: "14px",
+    cursor: "pointer", fontSize: "13px", fontWeight: "500",
+    display: "inline-flex", alignItems: "center", gap: "6px",
+    WebkitTapHighlightColor: "transparent",
+    transition: "border-color 0.15s, color 0.15s, transform 0.11s, opacity 0.11s",
+  };
+
   // ── State ────────────────────────────────────────────────────────────────
   const [view,          setView]          = useState("home");
   const [mode,          setMode]          = useState(null);
@@ -938,6 +993,14 @@ export default function App() {
   const explainRef = useRef(null);
   const audioCtx   = useRef(null);
   const mainRef    = useRef(null);
+
+  // ── Theme DOM sync ───────────────────────────────────────────────────────
+  useEffect(() => {
+    try { localStorage.setItem('taxi-teori-theme', theme); } catch {}
+    document.documentElement.setAttribute('data-theme', theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0D0D14' : '#F5F4EF');
+  }, [theme]);
 
   // ── One-time migration: copy Supabase stats → localStorage ──────────────
   useEffect(() => {
@@ -1314,17 +1377,18 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
+    <ThemeContext.Provider value={{ C, btnGold, btnGhost }}>
     <div style={{ height: "100%", display: "flex", flexDirection: "column", background: C.bg, color: C.text }}>
 
       {/* ── HEADER ──────────────────────────────────────────────────────── */}
       <header style={{
-        height: "56px",
+        height: "calc(56px + env(safe-area-inset-top, 0px))",
         flexShrink: 0,
-        background: "rgba(13,13,20,0.96)",
+        background: C.headerBg,
         backdropFilter: "blur(32px) saturate(200%)",
         WebkitBackdropFilter: "blur(32px) saturate(200%)",
         borderBottom: `1px solid ${C.border}`,
-        padding: "0 20px",
+        padding: "env(safe-area-inset-top, 0px) 20px 0",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         zIndex: 40,
       }}>
@@ -1892,7 +1956,7 @@ export default function App() {
                           </div>
                           {/* Progress bar */}
                           <div style={{ position: "relative", height: "6px" }}>
-                            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.05)", borderRadius: "3px" }} />
+                            <div style={{ position: "absolute", inset: 0, background: C.border, borderRadius: "3px" }} />
                             <div style={{ position: "absolute", inset: 0, borderRadius: "3px", overflow: "hidden" }}>
                               <div style={{
                                 height: "100%", borderRadius: "3px", width: `${masterPct}%`,
@@ -1953,7 +2017,7 @@ export default function App() {
                               </div>
                             </div>
                             <div style={{ position: "relative", height: "4px", marginBottom: "4px" }}>
-                              <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.04)", borderRadius: "16px" }} />
+                              <div style={{ position: "absolute", inset: 0, background: C.border, borderRadius: "16px" }} />
                               <div style={{ position: "absolute", inset: 0, borderRadius: "16px", overflow: "hidden" }}>
                                 <div style={{ height: "100%", borderRadius: "16px", width: `${pct}%`,
                                   background: barCol, transition: "width 0.9s cubic-bezier(0.4,0,0.2,1)" }} />
@@ -2087,7 +2151,7 @@ export default function App() {
                       onMouseEnter={e => { e.currentTarget.style.borderColor = C.borderGoldStr; e.currentTarget.style.background = C.surfaceAlt; }}
                       onMouseLeave={e => { e.currentTarget.style.borderColor = primary ? C.borderGoldStr : C.border; e.currentTarget.style.background = C.surface; }}>
                       <div style={{ width: "34px", height: "34px", borderRadius: "10px", flexShrink: 0,
-                        background: primary ? C.goldBg : "rgba(255,255,255,0.03)",
+                        background: primary ? C.goldBg : C.surfaceAlt,
                         border: `1px solid ${primary ? C.borderGold : C.border}`,
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontSize: primary ? "17px" : "11px", fontWeight: "800",
@@ -2150,13 +2214,13 @@ export default function App() {
                               background: `${barCol}15`, border: `1px solid ${barCol}30`,
                               padding: "2px 6px", borderRadius: "16px", flexShrink: 0, marginLeft: "4px" }}>{statusLbl}</div>
                           </div>
-                          <div style={{ height: "3px", background: "rgba(255,255,255,0.05)", borderRadius: "16px", overflow: "hidden", marginBottom: "14px" }}>
+                          <div style={{ height: "3px", background: C.border, borderRadius: "16px", overflow: "hidden", marginBottom: "14px" }}>
                             <div style={{ height: "100%", borderRadius: "16px", width: `${prog.pct}%`,
                               background: barCol, transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)" }} />
                           </div>
                         </div>
                         <div style={{ padding: "9px 14px", borderTop: `1px solid ${C.border}`,
-                          background: "rgba(0,0,0,0.15)" }}>
+                          background: C.surfaceAlt }}>
                           <div style={{ fontSize: "9px", color: C.textSoft, lineHeight: 1.7 }}>
                             {dpCfg.total} frågor · {dpCfg.time} min
                           </div>
@@ -2248,7 +2312,7 @@ export default function App() {
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "3px" }}>
                     <div style={{
                       display: "flex", alignItems: "center", gap: "5px",
-                      background: dailyData.streak > 0 ? C.goldBg : "rgba(255,255,255,0.03)",
+                      background: dailyData.streak > 0 ? C.goldBg : C.surfaceAlt,
                       border: `1px solid ${dailyData.streak > 0 ? C.borderGold : C.border}`,
                       borderRadius: "16px", padding: "5px 11px",
                       fontSize: "13px", fontWeight: "700",
@@ -2283,7 +2347,7 @@ export default function App() {
                     {/* Options */}
                     <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
                       {dailyQ.options.map((opt, i) => {
-                        const s     = optionStyles(i, dailyQ.correct, dailyData.chosenIdx, dailyData.answered);
+                        const s     = optionStyles(C, i, dailyQ.correct, dailyData.chosenIdx, dailyData.answered);
                         const shake = shakeBtn === i;
                         return (
                           <button key={i}
@@ -2639,7 +2703,7 @@ export default function App() {
               {/* Options */}
               <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {q.options.map((opt, i) => {
-                  const s = optionStyles(i, q.correct, quiz.answered, quiz.answered !== null);
+                  const s = optionStyles(C, i, q.correct, quiz.answered, quiz.answered !== null);
                   return (
                     <button key={i}
                       className={quiz.answered === null ? "quiz-opt" : ""}
@@ -2814,7 +2878,7 @@ export default function App() {
                   {cfg && (
                     <div style={{
                       display: "inline-flex", alignItems: "center", gap: "6px",
-                      background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
+                      background: C.surfaceAlt, border: `1px solid ${C.border}`,
                       borderRadius: "99px", padding: "6px 14px",
                       fontSize: "11px", color: C.muted,
                       marginTop: "6px",
@@ -3441,7 +3505,7 @@ export default function App() {
                               borderColor: isWeakest ? "rgba(208,72,72,0.22)" : isNear ? C.borderGold : C.border }}>
                             <div style={{ padding: "12px 14px", display: "flex", alignItems: "center", gap: "12px" }}>
                               <div style={{ width: "34px", height: "34px", borderRadius: "10px", flexShrink: 0,
-                                background: pct > 0 ? `${barCol}14` : "rgba(255,255,255,0.03)",
+                                background: pct > 0 ? `${barCol}14` : C.surfaceAlt,
                                 border: `1px solid ${pct > 0 ? `${barCol}28` : C.border}`,
                                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>
                                 {icon}
@@ -3469,7 +3533,7 @@ export default function App() {
                                 <div style={{ fontSize: "12px", color: C.muted, marginTop: "2px" }}>›</div>
                               </div>
                             </div>
-                            <div style={{ height: "2px", background: "rgba(255,255,255,0.04)" }}>
+                            <div style={{ height: "2px", background: C.border }}>
                               <div style={{ height: "100%", width: `${pct}%`, background: barCol,
                                 transition: "width 0.8s cubic-bezier(0.4,0,0.2,1)" }} />
                             </div>
@@ -3641,6 +3705,139 @@ export default function App() {
           </div>
         )}
 
+        {/* ══════════════════════════════════════════════════════════════
+            INSTÄLLNINGAR
+        ══════════════════════════════════════════════════════════════ */}
+        {view === "installningar" && (
+          <div style={{ animation: "screenIn 0.28s ease both" }}>
+
+            {/* Top bar */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+              <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
+            </div>
+
+            {/* ── UTSEENDE ─────────────────────────────────────────────── */}
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Utseende</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "24px" }}>
+              {[
+                {
+                  id: "light",
+                  label: "Ljust",
+                  preview: { bg: "#F5F4EF", surface: "#FFFFFF", text: "#18171E", muted: "#9898A8", border: "rgba(0,0,0,0.08)" },
+                },
+                {
+                  id: "dark",
+                  label: "Mörkt",
+                  preview: { bg: "#0D0D14", surface: "#141421", text: "#F2ECE4", muted: "#666880", border: "rgba(255,255,255,0.08)" },
+                },
+              ].map(({ id, label, preview }) => {
+                const active = theme === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => setTheme(id)}
+                    className="pressable"
+                    style={{
+                      background: active ? C.goldBg : C.surface,
+                      border: `1.5px solid ${active ? C.gold : C.border}`,
+                      borderRadius: "16px",
+                      padding: "12px",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      WebkitTapHighlightColor: "transparent",
+                      transition: "border-color 0.18s, background 0.18s",
+                    }}
+                  >
+                    {/* Mini preview thumbnail */}
+                    <div style={{
+                      background: preview.bg,
+                      borderRadius: "10px",
+                      padding: "8px",
+                      marginBottom: "10px",
+                      border: `1px solid ${preview.border}`,
+                      overflow: "hidden",
+                    }}>
+                      <div style={{
+                        background: preview.surface,
+                        borderRadius: "6px 6px 0 0",
+                        height: "10px",
+                        marginBottom: "5px",
+                        display: "flex", alignItems: "center", paddingLeft: "5px", gap: "3px",
+                      }}>
+                        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#F0A500" }} />
+                        <div style={{ width: "18px", height: "3px", borderRadius: "2px", background: preview.muted, opacity: 0.4 }} />
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "3px", paddingLeft: "2px" }}>
+                        <div style={{ height: "3px", borderRadius: "2px", background: preview.text, opacity: 0.7, width: "60%" }} />
+                        <div style={{ height: "3px", borderRadius: "2px", background: preview.muted, opacity: 0.4, width: "80%" }} />
+                        <div style={{ height: "3px", borderRadius: "2px", background: preview.muted, opacity: 0.3, width: "50%" }} />
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: "12px", fontWeight: "600", color: active ? C.gold : C.text }}>
+                        {label}
+                      </span>
+                      {active && (
+                        <span style={{
+                          width: "16px", height: "16px", borderRadius: "50%",
+                          background: C.gold,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          flexShrink: 0,
+                        }}>
+                          <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                            <path d="M1 3l2 2 4-4" stroke="#090909" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* ── DATA ─────────────────────────────────────────────────── */}
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Data</div>
+            <div style={{ ...card, overflow: "hidden" }}>
+              {/* Reset data row */}
+              <button
+                onClick={() => setShowResetConfirm(true)}
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
+                  background: "none", border: "none",
+                  WebkitTapHighlightColor: "transparent",
+                  borderBottom: `1px solid ${C.borderSoft}`,
+                }}
+              >
+                <span style={{
+                  width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
+                  background: "rgba(184,80,88,0.08)", border: "1px solid rgba(184,80,88,0.18)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "15px",
+                }}>🗑</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: "13px", fontWeight: "600", color: C.redLight, marginBottom: "1px" }}>
+                    Nollställ all data
+                  </div>
+                  <div style={{ fontSize: "11px", color: C.muted }}>Tar bort all statistik och sparade frågor</div>
+                </div>
+                <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
+              </button>
+
+              {/* Version row */}
+              <div style={{
+                padding: "10px 16px",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+              }}>
+                <div style={{ fontSize: "12px", color: C.faint }}>Version</div>
+                <div style={{ fontSize: "11px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>v{APP_VERSION}</div>
+              </div>
+            </div>
+
+          </div>
+        )}
+
         {view === "mer" && (
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
@@ -3652,7 +3849,7 @@ export default function App() {
               <div style={{ ...card, padding: "13px 16px", marginBottom: "10px", display: "flex", alignItems: "center", gap: "12px" }}>
                 <div style={{
                   width: "32px", height: "32px", borderRadius: "10px", flexShrink: 0,
-                  background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`,
+                  background: C.surfaceAlt, border: `1px solid ${C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                 }}>
                   <div style={{ width: "12px", height: "2px", background: C.faint, borderRadius: "2px" }} />
@@ -3682,7 +3879,7 @@ export default function App() {
                   </div>
                   <div style={{
                     width: "50px", height: "50px", borderRadius: "50%",
-                    background: `conic-gradient(${C.gold} ${acc * 3.6}deg, rgba(255,255,255,0.05) 0deg)`,
+                    background: `conic-gradient(${C.gold} ${acc * 3.6}deg, ${C.border} 0deg)`,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
@@ -3739,7 +3936,7 @@ export default function App() {
                   <div style={{ padding: "13px 16px 12px", display: "flex", alignItems: "center", gap: "12px" }}>
                     <span style={{
                       width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
-                      background: done === total && total > 0 ? C.greenBg : "rgba(255,255,255,0.04)",
+                      background: done === total && total > 0 ? C.greenBg : C.surfaceAlt,
                       border: `1px solid ${done === total && total > 0 ? C.greenBorder : C.border}`,
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: "18px",
@@ -3786,12 +3983,13 @@ export default function App() {
                   padding: "13px 16px",
                   display: "flex", alignItems: "center", gap: "12px",
                   background: "none", border: "none",
+                  borderBottom: `1px solid ${C.borderSoft}`,
                   WebkitTapHighlightColor: "transparent",
                 }}
               >
                 <span style={{
                   width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
-                  background: "rgba(255,255,255,0.04)", border: `1px solid ${C.border}`,
+                  background: C.surfaceAlt, border: `1px solid ${C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: "16px",
                 }}>🃏</span>
@@ -3803,122 +4001,35 @@ export default function App() {
                 </div>
                 <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
               </button>
-            </div>
 
-            {/* ══ INSTÄLLNINGAR ══════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Inställningar</div>
-            <div style={{ ...card, overflow: "hidden", marginBottom: "8px" }}>
-              {/* Reset data row */}
+              {/* Inställningar entry */}
               <button
-                onClick={() => setShowResetConfirm(true)}
+                className="pressable-sm"
+                onClick={() => setView("installningar")}
                 style={{
-                  width: "100%", textAlign: "left", cursor: "pointer",
+                  width: "100%", cursor: "pointer", textAlign: "left",
                   padding: "13px 16px",
                   display: "flex", alignItems: "center", gap: "12px",
                   background: "none", border: "none",
                   WebkitTapHighlightColor: "transparent",
-                  borderBottom: `1px solid ${C.borderSoft}`,
                 }}
               >
                 <span style={{
                   width: "34px", height: "34px", borderRadius: "12px", flexShrink: 0,
-                  background: "rgba(184,80,88,0.08)", border: "1px solid rgba(184,80,88,0.18)",
+                  background: C.surfaceAlt, border: `1px solid ${C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "15px",
-                }}>🗑</span>
+                  fontSize: "16px",
+                }}>⚙️</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: "13px", fontWeight: "600", color: C.redLight, marginBottom: "1px" }}>
-                    Nollställ all data
+                  <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "1px" }}>
+                    Inställningar
                   </div>
-                  <div style={{ fontSize: "11px", color: C.muted }}>Tar bort all statistik och sparade frågor</div>
+                  <div style={{ fontSize: "11px", color: C.muted }}>Utseende, data och version</div>
                 </div>
                 <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
               </button>
-
-              {/* Version row */}
-              <div style={{
-                padding: "10px 16px",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-              }}>
-                <div style={{ fontSize: "12px", color: C.faint }}>Version</div>
-                <div style={{ fontSize: "11px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>v{APP_VERSION}</div>
-              </div>
             </div>
 
-            {/* Reset confirmation dialog */}
-            {showResetConfirm && createPortal(
-              <div
-                onClick={() => setShowResetConfirm(false)}
-                style={{
-                  position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
-                  background: "rgba(0,0,0,0.88)",
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  zIndex: 200, padding: "24px",
-                  animation: "fadeIn 0.16s ease both",
-                }}
-              >
-                <div
-                  onClick={e => e.stopPropagation()}
-                  style={{
-                    background: C.surface,
-                    border: `1px solid ${C.border}`,
-                    borderRadius: "24px",
-                    padding: "28px 24px 24px",
-                    width: "100%", maxWidth: "360px",
-                    boxShadow: "0 8px 48px rgba(0,0,0,0.40)",
-                    animation: "popIn 0.24s cubic-bezier(0.34,1.2,0.64,1) both",
-                  }}
-                >
-                  <div style={{
-                    width: "48px", height: "48px", borderRadius: "16px",
-                    background: "rgba(200,60,60,0.12)", border: "1px solid rgba(200,60,60,0.22)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    marginBottom: "18px", fontSize: "22px",
-                  }}>
-                    ⚠️
-                  </div>
-                  <div style={{ fontSize: "17px", fontWeight: "800", color: C.text, marginBottom: "10px", letterSpacing: "-0.2px" }}>
-                    Nollställ all statistik?
-                  </div>
-                  <div style={{ fontSize: "13px", color: C.textSoft, lineHeight: 1.6, marginBottom: "26px" }}>
-                    Det här tar bort all din sparade träningsstatistik — rätta svar, felaktiga svar och din kunskapsnivå per fråga. Ditt framsteg nollställs helt och du börjar om från noll.
-                    <br /><br />
-                    <span style={{ color: C.muted, fontWeight: "600" }}>Det går inte att ångra.</span>
-                  </div>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button
-                      onClick={() => setShowResetConfirm(false)}
-                      style={{
-                        flex: 1, padding: "13px", borderRadius: "16px",
-                        border: `1px solid ${C.border}`, background: "transparent",
-                        color: C.muted, cursor: "pointer", fontSize: "13px", fontWeight: "600",
-                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                      }}
-                    >
-                      Avbryt
-                    </button>
-                    <button
-                      onClick={resetAllProgress}
-                      style={{
-                        flex: 1, padding: "13px", borderRadius: "16px",
-                        border: "1px solid rgba(200,60,60,0.5)",
-                        background: "rgba(200,60,60,0.14)",
-                        color: "#e05050",
-                        cursor: "pointer",
-                        fontSize: "13px", fontWeight: "700",
-                        fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
-                        transition: "background 0.15s",
-                      }}
-                    >
-                      Nollställ
-                    </button>
-                  </div>
-                </div>
-              </div>,
-              document.body
-            )}
           </div>
         )}
       </main>
@@ -3938,9 +4049,9 @@ export default function App() {
             {[["prov","prov","Prov"],["fragor","fragor","Frågor"],["home","home","Hem"],["utmaningar","utmaningar","Utmaningar"],["mer","mer","Mer"]].map(([v, ico, label]) => (
               <button key={v}
                 id={v !== "home" ? `ob-nav-${v}` : undefined}
-                className={`bottom-nav-btn${view === v ? " active" : ""}`}
+                className={`bottom-nav-btn${(view === v || (v === "mer" && view === "installningar")) ? " active" : ""}`}
                 onClick={() => setView(v)}
-                style={{ color: view === v ? C.gold : C.muted }}
+                style={{ color: (view === v || (v === "mer" && view === "installningar")) ? C.gold : C.muted }}
               >
                 <span className="bottom-nav-icon"><NavIcon name={ico} active={view === v} /></span>
                 <span className="bottom-nav-label">
@@ -3950,6 +4061,81 @@ export default function App() {
             ))}
           </div>
         </nav>
+      )}
+
+      {/* ── RESET CONFIRM DIALOG ─────────────────────────────────────────── */}
+      {showResetConfirm && createPortal(
+        <div
+          onClick={() => setShowResetConfirm(false)}
+          style={{
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+            background: "rgba(0,0,0,0.88)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            zIndex: 200, padding: "24px 24px max(24px, env(safe-area-inset-bottom, 0px))",
+            animation: "fadeIn 0.16s ease both",
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: C.surface,
+              border: `1px solid ${C.border}`,
+              borderRadius: "24px",
+              padding: "28px 24px 24px",
+              width: "100%", maxWidth: "360px",
+              boxShadow: "0 8px 48px rgba(0,0,0,0.40)",
+              animation: "popIn 0.24s cubic-bezier(0.34,1.2,0.64,1) both",
+            }}
+          >
+            <div style={{
+              width: "48px", height: "48px", borderRadius: "16px",
+              background: "rgba(200,60,60,0.12)", border: "1px solid rgba(200,60,60,0.22)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              marginBottom: "18px", fontSize: "22px",
+            }}>
+              ⚠️
+            </div>
+            <div style={{ fontSize: "17px", fontWeight: "800", color: C.text, marginBottom: "10px", letterSpacing: "-0.2px" }}>
+              Nollställ all statistik?
+            </div>
+            <div style={{ fontSize: "13px", color: C.textSoft, lineHeight: 1.6, marginBottom: "26px" }}>
+              Det här tar bort all din sparade träningsstatistik — rätta svar, felaktiga svar och din kunskapsnivå per fråga. Ditt framsteg nollställs helt och du börjar om från noll.
+              <br /><br />
+              <span style={{ color: C.muted, fontWeight: "600" }}>Det går inte att ångra.</span>
+            </div>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                style={{
+                  flex: 1, padding: "13px", borderRadius: "16px",
+                  border: `1px solid ${C.border}`, background: "transparent",
+                  color: C.muted, cursor: "pointer", fontSize: "13px", fontWeight: "600",
+                  fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                }}
+              >
+                Avbryt
+              </button>
+              <button
+                onClick={resetAllProgress}
+                style={{
+                  flex: 1, padding: "13px", borderRadius: "16px",
+                  border: "1px solid rgba(200,60,60,0.5)",
+                  background: "rgba(200,60,60,0.14)",
+                  color: "#e05050",
+                  cursor: "pointer",
+                  fontSize: "13px", fontWeight: "700",
+                  fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
+                  transition: "background 0.15s",
+                }}
+              >
+                Nollställ
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
       )}
 
       {/* ── DEV PANEL (development only) ─────────────────────────────────── */}
@@ -3970,5 +4156,6 @@ export default function App() {
       )}
 
     </div>
+    </ThemeContext.Provider>
   );
 }

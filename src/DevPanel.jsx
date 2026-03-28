@@ -8,7 +8,7 @@
  * How to open: click the small "DEV" tab anchored to the bottom-right corner.
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ── Status helpers ─────────────────────────────────────────────────────────────
 // Must match getQuestionStatus in App.jsx:
@@ -29,12 +29,18 @@ function statsForStatus(status) {
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 const S = {
+  backdrop: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 99998,
+    background: "rgba(0,0,0,0.45)",
+  },
   panel: {
     position: "fixed",
     bottom: 0,
     right: 0,
-    width: "320px",
-    maxHeight: "82vh",
+    width: "min(320px, 100vw)",
+    maxHeight: "82dvh",
     overflowY: "auto",
     background: "#0f0f0f",
     border: "1px solid #333",
@@ -46,6 +52,7 @@ const S = {
     fontSize: "11px",
     color: "#e0e0e0",
     boxShadow: "-4px -4px 24px rgba(0,0,0,0.6)",
+    paddingBottom: "env(safe-area-inset-bottom, 0px)",
   },
   tab: {
     position: "fixed",
@@ -175,6 +182,15 @@ export default function DevPanel({
   const [bestVal,    setBestVal]    = useState("10");
   const [rirVal,     setRirVal]     = useState("12");
   const [wrongPct,   setWrongPct]   = useState("30");
+
+  // Android hardware back button — dismiss panel before navigating away
+  useEffect(() => {
+    if (!open) return;
+    history.pushState({ devPanel: true }, "");
+    const onPop = () => setOpen(false);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [open]);
 
   const HISTORY_KEY   = `taxi-teori-history-${installId}`;
   const SAVED_KEY     = `taxi-teori-saved-${installId}`;
@@ -390,6 +406,11 @@ export default function DevPanel({
       {/* Toast notification */}
       {toast && <div style={S.toast}>{toast}</div>}
 
+      {/* Backdrop — tap outside to close */}
+      {open && (
+        <div style={S.backdrop} onClick={() => setOpen(false)} />
+      )}
+
       {/* Panel */}
       {open && (
         <div style={S.panel}>
@@ -399,9 +420,28 @@ export default function DevPanel({
             <span style={{ fontSize: "11px", fontWeight: "700", color: "#7b9fff", letterSpacing: "1px" }}>
               DEV PANEL
             </span>
-            <span style={{ fontSize: "9px", color: "#555" }}>
-              {questions.length} Q · install {installId.slice(-6)}
-            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ fontSize: "9px", color: "#555" }}>
+                {questions.length} Q · install {installId.slice(-6)}
+              </span>
+              <button
+                onClick={() => setOpen(false)}
+                style={{
+                  background: "none",
+                  border: "1px solid #444",
+                  borderRadius: "4px",
+                  color: "#aaa",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  lineHeight: 1,
+                  padding: "4px 8px",
+                  fontFamily: "monospace",
+                }}
+                aria-label="Close dev panel"
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* ── 1. Progress ───────────────────────────────── */}
