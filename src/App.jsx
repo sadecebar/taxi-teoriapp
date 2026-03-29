@@ -13,6 +13,9 @@ const INSTALL_ID = getInstallationId();
 import { supabase } from "./supabase.js";
 import { loadLocalStats, saveAllStats, clearLocalStats, hasMigrated, markMigrated } from "./progress.js";
 import { QUESTIONS as importedQuestions } from "./questions.js";
+import { sv } from "./locales/sv.js";
+import { en } from "./locales/en.js";
+import { QUESTIONS_EN } from "./locales/questions-en.js";
 
 // ─── Version (injected from package.json via vite.config.js) ─────────────────
 const APP_VERSION = import.meta.env.VITE_APP_VERSION ?? "1.0.0";
@@ -21,8 +24,8 @@ const APP_VERSION = import.meta.env.VITE_APP_VERSION ?? "1.0.0";
 const QUESTIONS = importedQuestions;
 
 const DELPROV_CONFIG = {
-  1: { name: "Delprov 1", sub: "Säkerhet & beteende", total: 70, countedQ: 65, passMark: 48, time: 50 },
-  2: { name: "Delprov 2", sub: "Lagstiftning",        total: 50, countedQ: 46, passMark: 34, time: 50 },
+  1: { name: "Delprov 1", nameKey: "mode_dp1", subKey: "dp1_sub", total: 70, countedQ: 65, passMark: 48, time: 50 },
+  2: { name: "Delprov 2", nameKey: "mode_dp2", subKey: "dp2_sub", total: 50, countedQ: 46, passMark: 34, time: 50 },
 };
 
 // ─── Quick Test recency config ────────────────────────────────────────────────
@@ -59,6 +62,34 @@ const CHECKLIST_STEPS = [
     desc:  "De skriftliga proven får inte vara äldre än tre år, och körprovet får inte vara äldre än ett år när du ansöker." },
   { title: "Invänta Transportstyrelsens slutliga prövning",          app: false,
     desc:  "Till sist prövar Transportstyrelsen att du uppfyller kraven på yrkeskompetens, medicinsk lämplighet och laglydnad innan legitimationen kan beviljas." },
+];
+
+// ─── Checklist steps — English ────────────────────────────────────────────────
+const CHECKLIST_STEPS_EN = [
+  { title: "Ensure you meet the basic requirements",                 app: false,
+    desc:  "You must be at least 20 years old, have held a Category B driving licence for at least two years, not had your licence revoked in the past two years, and meet the medical requirements." },
+  { title: "Book a medical examination",                             app: false,
+    desc:  "Before applying you must undergo a medical examination. The doctor issues a medical certificate that must be submitted with your application." },
+  { title: "Consider whether you need a preliminary decision",       app: false,
+    desc:  "If you are unsure whether you can be approved due to illness or other medical obstacles, you may first apply for a preliminary decision from Transportstyrelsen." },
+  { title: "Demonstrate solid exam readiness in the app",           app: true,
+    desc:  "The recommendation is that you have passing results several times in a row and feel confident in both Sub-test 1 and Sub-test 2 before booking the knowledge test." },
+  { title: "Book the knowledge test at Trafikverket",               app: false,
+    desc:  "The knowledge test consists of two sub-tests, and you choose the order yourself. Sub-test 1 covers safety and conduct, and Sub-test 2 covers traffic law." },
+  { title: "Pass both sub-tests within six months",                 app: false,
+    desc:  "For the knowledge test to count as passed, both sub-tests must be passed within six months of the first passed sub-test." },
+  { title: "Have your photo taken before the test",                 app: false,
+    desc:  "Before your first taxi driver's licence test, you need to have your photo taken at Trafikverket. Arrive in good time so that the photo and check can be completed." },
+  { title: "Bring valid ID to the test",                            app: false,
+    desc:  "At the test session you will need to identify yourself with a valid ID document." },
+  { title: "Complete and pass the driving test",                    app: false,
+    desc:  "In addition to the theory test, you also need to pass the practical driving test for the taxi driver's licence." },
+  { title: "Submit your application to Transportstyrelsen",         app: false,
+    desc:  "Once you have passed both sub-tests and the driving test, it is time to apply for your taxi driver's licence at Transportstyrelsen." },
+  { title: "Check that your passed tests are still valid",          app: false,
+    desc:  "The written tests may not be more than three years old, and the driving test may not be more than one year old when you apply." },
+  { title: "Await Transportstyrelsen's final review",               app: false,
+    desc:  "Finally, Transportstyrelsen reviews that you meet the requirements for professional competence, medical fitness, and law-abidingness before the licence can be granted." },
 ];
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -229,6 +260,7 @@ function optionStyles(C, i, correctIdx, chosenIdx, revealed) {
 // ─── Image lightbox ───────────────────────────────────────────────────────────
 
 function ImageModal({ src, onClose }) {
+  const { t } = useContext(ThemeContext);
   const [scale, setScale]       = useState(1);
   const [translate, setTranslate] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -400,7 +432,7 @@ function ImageModal({ src, onClose }) {
           padding: "6px 16px", fontSize: "11px", color: "rgba(255,255,255,0.45)",
           pointerEvents: "none", whiteSpace: "nowrap", letterSpacing: "0.3px",
         }}>
-          Dubbeltryck · nyp · scrolla för att zooma
+          {t("img_zoom_hint")}
         </div>
       )}
     </div>
@@ -487,7 +519,7 @@ function OptionBadge({ letter, bg, border, color }) {
 
 /** Explanation block shown after answering */
 function ExplanationBox({ text }) {
-  const { C } = useContext(ThemeContext);
+  const { C, t } = useContext(ThemeContext);
   if (!text) return null;
   return (
     <div style={{
@@ -508,7 +540,7 @@ function ExplanationBox({ text }) {
           fontSize: "11px", fontWeight: "600",
           color: C.gold, letterSpacing: "0.2px",
         }}>
-          Förklaring
+          {t("explanation_label")}
         </span>
       </div>
       <p style={{ color: C.textSoft, fontSize: "14px", lineHeight: "1.72", margin: 0 }}>
@@ -564,7 +596,7 @@ function Popup({ onClose, children }) {
  * - interactive (stats practice): onSelectOption provided, revealed starts false
  */
 function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSaved, onToggleSave }) {
-  const { C, btnGold, btnGhost } = useContext(ThemeContext);
+  const { C, btnGold, btnGhost, t } = useContext(ThemeContext);
   const isViewOnly = !onSelectOption;
   const showAnswers = revealed || isViewOnly;
 
@@ -633,7 +665,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
               transition: "all 0.18s",
             }}
           >
-            {isSaved ? "🔖 Sparad" : "🔖"}
+            {isSaved ? t("saved") : t("save_bookmark")}
           </button>
         )}
         <button
@@ -643,7 +675,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
             boxShadow: "0 4px 20px rgba(201,168,76,0.14)",
           }}
         >
-          Stäng
+          {t("close")}
         </button>
       </div>
     </>
@@ -655,7 +687,7 @@ function QuestionPopupBody({ q, chosen, revealed, onSelectOption, onClose, isSav
  * Headline mastery % → thick stacked bar → animated status rows.
  */
 function MasteryBar({ questions, getStatus }) {
-  const { C } = useContext(ThemeContext);
+  const { C, t } = useContext(ThemeContext);
   if (!questions.length) return null;
 
   const counts = { "ej övad": 0, "öva mer": 0, "på väg": 0, "behärskad": 0 };
@@ -666,10 +698,10 @@ function MasteryBar({ questions, getStatus }) {
   const headlineCol = masteredPct >= 70 ? C.greenLight : masteredPct >= 35 ? C.gold : C.textSoft;
 
   const segments = [
-    { key: "behärskad", color: C.green,   barColor: C.green,   label: "Behärskad" },
-    { key: "på väg",    color: C.gold,    barColor: C.gold,    label: "På väg"    },
-    { key: "öva mer",   color: C.red,     barColor: C.red,     label: "Öva mer"   },
-    { key: "ej övad",   color: C.muted,   barColor: C.surface3, label: "Ej övad"  },
+    { key: "behärskad", color: C.green,   barColor: C.green,    label: t("status_mastered")      },
+    { key: "på väg",    color: C.gold,    barColor: C.gold,     label: t("status_progressing")   },
+    { key: "öva mer",   color: C.red,     barColor: C.red,      label: t("status_practice_more") },
+    { key: "ej övad",   color: C.muted,   barColor: C.surface3, label: t("status_untried")       },
   ];
 
   return (
@@ -684,7 +716,7 @@ function MasteryBar({ questions, getStatus }) {
             {masteredPct}%
           </span>
           <span style={{ fontSize: "12px", color: C.muted, fontWeight: "500", paddingBottom: "5px" }}>
-            behärskat
+            {t("mastery_suffix")}
           </span>
         </div>
         <div style={{ textAlign: "right", paddingBottom: "4px" }}>
@@ -693,7 +725,7 @@ function MasteryBar({ questions, getStatus }) {
             <span style={{ fontSize: "12px", fontWeight: "500", color: C.muted }}> / {total}</span>
           </div>
           <div style={{ fontSize: "9px", color: C.faint, marginTop: "4px", letterSpacing: "0.5px", textTransform: "uppercase", fontWeight: "600" }}>
-            Behärskade
+            {t("mastery_bar_label")}
           </div>
         </div>
       </div>
@@ -784,7 +816,7 @@ function MasteryBar({ questions, getStatus }) {
  * Shows user's score vs. pass mark as a visual indicator.
  */
 function ScoreBar({ score, total, passMark }) {
-  const { C } = useContext(ThemeContext);
+  const { C, tf } = useContext(ThemeContext);
   const scorePct = total > 0 ? (score / total) * 100 : 0;
   const passPct  = passMark && total > 0 ? (passMark / total) * 100 : null;
   const passed   = passMark ? score >= passMark : scorePct >= 70;
@@ -827,7 +859,7 @@ function ScoreBar({ score, total, passMark }) {
               whiteSpace: "nowrap",
               letterSpacing: "0.3px",
             }}>
-              {passMark} rätt
+              {tf("score_bar_pass_label", passMark)}
             </div>
           </div>
         )}
@@ -900,6 +932,43 @@ function NavIcon({ name, active = false, size = 22 }) {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
+  // ── Language ─────────────────────────────────────────────────────────────
+  const [lang, setLangState] = useState(() => {
+    try { return localStorage.getItem('taxi-teori-language') || 'sv'; } catch { return 'sv'; }
+  });
+  const setLang = (l) => {
+    setLangState(l);
+    try { localStorage.setItem('taxi-teori-language', l); } catch {}
+  };
+  // Translation lookup: falls back to Swedish then to the key itself
+  const T = lang === 'sv' ? sv : en;
+  const t = (key) => T[key] ?? sv[key] ?? key;
+  // Template: replaces {0}, {1} … with supplied values
+  const tf = (key, ...args) => {
+    let s = t(key);
+    args.forEach((v, i) => { s = s.replace(`{${i}}`, String(v)); });
+    return s;
+  };
+  // Translate question status key to display label
+  const tStatus = (key) => ({
+    "behärskad": t("status_mastered"),
+    "på väg":    t("status_progressing"),
+    "öva mer":   t("status_practice_more"),
+    "ej övad":   t("status_untried"),
+  }[key] ?? key);
+  // Active checklist steps for current language
+  const checklistSteps = lang === 'sv' ? CHECKLIST_STEPS : CHECKLIST_STEPS_EN;
+  // Translate a question object's user-facing text fields for the current language.
+  // IDs, correct index, delprov, and image are never modified.
+  const tq = (q) => {
+    if (lang === 'sv' || !q) return q;
+    const en = QUESTIONS_EN[q.id];
+    if (!en) return q;
+    return { ...q, question: en.question, options: en.options, explanation: en.explanation };
+  };
+  // Date locale for daily question heading
+  const dateLocale = lang === 'sv' ? 'sv-SE' : 'en-GB';
+
   // ── Theme ────────────────────────────────────────────────────────────────
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem('taxi-teori-theme') || 'light'; } catch { return 'light'; }
@@ -1233,10 +1302,10 @@ export default function App() {
     if (m === 2)       qs = qs.slice(0, 50);
     if (m === "rir")   qs = qs.slice(0, 200);
     if (m === 10 || m === 20 || m === 30) qs = qs.slice(0, m);
-    const t = (m === 1 || m === 2) ? DELPROV_CONFIG[m].time * 60 : null;
+    const timeLimit = (m === 1 || m === 2) ? DELPROV_CONFIG[m].time * 60 : null;
     setMode(m);
     setQuiz({ questions: qs, current: 0, answers: [], answered: null });
-    setTimeLeft(t);
+    setTimeLeft(timeLimit);
     setResult(null);
     setView("quiz");
   };
@@ -1309,7 +1378,7 @@ export default function App() {
   }).length;
 
   const masterPct     = QUESTIONS.length > 0 ? Math.round(mastered / QUESTIONS.length * 100) : 0;
-  const overallStatus = masterPct >= 80 ? "Redo för prov" : masterPct >= 50 ? "Nästan redo" : masterPct >= 20 ? "På väg" : "Kom igång";
+  const overallStatus = masterPct >= 80 ? t("overall_ready") : masterPct >= 50 ? t("overall_almost") : masterPct >= 20 ? t("overall_going") : t("overall_start");
   const overallColor  = masterPct >= 80 ? C.greenLight   : masterPct >= 50 ? C.gold         : masterPct >= 20 ? C.gold  : C.muted;
 
   const getQuestionStatus = (q) => {
@@ -1377,7 +1446,7 @@ export default function App() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <ThemeContext.Provider value={{ C, btnGold, btnGhost }}>
+    <ThemeContext.Provider value={{ C, btnGold, btnGhost, t, tf, lang, tStatus }}>
     <div style={{ height: "100%", display: "flex", flexDirection: "column", background: C.bg, color: C.text }}>
 
       {/* ── HEADER ──────────────────────────────────────────────────────── */}
@@ -1422,7 +1491,9 @@ export default function App() {
 
         {/* Desktop nav */}
         <nav className="header-nav">
-          {[["home","Hem"],["prov","Prov"],["utmaningar","Utmaningar"],["fragor","Frågor"],["mer","Mer"]].map(([v, label]) => (
+          {[["home","nav_home"],["prov","nav_prov"],["utmaningar","nav_utmaningar"],["fragor","nav_fragor"],["mer","nav_mer"]].map(([v, labelKey]) => {
+            const label = t(labelKey);
+            return (
             <button key={v}
               id={v !== "home" ? `ob-nav-${v}-desktop` : undefined}
               onClick={() => setView(v)}
@@ -1441,7 +1512,8 @@ export default function App() {
             >
               {label}
             </button>
-          ))}
+          );
+          })}
         </nav>
       </header>
 
@@ -1464,14 +1536,14 @@ export default function App() {
                     letterSpacing: "-1.1px", lineHeight: 1.05,
                     margin: "0 0 10px", padding: 0,
                   }}>
-                    Klara teorin.<br />
-                    <span style={{ color: C.gold }}>Bli godkänd.</span>
+                    {t("hero_new_title1")}<br />
+                    <span style={{ color: C.gold }}>{t("hero_new_title2")}</span>
                   </h1>
                   <p style={{
                     fontSize: "13px", color: C.textSoft, lineHeight: 1.65,
                     margin: "0 auto", maxWidth: "240px", fontWeight: "500",
                   }}>
-                    Öva med riktiga teorifrågor inför taxiförarlegitimationen.
+                    {t("hero_new_sub")}
                   </p>
                 </div>
               ) : (
@@ -1484,14 +1556,14 @@ export default function App() {
                       margin: "0 0 7px", padding: 0,
                     }}>
                       {wrongCount > 0
-                        ? "Fortsätt träna."
+                        ? t("hero_keep_training")
                         : masterPct >= 80
-                          ? "Du är nästan redo."
-                          : "Bra jobbat."}
+                          ? t("hero_almost_ready")
+                          : t("hero_good_job")}
                     </h1>
                     <div style={{ fontSize: "13px", lineHeight: 1.5 }}>
                       <span style={{ color: masterPct >= 80 ? C.greenLight : C.textSoft, fontWeight: "700" }}>{mastered}</span>
-                      <span style={{ color: C.textSoft }}> / {QUESTIONS.length} behärskade</span>
+                      <span style={{ color: C.textSoft }}> / {QUESTIONS.length} {t("status_mastered").toLowerCase()}</span>
                     </div>
                     {/* Inline progress bar */}
                     <div style={{ marginTop: "10px", height: "3px", borderRadius: "99px", background: C.faint, overflow: "hidden", maxWidth: "150px" }}>
@@ -1529,7 +1601,7 @@ export default function App() {
                       }}>
                         {masterPct}%
                       </span>
-                      <span style={{ fontSize: "8.5px", color: C.muted, fontWeight: "600", letterSpacing: "0.2px" }}>klart</span>
+                      <span style={{ fontSize: "8.5px", color: C.muted, fontWeight: "600", letterSpacing: "0.2px" }}>{t("mastery_ring_label")}</span>
                     </div>
                   </div>
                 </div>
@@ -1565,10 +1637,10 @@ export default function App() {
                     fontSize: "17px", fontWeight: "800", color: "#09090E",
                     letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "4px",
                   }}>
-                    Starta Snabbprov
+                    {t("start_snabbprov")}
                   </div>
                   <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.45)" }}>
-                    15 slumpade frågor · ~5 min
+                    {t("snabbprov_sub")}
                   </div>
                 </div>
                 <div style={{ fontSize: "18px", color: "rgba(0,0,0,0.35)", flexShrink: 0 }}>→</div>
@@ -1601,10 +1673,10 @@ export default function App() {
                 }}>🎯</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>
-                    Fokusträning
+                    {t("fokus_title")}
                   </div>
                   <div style={{ fontSize: "11px", color: C.textSoft }}>
-                    {wrongCount} felaktiga svar att träna på
+                    {tf("fokus_sub", wrongCount)}
                   </div>
                 </div>
                 <div style={{
@@ -1614,7 +1686,7 @@ export default function App() {
                   fontFamily: "'DM Mono', monospace", letterSpacing: "0.5px",
                   borderRadius: "6px",
                 }}>
-                  TRÄNA →
+                  {t("fokus_btn")}
                 </div>
               </button>
             )}
@@ -1667,20 +1739,20 @@ export default function App() {
                   color: dailyData.streak > 0 ? C.goldDark : dailyData.answered ? C.green : C.muted,
                   letterSpacing: "0.3px",
                 }}>
-                  {dailyData.answered && dailyData.streak === 0 ? "klar" : "streak"}
+                  {dailyData.answered && dailyData.streak === 0 ? t("streak_done_label") : t("streak_label")}
                 </div>
               </div>
 
               {/* Content */}
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: "14px", fontWeight: "800", letterSpacing: "-0.2px", marginBottom: "4px" }}>
-                  <span style={{ color: C.gold }}>Dagens</span>
-                  <span style={{ color: C.text }}> fråga</span>
+                  <span style={{ color: C.gold }}>{t("dagensfraga_label")}</span>
+                  <span style={{ color: C.text }}> {t("dagensfraga_name")}</span>
                 </div>
                 <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.5 }}>
                   {dailyData.answered
-                    ? "Klar idag — kom tillbaka imorgon."
-                    : "En ny fråga varje dag. Bygg streak genom att svara rätt."}
+                    ? t("dagensfraga_answered")
+                    : t("dagensfraga_unanswered")}
                 </div>
               </div>
 
@@ -1719,15 +1791,15 @@ export default function App() {
                     fontSize: "10px", fontWeight: "700", color: C.textSoft,
                     letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "10px",
                   }}>
-                    Din provsäkerhet
+                    {t("provsäkerhet_title")}
                   </div>
 
                   {/* Inline stats — secondary weight, not dominant */}
                   <div style={{ display: "flex", alignItems: "baseline", marginBottom: "10px" }}>
                     {[
-                      { val: mastered,   unit: " klara",  color: masterPct >= 80 ? C.greenLight : C.textSoft },
-                      { val: `${acc}%`,  unit: " träff",  color: acc >= 70 ? C.textSoft : C.textSoft },
-                      { val: tot,        unit: " övade",  color: C.textSoft },
+                      { val: mastered,   unit: ` ${t("provsäkerhet_done")}`,   color: masterPct >= 80 ? C.greenLight : C.textSoft },
+                      { val: `${acc}%`,  unit: ` ${t("provsäkerhet_acc")}`,    color: acc >= 70 ? C.textSoft : C.textSoft },
+                      { val: tot,        unit: ` ${t("provsäkerhet_tried")}`,  color: C.textSoft },
                     ].map(({ val, unit, color }, i) => (
                       <div key={unit} style={{ display: "flex", alignItems: "baseline" }}>
                         {i > 0 && (
@@ -1742,10 +1814,10 @@ export default function App() {
                   {/* Contextual message */}
                   <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55, marginBottom: "12px" }}>
                     {masterPct >= 80
-                      ? <><span style={{ color: C.text }}>Imponerande.</span> Du behärskar det mesta — redo att testa?</>
+                      ? t("provsäkerhet_high")
                       : masterPct >= 50
-                        ? <><span style={{ color: C.gold, fontWeight: "700" }}>{QUESTIONS.length - mastered}</span> frågor kvar tills du når provsäkerhet.</>
-                        : "Fortsätt öva — varje prov gör dig starkare."}
+                        ? <><span style={{ color: C.gold, fontWeight: "700" }}>{QUESTIONS.length - mastered}</span> {tf("provsäkerhet_mid", QUESTIONS.length - mastered).replace(/^\d+ /, "")}</>
+                        : t("provsäkerhet_low")}
                   </div>
 
                   {/* Action */}
@@ -1759,7 +1831,7 @@ export default function App() {
                     }}
                   >
                     <span style={{ fontSize: "12px", fontWeight: "700", color: masterPct >= 80 ? C.greenLight : C.gold }}>
-                      {masterPct >= 80 ? "Ta hela provet →" : "Se Prov →"}
+                      {masterPct >= 80 ? t("provsäkerhet_btn_high") : t("provsäkerhet_btn_low")}
                     </span>
                   </button>
                 </div>
@@ -1779,13 +1851,13 @@ export default function App() {
                     fontSize: "10px", fontWeight: "700", color: C.textSoft,
                     letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: "12px",
                   }}>
-                    Så här funkar det
+                    {t("guided_title")}
                   </div>
                   {[
-                    { n: "1", t: "Gör ett snabbprov", d: "15 frågor — se direkt vad du kan" },
-                    { n: "2", t: "Se vad du missar", d: "Appen spårar felaktiga svar automatiskt" },
-                    { n: "3", t: "Fokusträna svagheterna", d: "Öva tills du behärskar allt" },
-                  ].map(({ n, t, d }, idx, arr) => (
+                    { n: "1", title: t("guided_s1_t"), d: t("guided_s1_d") },
+                    { n: "2", title: t("guided_s2_t"), d: t("guided_s2_d") },
+                    { n: "3", title: t("guided_s3_t"), d: t("guided_s3_d") },
+                  ].map(({ n, title, d }, idx, arr) => (
                     <div key={n} style={{
                       display: "flex", alignItems: "flex-start", gap: "12px",
                       marginBottom: idx < arr.length - 1 ? "10px" : "0",
@@ -1797,7 +1869,7 @@ export default function App() {
                         fontFamily: "'DM Mono', monospace", fontSize: "10px", fontWeight: "700", color: C.gold,
                       }}>{n}</div>
                       <div style={{ paddingTop: "2px" }}>
-                        <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{t}</div>
+                        <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{title}</div>
                         <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.4 }}>{d}</div>
                       </div>
                     </div>
@@ -1816,9 +1888,9 @@ export default function App() {
                   }}
                 >
                   <span style={{ fontSize: "11px", color: C.muted }}>
-                    {QUESTIONS.length} teorifrågor ingår
+                    {tf("questions_hint", QUESTIONS.length)}
                   </span>
-                  <span style={{ fontSize: "11px", color: C.gold, fontWeight: "700" }}>Utforska →</span>
+                  <span style={{ fontSize: "11px", color: C.gold, fontWeight: "700" }}>{t("explore_btn")}</span>
                 </button>
               </div>
             )}
@@ -1832,9 +1904,9 @@ export default function App() {
         {view === "prov" && (() => {
           const PASS = 70;
           const modeName = (m) =>
-            m === "quick" ? "Snabbprov" : m === "focus" ? "Fokus" :
+            m === "quick" ? t("mode_snabbprov") : m === "focus" ? t("mode_focus") :
             m === 1 ? "DP1" : m === 2 ? "DP2" :
-            m === 10 ? "10fr" : m === 20 ? "20fr" : m === 30 ? "30fr" : "Alla";
+            m === 10 ? "10" : m === 20 ? "20" : m === 30 ? "30" : t("mode_all");
           const TEST_MODES = new Set(["quick", 10, 20, 30, 1, 2]);
           const chartEntries = [...quizHistory]
             .filter(e => TEST_MODES.has(e.mode))
@@ -1845,11 +1917,11 @@ export default function App() {
 
           // Next-best-action recommendation
           const nextAction = (() => {
-            if (isNewUser) return { type: "start", label: "Starta Snabbprov", sub: "Ditt första test visar var du står", mode: "quick" };
-            if (wrongCount > 0 && masterPct < 50) return { type: "focus", label: "Fokusträning", sub: `${wrongCount} felaktiga svar att träna på`, mode: "focus" };
-            if (masterPct >= 80) return { type: "delprov", label: "Ta Delprov 1", sub: "Du är redo för det riktiga provet", mode: 1 };
-            if (masterPct >= 50) return { type: "quick", label: "Snabbprov", sub: "Öva vidare — du är på rätt spår", mode: "quick" };
-            return { type: "quick", label: "Snabbprov", sub: "15 frågor · se var du landar", mode: "quick" };
+            if (isNewUser) return { type: "start", label: t("start_snabbprov"), sub: t("prov_next_first_sub"), mode: "quick" };
+            if (wrongCount > 0 && masterPct < 50) return { type: "focus", label: t("fokus_title"), sub: tf("fokus_sub", wrongCount), mode: "focus" };
+            if (masterPct >= 80) return { type: "delprov", label: t("mode_dp1"), sub: t("prov_next_ready_sub"), mode: 1 };
+            if (masterPct >= 50) return { type: "quick", label: t("mode_snabbprov"), sub: t("prov_next_keep_sub"), mode: "quick" };
+            return { type: "quick", label: t("mode_snabbprov"), sub: t("prov_next_snabb_sub"), mode: "quick" };
           })();
 
           // Readiness state
@@ -1862,17 +1934,17 @@ export default function App() {
               <div style={{ paddingBottom: "18px" }}>
                 <div style={{ fontSize: "34px", fontWeight: "800", color: C.text, letterSpacing: "-0.8px", lineHeight: 1.05, marginBottom: "5px" }}>
                   {isNewUser
-                    ? "Träna i provformat."
+                    ? t("prov_title_new")
                     : masterPct >= 80
-                    ? "Du är redo att boka."
-                    : "Fortsätt mot provet."}
+                    ? t("prov_title_ready")
+                    : t("prov_title_progress")}
                 </div>
                 <div style={{ fontSize: "12px", color: C.textSoft, fontWeight: "500", lineHeight: 1.55 }}>
                   {isNewUser
-                    ? "Öva med examensfrågor i samma format som det riktiga taxiprovet."
+                    ? t("prov_sub_new")
                     : masterPct >= 80
-                    ? `Du behärskar ${masterPct}% av frågorna — dags att testa på riktigt.`
-                    : `${mastered} av ${QUESTIONS.length} frågor behärskade`}
+                    ? tf("prov_sub_ready", masterPct)
+                    : tf("prov_sub_progress", mastered, QUESTIONS.length)}
                 </div>
               </div>
 
@@ -1891,8 +1963,8 @@ export default function App() {
                         background: "rgba(0,0,0,0.18)", display: "flex", alignItems: "center",
                         justifyContent: "center", fontSize: "20px" }}>▶</div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: "17px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "4px" }}>Starta Snabbprov</div>
-                        <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.45)" }}>15 frågor · ~5 min · se direkt var du landar</div>
+                        <div style={{ fontSize: "17px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "4px" }}>{t("start_snabbprov")}</div>
+                        <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.45)" }}>{t("mode_snabbprov_prov_sub")}</div>
                       </div>
                       <div style={{ fontSize: "20px", color: "rgba(0,0,0,0.30)", flexShrink: 0 }}>→</div>
                     </div>
@@ -1900,12 +1972,12 @@ export default function App() {
 
                   {/* How it works */}
                   <div style={{ ...card, padding: "16px 18px", marginBottom: "6px" }}>
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "14px" }}>Hur det funkar</div>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "14px" }}>{t("prov_howto_title")}</div>
                     {[
-                      { n: "1", t: "Gör ett snabbprov", d: "Se direkt vilka frågor du kan" },
-                      { n: "2", t: "Appen spårar misstagen", d: "Felaktiga svar sparas automatiskt" },
-                      { n: "3", t: "Träna tills du behärskar allt", d: "Fokusträna svagheterna tills du är redo" },
-                    ].map(({ n, t, d }, idx, arr) => (
+                      { n: "1", title: t("prov_s1_t"), d: t("prov_s1_d") },
+                      { n: "2", title: t("prov_s2_t"), d: t("prov_s2_d") },
+                      { n: "3", title: t("prov_s3_t"), d: t("prov_s3_d") },
+                    ].map(({ n, title, d }, idx, arr) => (
                       <div key={n} style={{ display: "flex", alignItems: "flex-start", gap: "12px",
                         marginBottom: idx < arr.length - 1 ? "12px" : 0 }}>
                         <div style={{ width: "24px", height: "24px", flexShrink: 0, borderRadius: "8px",
@@ -1913,7 +1985,7 @@ export default function App() {
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontFamily: "'DM Mono', monospace", fontSize: "10px", fontWeight: "700", color: C.gold }}>{n}</div>
                         <div style={{ paddingTop: "3px" }}>
-                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{t}</div>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{title}</div>
                           <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.4 }}>{d}</div>
                         </div>
                       </div>
@@ -1938,7 +2010,7 @@ export default function App() {
                       }} />
                       {/* Top row: label + status badge */}
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
-                        <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase" }}>Provberedskap</div>
+                        <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "2px", textTransform: "uppercase" }}>{t("prov_readiness_label")}</div>
                         <div style={{ fontSize: "10px", fontWeight: "700", color: overallColor,
                           background: `${overallColor}14`, border: `1px solid ${overallColor}35`,
                           padding: "3px 10px", borderRadius: "16px" }}>{overallStatus}</div>
@@ -1952,7 +2024,7 @@ export default function App() {
                         </div>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: "11px", color: C.textSoft, marginBottom: "7px" }}>
-                            {mastered} av {QUESTIONS.length} behärskade
+                            {tf("prov_sub_progress", mastered, QUESTIONS.length)}
                           </div>
                           {/* Progress bar */}
                           <div style={{ position: "relative", height: "6px" }}>
@@ -1973,7 +2045,7 @@ export default function App() {
                               background: C.gold, borderRadius: "1px", opacity: 0.5 }} />
                           </div>
                           <div style={{ marginTop: "4px", fontSize: "8px", color: C.muted, opacity: 0.7 }}>
-                            provgräns vid {PASS}%
+                            {t("prov_readiness_label")} {PASS}%
                           </div>
                         </div>
                       </div>
@@ -1981,10 +2053,10 @@ export default function App() {
                       {/* Contextual message */}
                       <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55 }}>
                         {readinessLevel === "high"
-                          ? <><span style={{ color: C.text, fontWeight: "700" }}>Imponerande.</span> Du behärskar det mesta — redo att boka provet?</>
+                          ? t("provsäkerhet_high")
                           : readinessLevel === "mid"
-                          ? <><span style={{ color: C.gold, fontWeight: "700" }}>{QUESTIONS.length - mastered}</span> frågor kvar tills du når provgränsen.</>
-                          : <><span style={{ color: C.text, fontWeight: "700" }}>Bra start.</span> Fortsätt öva — varje prov gör dig starkare.</>}
+                          ? tf("provsäkerhet_mid", QUESTIONS.length - mastered)
+                          : t("provsäkerhet_low")}
                       </div>
                     </div>
 
@@ -1994,18 +2066,18 @@ export default function App() {
                       {dpProgress.map(({ dp, cfg: dpCfg, total, mastered: dpM, acc: dpA, pct, tried }) => {
                         const toPass   = Math.max(0, Math.ceil(total * 70 / 100) - dpM);
                         const barCol   = pct >= 70 ? C.greenLight : pct >= 40 ? C.gold : tried ? C.redLight : C.border;
-                        const dpStatus = pct >= 70 ? "Redo" : pct >= 40 ? "På väg" : tried ? "Öva mer" : "Ej övad";
+                        const dpStatus = pct >= 70 ? t("dp_status_ready") : pct >= 40 ? t("dp_status_going") : tried ? t("dp_status_practice") : t("dp_status_new");
                         const detail   = !tried
-                          ? "Ingen träning ännu"
+                          ? t("prov_no_training")
                           : pct >= 70
-                          ? `${dpM} av ${total} behärskade · ${dpA}% rätt`
-                          : `${toPass} fler för att nå provgränsen · ${dpA}% rätt`;
+                          ? tf("prov_dp_detail_mid", dpM, total, dpA)
+                          : tf("prov_dp_detail_low", toPass, dpA);
                         return (
                           <div key={dp}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
                               <div>
-                                <span style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{dpCfg.name}</span>
-                                <span style={{ fontSize: "10px", color: C.textSoft, marginLeft: "6px" }}>{dpCfg.sub}</span>
+                                <span style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{t(dpCfg.nameKey)}</span>
+                                <span style={{ fontSize: "10px", color: C.textSoft, marginLeft: "6px" }}>{t(dpCfg.subKey)}</span>
                               </div>
                               <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0, marginLeft: "8px" }}>
                                 <span style={{ fontSize: "14px", fontWeight: "800", color: C.text, letterSpacing: "-0.5px" }}>
@@ -2048,7 +2120,7 @@ export default function App() {
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: "10px", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.6px",
-                        color: nextAction.type === "focus" ? C.redLight : C.gold, marginBottom: "3px" }}>Rekommenderat nästa</div>
+                        color: nextAction.type === "focus" ? C.redLight : C.gold, marginBottom: "3px" }}>{t("recommended_next")}</div>
                       <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>{nextAction.label}</div>
                       <div style={{ fontSize: "11px", color: C.textSoft }}>{nextAction.sub}</div>
                     </div>
@@ -2056,14 +2128,14 @@ export default function App() {
                       color: nextAction.type === "focus" ? C.redLight : C.gold,
                       border: `1px solid ${nextAction.type === "focus" ? C.redBorder : C.borderGold}`,
                       padding: "4px 10px", borderRadius: "6px", flexShrink: 0,
-                      fontFamily: "'DM Mono', monospace", letterSpacing: "0.5px" }}>STARTA →</div>
+                      fontFamily: "'DM Mono', monospace", letterSpacing: "0.5px" }}>{t("start_cta")}</div>
                   </button>
 
                   {/* RESULT HISTORY CHART — only when there are entries */}
                   {chartEntries.length > 0 && (
                     <div style={{ ...card, padding: "14px 14px 10px", marginBottom: "6px", position: "relative" }}>
                       <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px",
-                        textTransform: "uppercase", marginBottom: "10px" }}>Senaste resultat</div>
+                        textTransform: "uppercase", marginBottom: "10px" }}>{t("result_history_title")}</div>
                       {/* Chart bars */}
                       <div style={{ position: "relative", height: "72px", display: "flex", alignItems: "flex-end", gap: "4px" }}>
                         <div style={{ position: "absolute", left: 0, right: 0,
@@ -2106,7 +2178,7 @@ export default function App() {
                         return (
                           <div style={{ display: "flex", marginTop: "10px",
                             borderTop: `1px solid ${C.borderSoft}`, paddingTop: "10px" }}>
-                            {[[`${avg}%`, "Snitt"], [`${best}%`, "Bäst"], [`${passed}/${chartEntries.length}`, "Godkänt"]].map(([val, lbl], i) => (
+                            {[[`${avg}%`, t("result_avg")], [`${best}%`, t("result_best")], [`${passed}/${chartEntries.length}`, t("result_passed_lbl")]].map(([val, lbl], i) => (
                               <div key={lbl} style={{ flex: 1, textAlign: "center",
                                 borderLeft: i > 0 ? `1px solid ${C.borderSoft}` : "none" }}>
                                 <div style={{ fontSize: "14px", fontWeight: "800", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>{val}</div>
@@ -2125,21 +2197,21 @@ export default function App() {
               <div style={{ marginBottom: "8px" }}>
                 <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px",
                   textTransform: "uppercase", marginBottom: "10px" }}>
-                  {isNewUser ? "Välj provlängd" : "Fler alternativ"}
+                  {isNewUser ? t("test_length_new") : t("test_length_returning")}
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                   {(isNewUser
                     ? [
-                        { m: "quick", label: "Snabbprov",  sub: "15 frågor · ~5 min",      icon: "⚡", primary: true },
-                        { m: 10,      label: "10 frågor",  sub: "Snabb koll · ~3 min",      icon: "10", primary: false },
-                        { m: 20,      label: "20 frågor",  sub: "Djupare test · ~7 min",    icon: "20", primary: false },
-                        { m: 30,      label: "30 frågor",  sub: "Längre session · ~10 min", icon: "30", primary: false },
+                        { m: "quick", label: t("mode_snabbprov"), sub: t("mode_snabbprov_sub_new"), icon: "⚡", primary: true },
+                        { m: 10,      label: t("mode_10"),        sub: t("mode_10_sub"),            icon: "10", primary: false },
+                        { m: 20,      label: t("mode_20"),        sub: t("mode_20_sub"),            icon: "20", primary: false },
+                        { m: 30,      label: t("mode_30"),        sub: t("mode_30_sub"),            icon: "30", primary: false },
                       ]
                     : [
-                        { m: "quick", label: "Snabbprov",  sub: "15 frågor · slumpat",      icon: "⚡", primary: false },
-                        { m: 10,      label: "10 frågor",  sub: "Snabb koll",                icon: "10", primary: false },
-                        { m: 20,      label: "20 frågor",  sub: "Djupare test",              icon: "20", primary: false },
-                        { m: 30,      label: "30 frågor",  sub: "Längre session",            icon: "30", primary: false },
+                        { m: "quick", label: t("mode_snabbprov"), sub: t("mode_snabbprov_sub_ret"), icon: "⚡", primary: false },
+                        { m: 10,      label: t("mode_10"),        sub: t("mode_10_sub").split(" · ")[0], icon: "10", primary: false },
+                        { m: 20,      label: t("mode_20"),        sub: t("mode_20_sub").split(" · ")[0], icon: "20", primary: false },
+                        { m: 30,      label: t("mode_30"),        sub: t("mode_30_sub").split(" · ")[0], icon: "30", primary: false },
                       ]
                   ).map(({ m, label, sub, icon, primary }) => (
                     <button key={String(m)} className="pressable-sm" onClick={() => startQuiz(m)}
@@ -2175,15 +2247,15 @@ export default function App() {
                 <div style={{ marginBottom: "14px" }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "7px" }}>
                     <div style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.6px", textTransform: "uppercase", color: C.textSoft }}>
-                      Officiella delprov
+                      {t("official_tests_title")}
                     </div>
                     <div style={{ fontSize: "8px", fontWeight: "700", color: C.gold, letterSpacing: "0.4px",
                       background: C.goldBg, border: `1px solid ${C.borderGold}`,
                       padding: "2px 7px", borderRadius: "5px", fontFamily: "'DM Mono', monospace",
-                      flexShrink: 0 }}>OFFICIELLT FORMAT</div>
+                      flexShrink: 0 }}>{t("official_badge")}</div>
                   </div>
                   <div style={{ fontSize: "11px", color: C.textSoft, lineHeight: 1.65 }}>
-                    Det riktiga taxiprovet är uppdelat i två delprov. Öva i exakt samma format — med tidsgräns och godkändgräns som på det riktiga provet.
+                    {t("official_desc")}
                   </div>
                 </div>
 
@@ -2192,7 +2264,7 @@ export default function App() {
                     const dpCfg = DELPROV_CONFIG[dp];
                     const prog  = dpProgress.find(p => p.dp === dp);
                     const barCol    = prog.pct >= 70 ? C.greenLight : prog.pct >= 40 ? C.gold : prog.tried ? C.redLight : C.border;
-                    const statusLbl = prog.pct >= 70 ? "Redo" : prog.pct >= 40 ? "På väg" : prog.tried ? "Öva mer" : "Ej övad";
+                    const statusLbl = prog.pct >= 70 ? t("dp_status_ready") : prog.pct >= 40 ? t("dp_status_going") : prog.tried ? t("dp_status_practice") : t("dp_status_new");
                     return (
                       <button key={dp} id={`ob-delprov${dp}`} className="pressable-sm" onClick={() => startQuiz(dp)}
                         style={{ ...card, padding: "0", cursor: "pointer", textAlign: "left", display: "block",
@@ -2204,10 +2276,10 @@ export default function App() {
                           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "10px" }}>
                             <div>
                               <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.2px", textTransform: "uppercase", marginBottom: "3px" }}>
-                                {dpCfg.name}
+                                {t(dpCfg.nameKey)}
                               </div>
                               <div style={{ fontSize: "12px", fontWeight: "700", color: C.text, lineHeight: 1.3 }}>
-                                {dpCfg.sub}
+                                {t(dpCfg.subKey)}
                               </div>
                             </div>
                             <div style={{ fontSize: "8px", fontWeight: "700", color: barCol,
@@ -2222,10 +2294,10 @@ export default function App() {
                         <div style={{ padding: "9px 14px", borderTop: `1px solid ${C.border}`,
                           background: C.surfaceAlt }}>
                           <div style={{ fontSize: "9px", color: C.textSoft, lineHeight: 1.7 }}>
-                            {dpCfg.total} frågor · {dpCfg.time} min
+                            {tf("dp_questions_time", dpCfg.total, dpCfg.time)}
                           </div>
                           <div style={{ fontSize: "9px", color: C.muted, lineHeight: 1.7 }}>
-                            Godkänt {dpCfg.passMark}/{dpCfg.countedQ} rätt
+                            {tf("dp_pass_mark", dpCfg.passMark, dpCfg.countedQ)}
                           </div>
                         </div>
                       </button>
@@ -2244,7 +2316,7 @@ export default function App() {
         {view === "utmaningar" && (() => {
           const dailyQ         = QUESTIONS.find(q => q.id === dailyData.questionId);
           const dailyDateLabel = dailyQ
-            ? new Date(dailyData.date + "T12:00:00").toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" })
+            ? new Date(dailyData.date + "T12:00:00").toLocaleDateString(dateLocale, { weekday: "long", day: "numeric", month: "long" })
             : "";
           const bilderCount    = QUESTIONS.filter(q => q.image).length;
           const isNewUser      = tot === 0;
@@ -2255,10 +2327,10 @@ export default function App() {
               {/* ── PAGE HEADER ────────────────────────────────────────── */}
               <div className="utmaning-s1" style={{ paddingBottom: "14px", marginBottom: "20px" }}>
                 <div style={{ fontSize: "28px", fontWeight: "800", color: C.text, letterSpacing: "-0.6px", lineHeight: 1.1, marginBottom: "4px" }}>
-                  Utmaningar
+                  {t("chal_title")}
                 </div>
                 <div style={{ fontSize: "13px", color: C.muted, fontWeight: "500" }}>
-                  Tre sätt att testa dig — varje dag.
+                  {t("chal_sub")}
                 </div>
               </div>
 
@@ -2269,8 +2341,8 @@ export default function App() {
                   background: "rgba(240,165,0,0.05)", border: `1px solid ${C.borderGold}`,
                   fontSize: "12px", color: C.textSoft, lineHeight: 1.6,
                 }}>
-                  <span style={{ fontWeight: "700", color: C.gold }}>Tips för dig som börjar:</span>{" "}
-                  Svara på dagens fråga varje dag för att hålla igång din streak. Bildutmaning och Rätt i rad kan du ta när du känner dig redo.
+                  <span style={{ fontWeight: "700", color: C.gold }}>{t("chal_tips_prefix")}</span>{" "}
+                  {t("chal_tips_text")}
                 </div>
               )}
 
@@ -2303,7 +2375,7 @@ export default function App() {
                       fontSize: "10px", fontWeight: "800", letterSpacing: "1.4px",
                       textTransform: "uppercase", color: C.gold, marginBottom: "3px",
                     }}>
-                      Dagens fråga
+                      {t("daily_q_section_title")}
                     </div>
                     <div style={{ fontSize: "12px", color: C.muted, textTransform: "capitalize" }}>
                       {dailyDateLabel}
@@ -2318,21 +2390,23 @@ export default function App() {
                       fontSize: "13px", fontWeight: "700",
                       color: dailyData.streak > 0 ? C.gold : C.muted,
                     }}>
-                      🔥 {dailyData.streak} {dailyData.streak === 1 ? "dag" : "dagar"}
+                      🔥 {dailyData.streak} {dailyData.streak === 1 ? t("streak_day") : t("streak_days")}
                     </div>
                     {dailyData.bestStreak > 1 && (
                       <div style={{ fontSize: "10px", color: C.faint, paddingRight: "2px" }}>
-                        Bästa: {dailyData.bestStreak}
+                        {t("streak_best")} {dailyData.bestStreak}
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Question body */}
-                {dailyQ ? (
+                {dailyQ ? (() => {
+                  const tDailyQ = tq(dailyQ);
+                  return (
                   <div style={{ padding: "16px 18px 18px" }}>
-                    {dailyQ.image && (
-                      <ZoomableImage src={dailyQ.image} style={{
+                    {tDailyQ.image && (
+                      <ZoomableImage src={tDailyQ.image} style={{
                         width: "100%", borderRadius: "16px", marginBottom: "14px",
                         border: `1px solid ${C.border}`,
                       }} />
@@ -2341,13 +2415,13 @@ export default function App() {
                       fontSize: "15px", lineHeight: "1.68", color: C.text,
                       fontWeight: "600", marginBottom: "14px",
                     }}>
-                      {dailyQ.question}
+                      {tDailyQ.question}
                     </p>
 
                     {/* Options */}
                     <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                      {dailyQ.options.map((opt, i) => {
-                        const s     = optionStyles(C, i, dailyQ.correct, dailyData.chosenIdx, dailyData.answered);
+                      {tDailyQ.options.map((opt, i) => {
+                        const s     = optionStyles(C, i, tDailyQ.correct, dailyData.chosenIdx, dailyData.answered);
                         const shake = shakeBtn === i;
                         return (
                           <button key={i}
@@ -2363,7 +2437,7 @@ export default function App() {
                               cursor: dailyData.answered ? "default" : "pointer",
                               WebkitTapHighlightColor: "transparent",
                               transition: "background 0.18s, border-color 0.18s",
-                              animation: dailyData.answered && i === dailyQ.correct
+                              animation: dailyData.answered && i === tDailyQ.correct
                                 ? "correctReveal 0.4s ease" : undefined,
                             }}
                           >
@@ -2389,7 +2463,7 @@ export default function App() {
                           padding: "10px 13px", borderRadius: "16px",
                           background: dailyData.correct ? C.greenBg : C.redBg,
                           border: `1px solid ${dailyData.correct ? C.greenBorder : C.redBorder}`,
-                          marginBottom: dailyQ.explanation ? "9px" : "0",
+                          marginBottom: tDailyQ.explanation ? "9px" : "0",
                         }}>
                           <span style={{ fontSize: "14px", flexShrink: 0 }}>
                             {dailyData.correct ? "✓" : "✗"}
@@ -2400,12 +2474,12 @@ export default function App() {
                           }}>
                             {dailyData.correct
                               ? (dailyData.streak === 1
-                                  ? "Rätt! Streaken börjar nu."
-                                  : `Rätt! ${dailyData.streak} dagar i rad.`)
-                              : "Fel svar. Streaken bröts."}
+                                  ? t("daily_correct_start")
+                                  : tf("daily_correct_streak", dailyData.streak))
+                              : t("daily_wrong")}
                           </span>
                         </div>
-                        {dailyQ.explanation && (
+                        {tDailyQ.explanation && (
                           <div style={{
                             padding: "10px 13px",
                             background: "rgba(201,168,76,0.04)",
@@ -2413,16 +2487,17 @@ export default function App() {
                             border: `1px solid rgba(201,168,76,0.12)`,
                           }}>
                             <p style={{ color: C.textSoft, fontSize: "13px", lineHeight: "1.65", margin: 0 }}>
-                              {dailyQ.explanation}
+                              {tDailyQ.explanation}
                             </p>
                           </div>
                         )}
                       </div>
                     )}
                   </div>
-                ) : (
+                  );
+                })() : (
                   <div style={{ padding: "24px 18px", textAlign: "center", color: C.faint, fontSize: "13px" }}>
-                    Ingen fråga tillgänglig
+                    {t("daily_no_question")}
                   </div>
                 )}
 
@@ -2437,7 +2512,7 @@ export default function App() {
                     background: "rgba(255,255,255,0.01)",
                     letterSpacing: "0.1px",
                   }}>
-                    Kom tillbaka imorgon för en ny fråga
+                    {t("daily_come_back")}
                   </div>
                 )}
               </div>
@@ -2473,13 +2548,13 @@ export default function App() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="cat-pill" style={{ marginBottom: "8px" }}>
                       <span className="cat-pill-dot" />
-                      <span className="cat-pill-text">Utmaning</span>
+                      <span className="cat-pill-text">{t("challenge_pill")}</span>
                     </div>
                     <div style={{ fontSize: "22px", fontWeight: "700", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "6px", fontFamily: "'Manrope', sans-serif" }}>
-                      Rätt i rad
+                      {t("rir_card_title")}
                     </div>
                     <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5 }}>
-                      Svara rätt utan avbrott — slutar vid första felet
+                      {t("rir_card_sub2")}
                     </div>
                   </div>
 
@@ -2520,7 +2595,7 @@ export default function App() {
                       textTransform: "uppercase",
                       color: rirBest > 0 ? C.goldDark : C.faint,
                     }}>
-                      rekord
+                      {t("rir_record_lbl")}
                     </div>
                   </div>
                 </div>
@@ -2566,13 +2641,13 @@ export default function App() {
                         width: "5px", height: "5px", borderRadius: "50%",
                         background: "rgba(140,160,230,0.9)", flexShrink: 0,
                       }} />
-                      <span style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.9px", textTransform: "uppercase", color: "rgba(160,180,240,0.9)" }}>Utmaning</span>
+                      <span style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.9px", textTransform: "uppercase", color: "rgba(160,180,240,0.9)" }}>{t("challenge_pill")}</span>
                     </div>
                     <div style={{ fontSize: "22px", fontWeight: "700", color: C.text, letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "6px" }}>
-                      Bildutmaning
+                      {t("bild_card_title")}
                     </div>
                     <div style={{ fontSize: "12px", color: C.muted, lineHeight: 1.5 }}>
-                      15 frågor med bilder — identifiera situationer och skyltar
+                      {t("bild_card_sub2")}
                     </div>
                   </div>
 
@@ -2594,7 +2669,7 @@ export default function App() {
                       {bilderCount}
                     </div>
                     <div style={{ fontSize: "7px", fontWeight: "700", letterSpacing: "0.8px", textTransform: "uppercase", color: "rgba(120,140,210,0.7)" }}>
-                      frågor
+                      {t("bild_count_lbl")}
                     </div>
                   </div>
                 </div>
@@ -2608,10 +2683,10 @@ export default function App() {
             QUIZ
         ══════════════════════════════════════════════════════════════ */}
         {view === "quiz" && quiz && (() => {
-          const q         = quiz.questions[quiz.current];
+          const q         = tq(quiz.questions[quiz.current]);
           const cfg       = (mode === 1 || mode === 2) ? DELPROV_CONFIG[mode] : null;
           const danger    = timeLeft !== null && timeLeft < 300;
-          const modeLabel = mode === "quick" ? "Snabbprov" : mode === "focus" ? "Fokusträning" : mode === "rir" ? "Rätt i rad" : mode === "bilder" ? "Bildutmaning" : mode === "all" ? "Alla frågor" : mode === 10 ? "10 frågor" : mode === 20 ? "20 frågor" : mode === 30 ? "30 frågor" : cfg?.name ?? "";
+          const modeLabel = mode === "quick" ? t("mode_snabbprov") : mode === "focus" ? t("mode_focus") : mode === "rir" ? t("mode_rir") : mode === "bilder" ? t("mode_bilder") : mode === "all" ? t("mode_all") : mode === 10 ? t("mode_10") : mode === 20 ? t("mode_20") : mode === 30 ? t("mode_30") : cfg ? t(cfg.nameKey) : "";
 
           return (
             <div>
@@ -2641,7 +2716,7 @@ export default function App() {
                     fontSize: "13px", padding: "8px 14px",
                   }}
                 >
-                  ← Avbryt
+                  {t("quiz_cancel")}
                 </button>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -2768,7 +2843,7 @@ export default function App() {
                         transition: "all 0.15s",
                       }}
                     >
-                      {savedIds.includes(q.id) ? "🔖 Sparad" : "🔖"}
+                      {savedIds.includes(q.id) ? t("saved") : t("save_bookmark")}
                     </button>
                     <button onClick={next}
                       className="pressable"
@@ -2778,7 +2853,7 @@ export default function App() {
                         fontFamily: "'DM Mono', monospace",
                       }}
                     >
-                      {quiz.current + 1 >= quiz.questions.length ? "Se resultat →" : "Nästa →"}
+                      {quiz.current + 1 >= quiz.questions.length ? t("quiz_see_result") : t("quiz_next")}
                     </button>
                   </div>
                 </div>
@@ -2814,19 +2889,19 @@ export default function App() {
                     {result.score >= 20 ? "🔥" : result.score >= 10 ? "💪" : result.score >= 5 ? "📖" : "🎯"}
                   </div>
                   <div className="result-badge" style={{ fontSize: "15px", fontWeight: "700", letterSpacing: "1px", textTransform: "uppercase", color: C.gold, marginBottom: "16px" }}>
-                    Rätt i rad
+                    {t("result_rir_title")}
                   </div>
                   <div className="result-score" style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "4px", marginBottom: "6px" }}>
                     <span style={{ fontSize: "64px", fontWeight: "500", color: C.text, lineHeight: 1, letterSpacing: "-3px", fontFamily: "'DM Mono', monospace" }}>
                       {result.score}
                     </span>
                     <span style={{ fontSize: "18px", fontWeight: "500", color: C.muted }}>
-                      &nbsp;rätt
+                      &nbsp;{t("result_correct_unit")}
                     </span>
                   </div>
                   {rirBest > 0 && (
                     <div style={{ fontSize: "12px", color: result.score >= rirBest && result.score > 0 ? C.gold : C.muted, marginTop: "4px" }}>
-                      {result.score >= rirBest && result.score > 0 ? "✦ Nytt rekord!" : `Rekord: ${rirBest}`}
+                      {result.score >= rirBest && result.score > 0 ? t("result_new_record") : `${t("result_record_prefix")} ${rirBest}`}
                     </div>
                   )}
                 </div>
@@ -2851,10 +2926,10 @@ export default function App() {
                     color: passed ? C.greenLight : C.redLight,
                     marginBottom: "16px",
                   }}>
-                    {passed ? "Godkänt" : "Underkänt"}
+                    {passed ? t("result_passed") : t("result_failed")}
                     {result.expired && (
                       <span style={{ display: "block", fontSize: "11px", textTransform: "none", letterSpacing: "0", fontWeight: "500", marginTop: "4px", color: C.redLight }}>
-                        Tiden tog slut
+                        {t("result_time_expired")}
                       </span>
                     )}
                   </div>
@@ -2869,7 +2944,7 @@ export default function App() {
                     </span>
                   </div>
                   <div style={{ fontSize: "13px", color: C.muted, marginBottom: "4px" }}>
-                    {pct}% rätt
+                    {tf("result_pct_correct", pct)}
                   </div>
 
                   {/* Score bar */}
@@ -2883,20 +2958,20 @@ export default function App() {
                       fontSize: "11px", color: C.muted,
                       marginTop: "6px",
                     }}>
-                      Godkändgräns:{" "}
-                      <span style={{ color: C.gold, fontWeight: "700" }}>{cfg.passMark} av {cfg.countedQ}</span>
+                      {t("result_pass_mark_label")}{" "}
+                      <span style={{ color: C.gold, fontWeight: "700" }}>{tf("result_pass_mark_val", cfg.passMark, cfg.countedQ)}</span>
                     </div>
                   )}
                 </div>
               )}
 
               {/* Answer review */}
-              <Label>Genomgång</Label>
+              <Label>{t("result_review_title")}</Label>
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "24px" }}>
                 {result.answers.map((a, i) => (
                   <button key={i}
                     className="review-item"
-                    onClick={() => setPopupQ({ ...a.q, chosen: a.chosen })}
+                    onClick={() => setPopupQ({ ...tq(a.q), chosen: a.chosen })}
                     style={{
                       display: "flex", alignItems: "center", gap: "11px",
                       padding: "11px 14px",
@@ -2928,12 +3003,12 @@ export default function App() {
                 <button onClick={() => startQuiz(result.mode)}
                   className="pressable"
                   style={{ ...btnGold, flex: 1, padding: "15px", fontSize: "14px" }}>
-                  {result.mode === "rir" ? "Ny omgång" : "Försök igen"}
+                  {result.mode === "rir" ? t("result_new_round") : t("result_retry")}
                 </button>
                 <button onClick={() => setView((result.mode === "rir" || result.mode === "bilder") ? "utmaningar" : "home")}
                   className="pressable-sm"
                   style={{ ...btnGhost, flex: 1, padding: "15px", fontSize: "14px", justifyContent: "center" }}>
-                  {(result.mode === "rir" || result.mode === "bilder") ? "← Utmaningar" : "Hem"}
+                  {(result.mode === "rir" || result.mode === "bilder") ? t("result_back_challenges") : t("result_back_home")}
                 </button>
               </div>
 
@@ -2963,12 +3038,12 @@ export default function App() {
           if (!qs.length) return (
             <div style={{ textAlign: "center", paddingTop: "60px" }}>
               <div style={{ fontSize: "44px", marginBottom: "14px" }}>📭</div>
-              <p style={{ color: C.muted, marginBottom: "18px", fontSize: "14px" }}>Inga kort att visa</p>
-              <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
+              <p style={{ color: C.muted, marginBottom: "18px", fontSize: "14px" }}>{t("flash_empty")}</p>
+              <button onClick={() => setView("mer")} style={btnGhost}>{t("back_mer")}</button>
             </div>
           );
 
-          const q       = qs[flashIdx];
+          const q       = tq(qs[flashIdx]);
           const dpLabel = DELPROV_CONFIG[q.delprov];
 
           return (
@@ -2978,7 +3053,7 @@ export default function App() {
                 display: "flex", justifyContent: "space-between", alignItems: "center",
                 marginBottom: "20px",
               }}>
-                <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
+                <button onClick={() => setView("mer")} style={btnGhost}>{t("back_mer")}</button>
                 <div style={{
                   background: C.goldBg, border: `1px solid ${C.borderGold}`,
                   borderRadius: "16px", padding: "5px 13px",
@@ -2992,7 +3067,7 @@ export default function App() {
               <ProgressBar value={flashIdx + 1} total={qs.length} />
 
               {/* Category */}
-              <Label color={C.gold}>{dpLabel.name} — {dpLabel.sub}</Label>
+              <Label color={C.gold}>{t(dpLabel.nameKey)} — {t(dpLabel.subKey)}</Label>
 
               {/* 3-D flip card */}
               <div className="flash-scene" style={{ marginBottom: "18px" }}>
@@ -3009,7 +3084,7 @@ export default function App() {
                       color: C.gold, marginBottom: "18px", textTransform: "uppercase",
                       fontFamily: "'DM Mono', monospace",
                     }}>
-                      FRÅGA · Tryck för att vända
+                      {t("flash_question_side").toUpperCase()} · {t("flash_tap_hint").toUpperCase()}
                     </div>
                     <ZoomableImage
                       src={q.image}
@@ -3031,7 +3106,7 @@ export default function App() {
                       color: C.greenLight, marginBottom: "18px", textTransform: "uppercase",
                       fontFamily: "'DM Mono', monospace",
                     }}>
-                      SVAR
+                      {t("flash_answer_side").toUpperCase()}
                     </div>
                     <p style={{
                       fontSize: "16px", fontWeight: "700", color: C.greenLight,
@@ -3074,7 +3149,7 @@ export default function App() {
                     gap: "6px", WebkitTapHighlightColor: "transparent",
                   }}
                 >
-                  Vänd 🔄
+                  {t("flash_flip_btn")}
                 </button>
                 <button
                   className="pressable-sm"
@@ -3091,7 +3166,7 @@ export default function App() {
                     fontSize: flashIdx === qs.length - 1 ? "12px" : "18px",
                   }}
                 >
-                  {flashIdx === qs.length - 1 ? "Klar" : "→"}
+                  {flashIdx === qs.length - 1 ? t("flash_done") : "→"}
                 </button>
               </div>
             </div>
@@ -3111,12 +3186,12 @@ export default function App() {
           };
 
           const categories = [
-            { key: "fordon",       label: "Fordon & säkerhet", icon: "🔧", qs: QUESTIONS.filter(q => q.delprov === 1 && !isNavigeringQuestion(q)) },
-            { key: "trafikregler", label: "Trafikregler",       icon: "🚦", qs: QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q)) },
-            { key: "taxiregler",   label: "Taxiregler",         icon: "📋", qs: QUESTIONS.filter(isTaxiregelQuestion) },
-            { key: "vilotid",      label: "Vilotid & tidbok",   icon: "⏱️", qs: QUESTIONS.filter(isVilotidQuestion) },
-            { key: "navigering",   label: "Navigering",         icon: "🗺️", qs: QUESTIONS.filter(isNavigeringQuestion) },
-            { key: "bilder",       label: "Bildfrågor",         icon: "🖼️", qs: QUESTIONS.filter(q => q.image) },
+            { key: "fordon",       label: t("cat_fordon"),       icon: "🔧", qs: QUESTIONS.filter(q => q.delprov === 1 && !isNavigeringQuestion(q)) },
+            { key: "trafikregler", label: t("cat_trafikregler"),  icon: "🚦", qs: QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q)) },
+            { key: "taxiregler",   label: t("cat_taxiregler"),    icon: "📋", qs: QUESTIONS.filter(isTaxiregelQuestion) },
+            { key: "vilotid",      label: t("cat_vilotid"),       icon: "⏱️", qs: QUESTIONS.filter(isVilotidQuestion) },
+            { key: "navigering",   label: t("cat_navigering"),    icon: "🗺️", qs: QUESTIONS.filter(isNavigeringQuestion) },
+            { key: "bilder",       label: t("cat_bilder"),        icon: "🖼️", qs: QUESTIONS.filter(q => q.image) },
           ].map(cat => {
             const masteredCount = cat.qs.filter(q => getQuestionStatus(q) === "behärskad").length;
             const triedCount    = cat.qs.filter(q => getQuestionStatus(q) !== "ej övad").length;
@@ -3143,18 +3218,18 @@ export default function App() {
           })();
 
           const browseTitle = {
-            "felaktiga":    "Felaktigt besvarade",
-            "sparade":      "Sparade frågor",
-            "ej övad":      "Ej övad",
-            "öva mer":      "Öva mer",
-            "på väg":       "På väg",
-            "behärskad":    "Behärskad",
-            "fordon":       "Fordon & säkerhet",
-            "trafikregler": "Trafikregler",
-            "taxiregler":   "Taxiregler",
-            "vilotid":      "Vilotid & tidbok",
-            "navigering":   "Navigering",
-            "bilder":       "Bildfrågor",
+            "felaktiga":    t("browse_felaktiga"),
+            "sparade":      t("browse_sparade"),
+            "ej övad":      t("browse_ej_ovad"),
+            "öva mer":      t("browse_ova_mer"),
+            "på väg":       t("browse_pa_vag"),
+            "behärskad":    t("browse_behärskad"),
+            "fordon":       t("cat_fordon"),
+            "trafikregler": t("cat_trafikregler"),
+            "taxiregler":   t("cat_taxiregler"),
+            "vilotid":      t("cat_vilotid"),
+            "navigering":   t("cat_navigering"),
+            "bilder":       t("cat_bilder"),
           }[fragorFilter] || "";
 
           const statusColor = (status) => ({ "behärskad": C.greenLight, "på väg": C.gold, "öva mer": C.redLight, "ej övad": C.faint }[status]);
@@ -3182,7 +3257,7 @@ export default function App() {
                         fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                       }}
                     >
-                      ← Tillbaka
+                      {t("browse_back")}
                     </button>
                     <div style={{ fontSize: "13px", fontWeight: "700", color: C.text }}>{browseTitle}</div>
                     <div style={{ marginLeft: "auto", fontSize: "11px", color: C.muted }}>{browseQs.length} st</div>
@@ -3193,13 +3268,13 @@ export default function App() {
                       <div style={{ fontSize: "28px", marginBottom: "12px", opacity: 0.4 }}>
                         {fragorFilter === "sparade" ? "🔖" : "✓"}
                       </div>
-                      <div style={{ fontSize: "14px", fontWeight: "700", color: C.muted, marginBottom: "6px" }}>Inga frågor här</div>
+                      <div style={{ fontSize: "14px", fontWeight: "700", color: C.muted, marginBottom: "6px" }}>{t("fragor_saved_empty_title")}</div>
                       <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.65 }}>
                         {fragorFilter === "felaktiga"
-                          ? "Du har inga felaktigt besvarade frågor just nu"
+                          ? t("browse_no_status")
                           : fragorFilter === "sparade"
-                          ? "Öppna en fråga och tryck 🔖 för att spara den"
-                          : "Inga frågor matchar detta filter"}
+                          ? t("browse_no_saved")
+                          : t("browse_no_match")}
                       </div>
                     </div>
                   ) : (
@@ -3224,7 +3299,7 @@ export default function App() {
                               {q.question.substring(0, 62)}…
                             </span>
                             {saved && <span style={{ fontSize: "10px", color: C.gold, flexShrink: 0 }}>🔖</span>}
-                            <span style={{ fontSize: "10px", color: sc, whiteSpace: "nowrap", fontWeight: "600" }}>{st}</span>
+                            <span style={{ fontSize: "10px", color: sc, whiteSpace: "nowrap", fontWeight: "600" }}>{tStatus(st)}</span>
                           </button>
                         );
                       })}
@@ -3239,21 +3314,21 @@ export default function App() {
                   <div className="fragor-s1" style={{ paddingBottom: "18px" }}>
                     <div style={{ fontSize: "34px", fontWeight: "800", color: C.text, letterSpacing: "-0.8px", lineHeight: 1.05, marginBottom: "5px" }}>
                       {isNewUser
-                        ? "Börja med ett snabbprov."
+                        ? t("fragor_title_new")
                         : isHighMastery
-                        ? "Håll nivån uppe."
+                        ? t("fragor_title_high")
                         : wrongCount > 0
-                        ? "Fokusera på svagheterna."
-                        : "Studera efter ämne."}
+                        ? t("fragor_title_wrong")
+                        : t("fragor_title_normal")}
                     </div>
                     <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.55 }}>
                       {isNewUser
-                        ? "Gör ett snabbprov och se direkt var du landar — sedan kan du studera efter ämne."
+                        ? t("fragor_sub_new")
                         : isHighMastery
-                        ? `Du behärskar ${masterPct}% av alla frågor. Underhåll kunskapen.`
+                        ? tf("fragor_sub_high", masterPct)
                         : wrongCount > 0
-                        ? `${wrongCount} felaktiga svar att rätta till — eller välj ett ämne.`
-                        : `${mastered} av ${QUESTIONS.length} behärskade — välj vad du vill träna.`}
+                        ? tf("fragor_sub_wrong", wrongCount)
+                        : tf("fragor_sub_normal", mastered, QUESTIONS.length)}
                     </div>
                   </div>
 
@@ -3275,14 +3350,14 @@ export default function App() {
                               background: "rgba(0,0,0,0.16)", display: "flex", alignItems: "center",
                               justifyContent: "center", fontSize: "18px" }}>▶</div>
                             <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontSize: "16px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>Starta Snabbprov</div>
-                              <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.42)" }}>15 frågor · se direkt var du landar</div>
+                              <div style={{ fontSize: "16px", fontWeight: "800", color: "#09090E", letterSpacing: "-0.3px", lineHeight: 1, marginBottom: "3px" }}>{t("start_snabbprov")}</div>
+                              <div style={{ fontSize: "11px", fontWeight: "600", color: "rgba(0,0,0,0.42)" }}>{t("prov_next_first_sub")}</div>
                             </div>
                             <div style={{ fontSize: "18px", color: "rgba(0,0,0,0.28)", flexShrink: 0 }}>→</div>
                           </div>
                         </button>
                         <div style={{ fontSize: "11px", color: C.muted, textAlign: "center", padding: "2px 0 4px" }}>
-                          Eller välj ett ämne i listan nedan.
+                          {t("fragor_new_hint")}
                         </div>
                       </>
                     ) : wrongCount > 0 ? (
@@ -3291,11 +3366,11 @@ export default function App() {
                         borderColor: "rgba(208,72,72,0.18)", background: C.surface }}>
                         <div style={{ marginBottom: "14px" }}>
                           <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "8px" }}>
-                            Att rätta till
+                            {t("fragor_wrong_section_title")}
                           </div>
                           <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
                             <span style={{ fontSize: "32px", fontWeight: "800", color: C.redLight, letterSpacing: "-1px", lineHeight: 1 }}>{wrongCount}</span>
-                            <span style={{ fontSize: "13px", color: C.textSoft }}>felaktiga svar</span>
+                            <span style={{ fontSize: "13px", color: C.textSoft }}>{t("fragor_wrong_unit")}</span>
                           </div>
                         </div>
                         <div style={{ display: "flex", gap: "8px" }}>
@@ -3304,14 +3379,14 @@ export default function App() {
                               border: `1px solid ${C.border}`, background: "transparent",
                               color: C.muted, cursor: "pointer", fontSize: "12px", fontWeight: "600",
                               fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
-                            Bläddra →
+                            {t("fragor_browse_btn")}
                           </button>
                           <button className="pressable-sm" onClick={() => startQuiz("focus")}
                             style={{ flex: 1, padding: "9px 14px", borderRadius: "11px",
                               border: "1px solid rgba(208,72,72,0.28)", background: "rgba(208,72,72,0.08)",
                               color: C.redLight, cursor: "pointer", fontSize: "12px", fontWeight: "700",
                               fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
-                            Träna nu →
+                            {t("fragor_train_btn")}
                           </button>
                         </div>
                       </div>
@@ -3319,17 +3394,17 @@ export default function App() {
                       /* High mastery: maintenance card */
                       <div style={{ ...card, padding: "16px 18px", marginBottom: "6px",
                         borderColor: C.greenBorder, background: "rgba(44,184,122,0.04)" }}>
-                        <div style={{ fontSize: "10px", fontWeight: "700", color: C.greenLight, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "8px" }}>Underhållsläge</div>
-                        <div style={{ fontSize: "14px", fontWeight: "700", color: C.text, marginBottom: "4px" }}>Du behärskar {masterPct}% av frågorna.</div>
+                        <div style={{ fontSize: "10px", fontWeight: "700", color: C.greenLight, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "8px" }}>{t("fragor_maintenance_title")}</div>
+                        <div style={{ fontSize: "14px", fontWeight: "700", color: C.text, marginBottom: "4px" }}>{tf("fragor_maintenance_msg", masterPct)}</div>
                         <div style={{ fontSize: "12px", color: C.textSoft, lineHeight: 1.6, marginBottom: "14px" }}>
-                          Gå igenom kategorierna nedan för att hålla kunskapen fräsch, eller ta det officiella provet.
+                          {t("fragor_maintenance_sub")}
                         </div>
                         <button className="pressable-sm" onClick={() => setView("prov")}
                           style={{ padding: "9px 16px", borderRadius: "11px",
                             border: `1px solid ${C.greenBorder}`, background: "rgba(44,184,122,0.10)",
                             color: C.greenLight, cursor: "pointer", fontSize: "12px", fontWeight: "700",
                             fontFamily: "inherit", WebkitTapHighlightColor: "transparent" }}>
-                          Ta ett delprov →
+                          {t("fragor_maintenance_btn")}
                         </button>
                       </div>
                     ) : savedIds.length > 0 ? (
@@ -3344,8 +3419,8 @@ export default function App() {
                           background: "rgba(240,165,0,0.18)", border: `1px solid ${C.borderGold}`,
                           display: "flex", alignItems: "center", justifyContent: "center", fontSize: "15px" }}>🔖</div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Sparade frågor</div>
-                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{savedIds.length} sparade att repetera</div>
+                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.gold, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>{t("fragor_saved_title")}</div>
+                          <div style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{tf("fragor_saved_count", savedIds.length)}</div>
                         </div>
                         <span style={{ color: C.gold, fontSize: "16px" }}>›</span>
                       </button>
@@ -3363,9 +3438,9 @@ export default function App() {
                           {weakestCat.icon}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.redLight, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Svagast område</div>
+                          <div style={{ fontSize: "10px", fontWeight: "700", color: C.redLight, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>{t("fragor_weakest_label")}</div>
                           <div style={{ fontSize: "12px", fontWeight: "700", color: C.text }}>{weakestCat.label}</div>
-                          <div style={{ fontSize: "10px", color: C.muted }}>{weakestCat.pct}% behärskat</div>
+                          <div style={{ fontSize: "10px", color: C.muted }}>{weakestCat.pct}% {t("mastery_suffix")}</div>
                         </div>
                         <span style={{ color: C.muted, fontSize: "16px" }}>›</span>
                       </button>
@@ -3380,8 +3455,8 @@ export default function App() {
                           fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                           borderColor: C.borderGoldStr, background: C.goldBg }}>
                         <span style={{ fontSize: "13px" }}>🔖</span>
-                        <span style={{ flex: 1, fontSize: "12px", fontWeight: "600", color: C.text }}>Sparade frågor</span>
-                        <span style={{ fontSize: "10px", color: C.muted, fontFamily: "'DM Mono', monospace" }}>{savedIds.length} st</span>
+                        <span style={{ flex: 1, fontSize: "12px", fontWeight: "600", color: C.text }}>{t("fragor_saved_title")}</span>
+                        <span style={{ fontSize: "10px", color: C.muted, fontFamily: "'DM Mono', monospace" }}>{tf("fragor_saved_count_short", savedIds.length)}</span>
                         <span style={{ color: C.gold, fontSize: "13px" }}>›</span>
                       </button>
                     )}
@@ -3396,8 +3471,8 @@ export default function App() {
                           display: "flex", alignItems: "center", justifyContent: "center",
                           fontSize: "13px", opacity: 0.55 }}>🔖</div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted }}>Sparade frågor</div>
-                          <div style={{ fontSize: "10px", color: C.muted, opacity: 0.7, lineHeight: 1.4 }}>Tryck 🔖 under en fråga för att spara den hit</div>
+                          <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted }}>{t("fragor_saved_empty_title")}</div>
+                          <div style={{ fontSize: "10px", color: C.muted, opacity: 0.7, lineHeight: 1.4 }}>{t("fragor_saved_empty_hint")}</div>
                         </div>
                         <span style={{ fontSize: "10px", color: C.muted, opacity: 0.55, fontFamily: "'DM Mono', monospace", flexShrink: 0 }}>0 st</span>
                       </div>
@@ -3410,10 +3485,10 @@ export default function App() {
                       style={{ display: "flex", gap: "6px", overflowX: "auto",
                         paddingBottom: "2px", WebkitOverflowScrolling: "touch" }}>
                       {[
-                        { key: "felaktiga", label: "Felaktiga",  count: wrongCount,      color: C.redLight, border: "rgba(208,72,72,0.30)" },
-                        { key: "sparade",   label: "Sparade",    count: savedIds.length, color: C.gold,     border: C.borderGold },
-                        { key: "ej övad",   label: "Ej övade",   count: untriedCount,    color: C.textSoft, border: C.border },
-                        { key: "bilder",    label: "Bildfrågor", count: imageCount,      color: C.textSoft, border: C.border },
+                        { key: "felaktiga", label: t("fragor_pills_wrong"),   count: wrongCount,      color: C.redLight, border: "rgba(208,72,72,0.30)" },
+                        { key: "sparade",   label: t("fragor_pills_saved"),   count: savedIds.length, color: C.gold,     border: C.borderGold },
+                        { key: "ej övad",   label: t("fragor_pills_untried"), count: untriedCount,    color: C.textSoft, border: C.border },
+                        { key: "bilder",    label: t("fragor_pills_images"),  count: imageCount,      color: C.textSoft, border: C.border },
                       ].map(({ key, label, count, color, border }) => {
                         const disabled = count === 0;
                         return (
@@ -3439,7 +3514,7 @@ export default function App() {
 
                   {/* ── KUNSKAPSNIVÅ (redesigned as integrated card) ──────── */}
                   <div className="fragor-s3" style={{ marginBottom: "18px" }}>
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>Kunskapsnivå</div>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>{t("fragor_knowledge_title")}</div>
                     <div style={{ ...card, padding: "14px 16px" }}>
                       {/* Stacked proportion bar */}
                       <div style={{ display: "flex", height: "5px", borderRadius: "3px", overflow: "hidden", marginBottom: "14px", gap: "1px" }}>
@@ -3457,10 +3532,10 @@ export default function App() {
                       </div>
                       {/* Compact tappable rows */}
                       {[
-                        { key: "behärskad", label: "Behärskad", color: C.greenLight },
-                        { key: "på väg",    label: "På väg",    color: C.gold },
-                        { key: "öva mer",   label: "Öva mer",   color: C.redLight },
-                        { key: "ej övad",   label: "Ej övad",   color: "rgba(255,255,255,0.35)" },
+                        { key: "behärskad", label: t("status_mastered"),      color: C.greenLight },
+                        { key: "på väg",    label: t("status_progressing"),   color: C.gold },
+                        { key: "öva mer",   label: t("status_practice_more"), color: C.redLight },
+                        { key: "ej övad",   label: t("status_untried"),       color: "rgba(255,255,255,0.35)" },
                       ].map(({ key, label, color }, i, arr) => {
                         const count = statusCounts[key];
                         const pct   = QUESTIONS.length > 0 ? Math.round(count / QUESTIONS.length * 100) : 0;
@@ -3489,7 +3564,7 @@ export default function App() {
 
                   {/* ── ÖVA EFTER ÄMNE (category list) ──────────────────── */}
                   <div className="fragor-s4">
-                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>Öva efter ämne</div>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: C.textSoft, letterSpacing: "0.6px", textTransform: "uppercase", marginBottom: "10px" }}>{t("fragor_category_title")}</div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                       {categories.map(({ key, label, icon, qs, masteredCount, triedCount, pct }) => {
                         const barCol   = pct >= 80 ? C.greenLight : pct >= 50 ? C.gold : pct > 0 ? C.redLight : "rgba(255,255,255,0.12)";
@@ -3516,15 +3591,15 @@ export default function App() {
                                   {isWeakest && (
                                     <span style={{ fontSize: "8px", fontWeight: "700", color: C.redLight,
                                       background: "rgba(208,72,72,0.12)", border: "1px solid rgba(208,72,72,0.22)",
-                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>Svagast</span>
+                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>{t("cat_weakest_badge")}</span>
                                   )}
                                   {isNear && (
                                     <span style={{ fontSize: "8px", fontWeight: "700", color: C.gold,
                                       background: C.goldBg, border: `1px solid ${C.borderGold}`,
-                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>Nästan klar</span>
+                                      padding: "1px 5px", borderRadius: "4px", letterSpacing: "0.3px", flexShrink: 0 }}>{t("cat_near_badge")}</span>
                                   )}
                                 </div>
-                                <div style={{ fontSize: "10px", color: C.muted }}>{masteredCount} av {qs.length} behärskade</div>
+                                <div style={{ fontSize: "10px", color: C.muted }}>{tf("cat_mastered_of", masteredCount, qs.length)}</div>
                               </div>
                               <div style={{ textAlign: "right", flexShrink: 0 }}>
                                 <div style={{ fontSize: "14px", fontWeight: "800", color: pct > 0 ? barCol : C.muted, letterSpacing: "-0.3px", lineHeight: 1 }}>
@@ -3550,7 +3625,7 @@ export default function App() {
               {statsQuestion && (
                 <Popup onClose={() => setStatsQuestion(null)}>
                   <QuestionPopupBody
-                    q={statsQuestion}
+                    q={tq(statsQuestion)}
                     chosen={statsSelected}
                     revealed={statsAnswered}
                     onSelectOption={(i) => {
@@ -3586,29 +3661,29 @@ export default function App() {
               display: "flex", justifyContent: "space-between", alignItems: "center",
               marginBottom: "20px",
             }}>
-              <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
+              <button onClick={() => setView("mer")} style={btnGhost}>{t("checklist_view_back")}</button>
               <div style={{
                 fontSize: "12px", fontWeight: "600", color: C.muted,
-                background: checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0
+                background: checklistDone.size === checklistSteps.length && checklistSteps.length > 0
                   ? C.greenBg : C.goldBg,
-                border: `1px solid ${checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0
+                border: `1px solid ${checklistDone.size === checklistSteps.length && checklistSteps.length > 0
                   ? C.greenBorder : C.borderGold}`,
                 borderRadius: "16px", padding: "5px 12px",
-                color: checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0
+                color: checklistDone.size === checklistSteps.length && checklistSteps.length > 0
                   ? C.greenLight : C.gold,
               }}>
-                {checklistDone.size} / {CHECKLIST_STEPS.length}
+                {checklistDone.size} / {checklistSteps.length}
               </div>
             </div>
 
-            <Label color={C.gold}>Checklista</Label>
+            <Label color={C.gold}>{t("checklist_view_label")}</Label>
             <p style={{ fontSize: "13px", color: C.muted, lineHeight: "1.6", margin: "0 0 20px" }}>
-              Taxiförarlegitimation — markera varje steg när du är klar med det.
+              {t("checklist_view_intro")}
             </p>
 
             {/* Step list */}
             <div style={{ ...card, overflow: "hidden" }}>
-              {CHECKLIST_STEPS.map(({ title, desc, app }, i, arr) => {
+              {checklistSteps.map(({ title, desc, app }, i, arr) => {
                 const done = checklistDone.has(i);
                 const last = i === arr.length - 1;
                 return (
@@ -3686,7 +3761,7 @@ export default function App() {
             </div>
 
             {/* All done state */}
-            {checklistDone.size === CHECKLIST_STEPS.length && CHECKLIST_STEPS.length > 0 && (
+            {checklistDone.size === checklistSteps.length && checklistSteps.length > 0 && (
               <div style={{
                 marginTop: "20px", padding: "18px 20px",
                 background: C.greenBg, border: `1px solid ${C.greenBorder}`,
@@ -3694,10 +3769,10 @@ export default function App() {
                 animation: "popIn 0.4s cubic-bezier(0.34,1.4,0.64,1) both",
               }}>
                 <div style={{ fontSize: "13px", fontWeight: "700", color: C.greenLight, marginBottom: "3px" }}>
-                  Alla steg klara
+                  {t("checklist_all_done")}
                 </div>
                 <div style={{ fontSize: "12px", color: C.green, opacity: 0.8 }}>
-                  Lycka till med din taxiförarlegitimation!
+                  {t("checklist_good_luck")}
                 </div>
               </div>
             )}
@@ -3713,21 +3788,21 @@ export default function App() {
 
             {/* Top bar */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
-              <button onClick={() => setView("mer")} style={btnGhost}>← Mer</button>
+              <button onClick={() => setView("mer")} style={btnGhost}>{t("settings_back")}</button>
             </div>
 
             {/* ── UTSEENDE ─────────────────────────────────────────────── */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Utseende</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("settings_appearance_lbl")}</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "24px" }}>
               {[
                 {
                   id: "light",
-                  label: "Ljust",
+                  label: t("settings_light"),
                   preview: { bg: "#F5F4EF", surface: "#FFFFFF", text: "#18171E", muted: "#9898A8", border: "rgba(0,0,0,0.08)" },
                 },
                 {
                   id: "dark",
-                  label: "Mörkt",
+                  label: t("settings_dark"),
                   preview: { bg: "#0D0D14", surface: "#141421", text: "#F2ECE4", muted: "#666880", border: "rgba(255,255,255,0.08)" },
                 },
               ].map(({ id, label, preview }) => {
@@ -3795,8 +3870,99 @@ export default function App() {
               })}
             </div>
 
+            {/* ── SPRÅK ────────────────────────────────────────────────── */}
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("settings_language_lbl")}</div>
+            <div style={{ ...card, overflow: "hidden", marginBottom: "24px" }}>
+              {[
+                {
+                  id: "sv",
+                  name: "Svenska",
+                  flag: (
+                    /* Swedish flag — official blue #006AA7, yellow #FECC02, Nordic cross */
+                    <svg viewBox="0 0 16 10" style={{ width: "24px", height: "auto", display: "block", borderRadius: "2px", flexShrink: 0 }}>
+                      <rect width="16" height="10" fill="#006AA7"/>
+                      <rect x="0" y="4" width="16" height="2" fill="#FECC02"/>
+                      <rect x="5" y="0" width="2" height="10" fill="#FECC02"/>
+                    </svg>
+                  ),
+                },
+                {
+                  id: "en",
+                  name: "English",
+                  flag: (
+                    /* Union Jack — #012169 blue, #C8102E red, white fimbriation */
+                    <svg viewBox="0 0 60 30" style={{ width: "24px", height: "auto", display: "block", borderRadius: "2px", flexShrink: 0 }}>
+                      <rect width="60" height="30" fill="#012169"/>
+                      <path d="M0,0 L60,30 M60,0 L0,30" stroke="white" strokeWidth="6"/>
+                      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
+                      <rect x="24" y="0" width="12" height="30" fill="white"/>
+                      <rect x="0" y="11" width="60" height="8" fill="white"/>
+                      <rect x="26" y="0" width="8" height="30" fill="#C8102E"/>
+                      <rect x="0" y="13" width="60" height="4" fill="#C8102E"/>
+                    </svg>
+                  ),
+                },
+              ].map(({ id, name, flag }, idx, arr) => {
+                const active = lang === id;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => setLang(id)}
+                    className="pressable"
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                      padding: "13px 16px",
+                      background: active ? C.goldBg : "transparent",
+                      border: "none",
+                      borderBottom: idx < arr.length - 1 ? `1px solid ${C.border}` : "none",
+                      cursor: "pointer",
+                      WebkitTapHighlightColor: "transparent",
+                      textAlign: "left",
+                      transition: "background 0.18s",
+                      boxSizing: "border-box",
+                    }}
+                  >
+                    {/* Flag SVG */}
+                    {flag}
+
+                    {/* Language name */}
+                    <span style={{
+                      flex: 1,
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: active ? C.gold : C.text,
+                      letterSpacing: "0.1px",
+                      transition: "color 0.18s",
+                    }}>
+                      {name}
+                    </span>
+
+                    {/* Radio indicator */}
+                    <div style={{
+                      width: "18px", height: "18px",
+                      borderRadius: "50%",
+                      background: active ? C.gold : "transparent",
+                      border: `1.5px solid ${active ? C.gold : C.border}`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      flexShrink: 0,
+                      transition: "background 0.18s, border-color 0.18s",
+                    }}>
+                      {active && (
+                        <svg width="8" height="7" viewBox="0 0 8 7" fill="none">
+                          <path d="M1 3.5l2 2 4-4" stroke="#090909" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
             {/* ── DATA ─────────────────────────────────────────────────── */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Data</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("settings_data_lbl")}</div>
             <div style={{ ...card, overflow: "hidden" }}>
               {/* Reset data row */}
               <button
@@ -3818,9 +3984,9 @@ export default function App() {
                 }}>🗑</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "13px", fontWeight: "600", color: C.redLight, marginBottom: "1px" }}>
-                    Nollställ all data
+                    {t("settings_reset_title")}
                   </div>
-                  <div style={{ fontSize: "11px", color: C.muted }}>Tar bort all statistik och sparade frågor</div>
+                  <div style={{ fontSize: "11px", color: C.muted }}>{t("settings_reset_sub")}</div>
                 </div>
                 <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
               </button>
@@ -3830,7 +3996,7 @@ export default function App() {
                 padding: "10px 16px",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
               }}>
-                <div style={{ fontSize: "12px", color: C.faint }}>Version</div>
+                <div style={{ fontSize: "12px", color: C.faint }}>{t("settings_version")}</div>
                 <div style={{ fontSize: "11px", color: C.faint, fontFamily: "'DM Mono', monospace" }}>v{APP_VERSION}</div>
               </div>
             </div>
@@ -3842,7 +4008,7 @@ export default function App() {
           <div style={{ animation: "screenIn 0.28s ease both" }}>
 
             {/* ══ STATISTIK ═══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Statistik</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("mer_stats_title")}</div>
 
             {tot === 0 ? (
               /* No-data placeholder — compact and calm */
@@ -3855,8 +4021,8 @@ export default function App() {
                   <div style={{ width: "12px", height: "2px", background: C.faint, borderRadius: "2px" }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: "12px", fontWeight: "600", color: C.muted, lineHeight: 1, marginBottom: "3px" }}>Ingen aktivitet ännu</div>
-                  <div style={{ fontSize: "11px", color: C.faint }}>Statistik visas här efter din första session</div>
+                  <div style={{ fontSize: "12px", fontWeight: "600", color: C.muted, lineHeight: 1, marginBottom: "3px" }}>{t("mer_no_activity")}</div>
+                  <div style={{ fontSize: "11px", color: C.faint }}>{t("mer_no_activity_sub")}</div>
                 </div>
               </div>
             ) : (
@@ -3871,7 +4037,7 @@ export default function App() {
                 }}>
                   <div>
                     <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "6px", opacity: 0.8 }}>
-                      Träffsäkerhet
+                      {t("mer_accuracy")}
                     </div>
                     <div style={{ fontSize: "40px", fontWeight: "500", color: C.gold, lineHeight: 1, letterSpacing: "-1.5px", fontFamily: "'DM Mono', monospace" }}>
                       {acc}<span style={{ fontSize: "18px", fontWeight: "400", letterSpacing: "-0.5px" }}>%</span>
@@ -3889,9 +4055,9 @@ export default function App() {
                 {/* Secondary: 3 stats */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
                   {[
-                    [tot,        "Försök",     C.text,       "stat-card-2"],
-                    [corr,       "Rätt",       C.greenLight, "stat-card-3"],
-                    [`${mastered}/${QUESTIONS.length}`, "Behärskade", "#b8a0d0", "stat-card-4"],
+                    [tot,        t("mer_attempts"),    C.text,       "stat-card-2"],
+                    [corr,       t("mer_correct"),     C.greenLight, "stat-card-3"],
+                    [`${mastered}/${QUESTIONS.length}`, t("mer_mastered_lbl"), "#b8a0d0", "stat-card-4"],
                   ].map(([v, l, color, cn], i) => (
                     <div key={l} className={cn} style={{
                       padding: "10px 14px",
@@ -3910,16 +4076,16 @@ export default function App() {
             {/* Mastery distribution */}
             <div style={{ ...card, padding: "12px 16px 10px", marginBottom: "20px" }}>
               <div style={{ fontSize: "9px", fontWeight: "700", color: C.muted, letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px" }}>
-                Kunskapsfördelning
+                {t("mer_knowledge_dist")}
               </div>
               <MasteryBar questions={QUESTIONS} getStatus={getQuestionStatus} />
             </div>
 
             {/* ══ CHECKLISTA ══════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Checklista</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("mer_checklist_title")}</div>
             {(() => {
               const done  = checklistDone.size;
-              const total = CHECKLIST_STEPS.length;
+              const total = checklistSteps.length;
               const pct   = Math.round(done / total * 100);
               return (
                 <button
@@ -3945,14 +4111,14 @@ export default function App() {
                     </span>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "2px" }}>
-                        Taxiförarlegitimation
+                        {t("mer_checklist_name")}
                       </div>
                       <div style={{ fontSize: "11px", color: C.muted }}>
                         {done === 0
-                          ? "12 steg på vägen till din yrkeslegitimation"
+                          ? t("mer_checklist_start")
                           : done === total
-                          ? "Alla steg klara"
-                          : `${done} av ${total} steg klara`}
+                          ? t("checklist_all_done")
+                          : tf("mer_checklist_in_progress", done, total)}
                       </div>
                     </div>
                     <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1, flexShrink: 0 }}>›</span>
@@ -3972,7 +4138,7 @@ export default function App() {
             })()}
 
             {/* ══ VERKTYG ════════════════════════════════════════════════ */}
-            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>Verktyg</div>
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("mer_tools_title")}</div>
             <div style={{ ...card, overflow: "hidden", marginBottom: "24px" }}>
               <button
                 id="ob-flashcards"
@@ -3995,9 +4161,9 @@ export default function App() {
                 }}>🃏</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "1px" }}>
-                    Flashcards
+                    {t("mer_flashcards_title")}
                   </div>
-                  <div style={{ fontSize: "11px", color: C.muted }}>Öva med fråge- och svarskort</div>
+                  <div style={{ fontSize: "11px", color: C.muted }}>{t("mer_flashcards_sub")}</div>
                 </div>
                 <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
               </button>
@@ -4022,9 +4188,9 @@ export default function App() {
                 }}>⚙️</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "13px", fontWeight: "700", color: C.text, marginBottom: "1px" }}>
-                    Inställningar
+                    {t("mer_settings_title")}
                   </div>
-                  <div style={{ fontSize: "11px", color: C.muted }}>Utseende, data och version</div>
+                  <div style={{ fontSize: "11px", color: C.muted }}>{t("mer_settings_sub")}</div>
                 </div>
                 <span style={{ color: C.muted, fontSize: "16px", lineHeight: 1 }}>›</span>
               </button>
@@ -4046,7 +4212,7 @@ export default function App() {
       {showBottomNav && (
         <nav className="bottom-nav">
           <div className="bottom-nav-inner">
-            {[["prov","prov","Prov"],["fragor","fragor","Frågor"],["home","home","Hem"],["utmaningar","utmaningar","Utmaningar"],["mer","mer","Mer"]].map(([v, ico, label]) => (
+            {[["prov","prov","nav_prov"],["fragor","fragor","nav_fragor"],["home","home","nav_home"],["utmaningar","utmaningar","nav_utmaningar"],["mer","mer","nav_mer"]].map(([v, ico, labelKey]) => (
               <button key={v}
                 id={v !== "home" ? `ob-nav-${v}` : undefined}
                 className={`bottom-nav-btn${(view === v || (v === "mer" && view === "installningar")) ? " active" : ""}`}
@@ -4055,7 +4221,7 @@ export default function App() {
               >
                 <span className="bottom-nav-icon"><NavIcon name={ico} active={view === v} /></span>
                 <span className="bottom-nav-label">
-                  {label}
+                  {t(labelKey)}
                 </span>
               </button>
             ))}
@@ -4098,12 +4264,12 @@ export default function App() {
               ⚠️
             </div>
             <div style={{ fontSize: "17px", fontWeight: "800", color: C.text, marginBottom: "10px", letterSpacing: "-0.2px" }}>
-              Nollställ all statistik?
+              {t("reset_title")}
             </div>
             <div style={{ fontSize: "13px", color: C.textSoft, lineHeight: 1.6, marginBottom: "26px" }}>
-              Det här tar bort all din sparade träningsstatistik — rätta svar, felaktiga svar och din kunskapsnivå per fråga. Ditt framsteg nollställs helt och du börjar om från noll.
+              {t("reset_body")}
               <br /><br />
-              <span style={{ color: C.muted, fontWeight: "600" }}>Det går inte att ångra.</span>
+              <span style={{ color: C.muted, fontWeight: "600" }}>{t("reset_irreversible")}</span>
             </div>
             <div style={{ display: "flex", gap: "10px" }}>
               <button
@@ -4115,7 +4281,7 @@ export default function App() {
                   fontFamily: "inherit", WebkitTapHighlightColor: "transparent",
                 }}
               >
-                Avbryt
+                {t("reset_cancel")}
               </button>
               <button
                 onClick={resetAllProgress}
@@ -4130,7 +4296,7 @@ export default function App() {
                   transition: "background 0.15s",
                 }}
               >
-                Nollställ
+                {t("reset_confirm")}
               </button>
             </div>
           </div>
@@ -4150,7 +4316,7 @@ export default function App() {
           rirBest={rirBest}               setRirBest={setRirBest}
           checklistDone={checklistDone}   setChecklistDone={setChecklistDone}
           showOnboarding={showOnboarding} setShowOnboarding={setShowOnboarding}
-          checklistSteps={CHECKLIST_STEPS}
+          checklistSteps={checklistSteps}
           saveAllStats={saveAllStats}
         />
       )}
