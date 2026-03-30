@@ -9,12 +9,12 @@
   "theme_color": "#f5a623",
   "icons": [
     {
-      "src": "/taxi-teoriapp/icon-192.png",
+      "src": "/taxi-teoriapp/branding/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/taxi-teoriapp/icon-512.png",
+      "src": "/taxi-teoriapp/branding/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

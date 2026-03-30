@@ -16,6 +16,12 @@ import { QUESTIONS as importedQuestions } from "./questions.js";
 import { sv } from "./locales/sv.js";
 import { en } from "./locales/en.js";
 import { QUESTIONS_EN } from "./locales/questions-en.js";
+import {
+  loadNotifSettings, saveNotifSettings,
+  recordActivity, checkAndFireOnOpen,
+  scheduleNextReminder, cancelScheduledReminders,
+} from "./notifications.js";
+import { ensureNotifChannel } from "./notif-platform.js";
 
 // ─── Version (injected from package.json via vite.config.js) ─────────────────
 const APP_VERSION = import.meta.env.VITE_APP_VERSION ?? "1.0.0";
@@ -461,7 +467,7 @@ function ZoomableImage({ src, style }) {
 function Logo({ size = 36 }) {
   return (
     <img
-      src={import.meta.env.BASE_URL + "icon-180.png"}
+      src={import.meta.env.BASE_URL + "branding/icon-180.png"}
       alt="Taxi Teori"
       style={{
         width: size, height: size,
@@ -940,6 +946,16 @@ export default function App() {
     setLangState(l);
     try { localStorage.setItem('taxi-teori-language', l); } catch {}
   };
+  // ── Notification + feedback settings ────────────────────────────────────
+  const [notifSettings, setNotifSettingsState] = useState(() => loadNotifSettings());
+  const setNotifSettings = (next) => {
+    setNotifSettingsState(next);
+    saveNotifSettings(next);
+    // Reschedule (or cancel) on native whenever enabled/timing changes
+    if (next.enabled !== notifSettings.enabled || next.timing !== notifSettings.timing) {
+      scheduleNextReminder(next, lang).catch(() => {});
+    }
+  };
   // Translation lookup: falls back to Swedish then to the key itself
   const T = lang === 'sv' ? sv : en;
   const t = (key) => T[key] ?? sv[key] ?? key;
@@ -1114,6 +1130,13 @@ export default function App() {
     saveAllStats(stats);
   }, [stats]);
 
+  // ── Notifications: init channel + schedule/fire on app open (once at mount) ─
+  useEffect(() => {
+    ensureNotifChannel().catch(() => {});           // Android channel setup (idempotent, no-op on web)
+    scheduleNextReminder(notifSettings, lang).catch(() => {}); // native: schedule next; web: no-op
+    checkAndFireOnOpen(notifSettings, lang).catch(() => {});   // web: fire if in window; native: no-op
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Reset all progress ────────────────────────────────────────────────────
   const resetAllProgress = () => {
     clearLocalStats();
@@ -1184,33 +1207,37 @@ export default function App() {
   // ── Audio feedback ────────────────────────────────────────────────────────
   const playPling = () => {
     try {
-      if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
-      const ctx = audioCtx.current;
-      const osc = ctx.createOscillator(), gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
-      gain.gain.setValueAtTime(0.25, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
-      if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
+      if (notifSettings.sound) {
+        if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = audioCtx.current;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.25, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
+      }
+      if (notifSettings.vibration && navigator.vibrate) navigator.vibrate([40, 60, 40]);
     } catch (e) {}
   };
 
   const playBuzz = () => {
     try {
-      if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
-      const ctx = audioCtx.current;
-      const osc = ctx.createOscillator(), gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(140, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.15);
-      gain.gain.setValueAtTime(0.18, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.25);
-      if (navigator.vibrate) navigator.vibrate([180]);
+      if (notifSettings.sound) {
+        if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+        const ctx = audioCtx.current;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(140, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.25);
+      }
+      if (notifSettings.vibration && navigator.vibrate) navigator.vibrate([180]);
     } catch (e) {}
   };
 
@@ -1350,6 +1377,7 @@ export default function App() {
       try { localStorage.setItem(`taxi-teori-rir-${INSTALL_ID}`, String(newBest)); } catch {}
     }
     setResult({ score, total, answers, mode, expired: timeLeft === 0 });
+    recordActivity(lang, notifSettings);
     setView("result");
   };
 
@@ -1448,74 +1476,6 @@ export default function App() {
   return (
     <ThemeContext.Provider value={{ C, btnGold, btnGhost, t, tf, lang, tStatus }}>
     <div style={{ height: "100%", display: "flex", flexDirection: "column", background: C.bg, color: C.text }}>
-
-      {/* ── HEADER ──────────────────────────────────────────────────────── */}
-      <header style={{
-        height: "calc(56px + env(safe-area-inset-top, 0px))",
-        flexShrink: 0,
-        background: C.headerBg,
-        backdropFilter: "blur(32px) saturate(200%)",
-        WebkitBackdropFilter: "blur(32px) saturate(200%)",
-        borderBottom: `1px solid ${C.border}`,
-        padding: "env(safe-area-inset-top, 0px) 20px 0",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        zIndex: 40,
-      }}>
-        {/* Brand mark — warm glow logo */}
-        <button
-          onClick={() => setView("home")}
-          style={{
-            display: "flex", alignItems: "center", gap: "10px",
-            background: "none", border: "none", cursor: "pointer", padding: 0,
-            WebkitTapHighlightColor: "transparent",
-          }}
-        >
-          <div style={{
-            width: "28px", height: "28px", borderRadius: "8px",
-            background: `linear-gradient(135deg, ${C.goldLight} 0%, ${C.gold} 100%)`,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            flexShrink: 0,
-            boxShadow: "0 2px 10px rgba(240,165,0,0.30)",
-          }}>
-            <span style={{ fontSize: "14px", lineHeight: 1 }}>🚕</span>
-          </div>
-          <span style={{
-            fontSize: "15px", fontWeight: "700",
-            color: C.text, letterSpacing: "0.2px",
-            lineHeight: 1,
-            fontFamily: "'Manrope', sans-serif",
-          }}>
-            Taxi Teori
-          </span>
-        </button>
-
-        {/* Desktop nav */}
-        <nav className="header-nav">
-          {[["home","nav_home"],["prov","nav_prov"],["utmaningar","nav_utmaningar"],["fragor","nav_fragor"],["mer","nav_mer"]].map(([v, labelKey]) => {
-            const label = t(labelKey);
-            return (
-            <button key={v}
-              id={v !== "home" ? `ob-nav-${v}-desktop` : undefined}
-              onClick={() => setView(v)}
-              style={{
-                padding: "6px 14px",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontSize: "13px", fontWeight: "600",
-                letterSpacing: "0.2px",
-                background: view === v ? C.goldBg : "transparent",
-                color: view === v ? C.gold : C.muted,
-                transition: "color 0.16s, background 0.16s",
-                WebkitTapHighlightColor: "transparent",
-              }}
-            >
-              {label}
-            </button>
-          );
-          })}
-        </nav>
-      </header>
 
       {/* ── CONTENT ─────────────────────────────────────────────────────── */}
       <main ref={mainRef} className="main-content">
@@ -3663,21 +3623,21 @@ export default function App() {
             }}>
               <button onClick={() => setView("mer")} style={btnGhost}>{t("checklist_view_back")}</button>
               <div style={{
-                fontSize: "12px", fontWeight: "600", color: C.muted,
+                fontSize: "12px", fontWeight: "600",
                 background: checklistDone.size === checklistSteps.length && checklistSteps.length > 0
                   ? C.greenBg : C.goldBg,
                 border: `1px solid ${checklistDone.size === checklistSteps.length && checklistSteps.length > 0
                   ? C.greenBorder : C.borderGold}`,
                 borderRadius: "16px", padding: "5px 12px",
                 color: checklistDone.size === checklistSteps.length && checklistSteps.length > 0
-                  ? C.greenLight : C.gold,
+                  ? C.green : C.goldDark,
               }}>
                 {checklistDone.size} / {checklistSteps.length}
               </div>
             </div>
 
             <Label color={C.gold}>{t("checklist_view_label")}</Label>
-            <p style={{ fontSize: "13px", color: C.muted, lineHeight: "1.6", margin: "0 0 20px" }}>
+            <p style={{ fontSize: "13px", color: C.textSoft, lineHeight: "1.6", margin: "0 0 20px" }}>
               {t("checklist_view_intro")}
             </p>
 
@@ -3694,11 +3654,9 @@ export default function App() {
                       width: "100%", textAlign: "left", cursor: "pointer",
                       display: "flex", gap: "14px",
                       padding: "15px 18px",
-                      borderBottom: last ? "none" : `1px solid ${C.borderSoft}`,
-                      background: done
-                        ? "rgba(79,168,112,0.05)"
-                        : app ? "rgba(201,168,76,0.02)" : "transparent",
                       border: "none",
+                      borderBottom: last ? "none" : `1px solid ${C.border}`,
+                      background: done ? C.greenBg : "transparent",
                       WebkitTapHighlightColor: "transparent",
                       transition: "background 0.18s",
                     }}
@@ -3709,11 +3667,11 @@ export default function App() {
                       style={{
                         width: "22px", height: "22px", borderRadius: "50%", flexShrink: 0,
                         marginTop: "1px",
-                        background: done ? C.greenBg : "transparent",
+                        background: done ? C.greenBg : C.surfaceAlt,
                         border: `1.5px solid ${done ? C.green : app ? C.borderGoldStr : C.border}`,
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontSize: "11px", fontWeight: "800",
-                        color: done ? C.greenLight : C.faint,
+                        color: done ? C.green : C.muted,
                       }}
                     >
                       {done ? "✓" : ""}
@@ -3727,9 +3685,9 @@ export default function App() {
                       }}>
                         <span style={{
                           fontSize: "13px", fontWeight: "700", lineHeight: 1.35,
-                          color: done ? C.muted : app ? C.gold : C.text,
+                          color: done ? C.textSoft : app ? C.gold : C.text,
                           textDecoration: done ? "line-through" : "none",
-                          textDecorationColor: C.faint,
+                          textDecorationColor: C.muted,
                           transition: "color 0.18s",
                         }}>
                           {title}
@@ -3749,7 +3707,7 @@ export default function App() {
                       </div>
                       <p style={{
                         fontSize: "12px", lineHeight: "1.65", margin: 0,
-                        color: done ? C.faint : C.textSoft,
+                        color: done ? C.muted : C.textSoft,
                         transition: "color 0.18s",
                       }}>
                         {desc}
@@ -3768,10 +3726,10 @@ export default function App() {
                 borderRadius: "16px", textAlign: "center",
                 animation: "popIn 0.4s cubic-bezier(0.34,1.4,0.64,1) both",
               }}>
-                <div style={{ fontSize: "13px", fontWeight: "700", color: C.greenLight, marginBottom: "3px" }}>
+                <div style={{ fontSize: "13px", fontWeight: "700", color: C.green, marginBottom: "3px" }}>
                   {t("checklist_all_done")}
                 </div>
-                <div style={{ fontSize: "12px", color: C.green, opacity: 0.8 }}>
+                <div style={{ fontSize: "12px", color: C.green }}>
                   {t("checklist_good_luck")}
                 </div>
               </div>
@@ -3959,6 +3917,173 @@ export default function App() {
                   </button>
                 );
               })}
+            </div>
+
+            {/* ── AVISERINGAR ──────────────────────────────────────────── */}
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("settings_notifications_lbl")}</div>
+            <div style={{ ...card, overflow: "hidden", marginBottom: "24px" }}>
+
+              {/* Study reminders toggle */}
+              <button
+                onClick={() => setNotifSettings({ ...notifSettings, enabled: !notifSettings.enabled })}
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
+                  background: "none", border: "none",
+                  WebkitTapHighlightColor: "transparent",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: "14px", fontWeight: "600", color: C.text, lineHeight: 1.2 }}>
+                    {t("settings_notif_enabled_title")}
+                  </div>
+                  <div style={{ fontSize: "11px", color: C.muted, marginTop: "2px" }}>
+                    {t("settings_notif_enabled_sub")}
+                  </div>
+                </div>
+                <div style={{
+                  width: "44px", height: "26px", borderRadius: "13px", flexShrink: 0,
+                  background: notifSettings.enabled ? C.gold : C.surfaceAlt,
+                  border: `1.5px solid ${notifSettings.enabled ? C.gold : C.border}`,
+                  position: "relative",
+                  transition: "background 0.2s, border-color 0.2s",
+                  pointerEvents: "none",
+                }}>
+                  <div style={{
+                    position: "absolute", top: "3px",
+                    left: notifSettings.enabled ? "21px" : "3px",
+                    width: "16px", height: "16px", borderRadius: "50%",
+                    background: notifSettings.enabled ? "#090909" : C.muted,
+                    transition: "left 0.2s",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                  }} />
+                </div>
+              </button>
+
+              {/* Timing selector — only when enabled */}
+              {notifSettings.enabled && (
+                <div style={{ padding: "10px 16px 14px", borderTop: `1px solid ${C.border}` }}>
+                  <div style={{ fontSize: "11px", fontWeight: "600", color: C.muted, marginBottom: "8px" }}>
+                    {t("settings_notif_timing_lbl")}
+                  </div>
+                  <div style={{
+                    display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
+                    background: C.surfaceAlt, borderRadius: "10px", padding: "3px", gap: "3px",
+                  }}>
+                    {[
+                      { key: "day",     label: t("settings_notif_timing_day") },
+                      { key: "lunch",   label: t("settings_notif_timing_lunch") },
+                      { key: "evening", label: t("settings_notif_timing_evening") },
+                    ].map(({ key, label }) => {
+                      const sel = notifSettings.timing === key;
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => setNotifSettings({ ...notifSettings, timing: key })}
+                          style={{
+                            background: sel ? C.gold : "transparent",
+                            border: "none", borderRadius: "7px",
+                            padding: "9px 4px", cursor: "pointer",
+                            textAlign: "center",
+                            WebkitTapHighlightColor: "transparent",
+                            transition: "background 0.18s",
+                          }}
+                        >
+                          <div style={{ fontSize: "13px", fontWeight: "700", color: sel ? "#090909" : C.text, letterSpacing: "0.1px" }}>
+                            {label}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ── SVARSFEEDBACK ─────────────────────────────────────────── */}
+            <div style={{ fontSize: "9px", fontWeight: "700", color: C.gold, letterSpacing: "3px", textTransform: "uppercase", marginBottom: "10px", fontFamily: "'DM Mono', monospace" }}>{t("settings_feedback_lbl")}</div>
+            <div style={{ ...card, overflow: "hidden", marginBottom: "24px" }}>
+
+              {/* Vibration toggle */}
+              <button
+                onClick={() => setNotifSettings({ ...notifSettings, vibration: !notifSettings.vibration })}
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
+                  background: "none", border: "none",
+                  borderBottom: `1px solid ${C.border}`,
+                  WebkitTapHighlightColor: "transparent",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: "14px", fontWeight: "600", color: C.text, lineHeight: 1.2 }}>
+                    {t("settings_vibration_title")}
+                  </div>
+                  <div style={{ fontSize: "11px", color: C.muted, marginTop: "2px" }}>
+                    {t("settings_vibration_sub")}
+                  </div>
+                </div>
+                <div style={{
+                  width: "44px", height: "26px", borderRadius: "13px", flexShrink: 0,
+                  background: notifSettings.vibration ? C.gold : C.surfaceAlt,
+                  border: `1.5px solid ${notifSettings.vibration ? C.gold : C.border}`,
+                  position: "relative",
+                  transition: "background 0.2s, border-color 0.2s",
+                  pointerEvents: "none",
+                }}>
+                  <div style={{
+                    position: "absolute", top: "3px",
+                    left: notifSettings.vibration ? "21px" : "3px",
+                    width: "16px", height: "16px", borderRadius: "50%",
+                    background: notifSettings.vibration ? "#090909" : C.muted,
+                    transition: "left 0.2s",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                  }} />
+                </div>
+              </button>
+
+              {/* Sound toggle */}
+              <button
+                onClick={() => setNotifSettings({ ...notifSettings, sound: !notifSettings.sound })}
+                style={{
+                  width: "100%", textAlign: "left", cursor: "pointer",
+                  padding: "13px 16px",
+                  display: "flex", alignItems: "center", gap: "12px",
+                  background: "none", border: "none",
+                  WebkitTapHighlightColor: "transparent",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: "14px", fontWeight: "600", color: C.text, lineHeight: 1.2 }}>
+                    {t("settings_sound_title")}
+                  </div>
+                  <div style={{ fontSize: "11px", color: C.muted, marginTop: "2px" }}>
+                    {t("settings_sound_sub")}
+                  </div>
+                </div>
+                <div style={{
+                  width: "44px", height: "26px", borderRadius: "13px", flexShrink: 0,
+                  background: notifSettings.sound ? C.gold : C.surfaceAlt,
+                  border: `1.5px solid ${notifSettings.sound ? C.gold : C.border}`,
+                  position: "relative",
+                  transition: "background 0.2s, border-color 0.2s",
+                  pointerEvents: "none",
+                }}>
+                  <div style={{
+                    position: "absolute", top: "3px",
+                    left: notifSettings.sound ? "21px" : "3px",
+                    width: "16px", height: "16px", borderRadius: "50%",
+                    background: notifSettings.sound ? "#090909" : C.muted,
+                    transition: "left 0.2s",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.25)",
+                  }} />
+                </div>
+              </button>
             </div>
 
             {/* ── DATA ─────────────────────────────────────────────────── */}
@@ -4318,6 +4443,8 @@ export default function App() {
           showOnboarding={showOnboarding} setShowOnboarding={setShowOnboarding}
           checklistSteps={checklistSteps}
           saveAllStats={saveAllStats}
+          lang={lang}
+          notifSettings={notifSettings}   setNotifSettings={setNotifSettings}
         />
       )}
 

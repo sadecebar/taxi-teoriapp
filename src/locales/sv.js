@@ -349,4 +349,22 @@ export const sv = {
   prov_next_keep_sub:  "Öva vidare — du är på rätt spår",
   prov_next_snabb_sub: "15 frågor · se var du landar",
   prov_no_training:    "Ingen träning ännu",
+
+  // ── Inställningar — aviseringar ───────────────────────────────────────────────
+  settings_notifications_lbl:        "Aviseringar",
+  settings_notif_enabled_title:      "Studiepåminnelser",
+  settings_notif_enabled_sub:        "Få påminnelser att öva",
+  settings_notif_timing_lbl:         "Bästa tid att påminna",
+  settings_notif_timing_day:         "Dag",
+  settings_notif_timing_lunch:       "Lunch",
+  settings_notif_timing_evening:     "Kväll",
+  settings_notif_timing_day_sub:     "8–10 förmiddag",
+  settings_notif_timing_evening_sub: "18–20 kväll",
+
+  // ── Inställningar — svarsfeedback ─────────────────────────────────────────────
+  settings_feedback_lbl:    "Svarsfeedback",
+  settings_vibration_title: "Vibration",
+  settings_vibration_sub:   "Vibrera vid rätt och fel svar",
+  settings_sound_title:     "Ljud",
+  settings_sound_sub:       "Ljud vid rätt och fel svar",
 };

@@ -349,4 +349,22 @@ export const en = {
   prov_next_keep_sub:  "Keep practising — you're on the right track",
   prov_next_snabb_sub: "15 questions · see where you stand",
   prov_no_training:    "No training yet",
+
+  // ── Settings — notifications ──────────────────────────────────────────────────
+  settings_notifications_lbl:        "Notifications",
+  settings_notif_enabled_title:      "Study reminders",
+  settings_notif_enabled_sub:        "Get reminders to practise",
+  settings_notif_timing_lbl:         "Best time to remind",
+  settings_notif_timing_day:         "Day",
+  settings_notif_timing_lunch:       "Lunch",
+  settings_notif_timing_evening:     "Evening",
+  settings_notif_timing_day_sub:     "8–10 morning",
+  settings_notif_timing_evening_sub: "6–8 evening",
+
+  // ── Settings — answer feedback ────────────────────────────────────────────────
+  settings_feedback_lbl:    "Answer feedback",
+  settings_vibration_title: "Vibration",
+  settings_vibration_sub:   "Vibrate on correct and wrong answers",
+  settings_sound_title:     "Sound",
+  settings_sound_sub:       "Sound on correct and wrong answers",
 };
