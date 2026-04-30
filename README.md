@@ -138,7 +138,7 @@ src/
   taxiyrket-1.js            # Taxi profession question set
   sakerhet-*.js             # Safety-related question sets
   lagstiftning-*.js         # Law/regulation question sets
-  navigering-1.js           # Navigation-related questions
+  navigering-1.js           # Navigation-related questions```
 
 Key Technical Highlights
 
