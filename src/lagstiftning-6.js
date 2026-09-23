@@ -487,9 +487,9 @@ export const LAGSTIFTNING_6 = [
     "I två av situationerna",
     "I alla situationerna"
   ],
-  correct: 2,
+  correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/289-600x510.png",
-  explanation: "Du måste alltid stanna där stopplikt gäller, även om det inte kommer någon annan trafik. I den här uppgiften är det situation A och B som visar stopplikt. Därför är rätt svar att du måste stanna i två av situationerna."
+  explanation: "Rätt svar är \"I tre av situationerna\". I situation B gäller stopplikt och du måste därför alltid stanna, även om ingen annan trafik kommer. I situation C och D visar trafiksignalen rött, vilket också innebär att du måste stanna. I situation A visar trafiksignalen däremot grönt. En anvisning genom fast sken i en trafiksignal gäller framför ett vägmärke om stopplikt eller väjningsplikt. Därför behöver du inte stanna vid stoppskylten i situation A när signalen visar grönt. Du måste alltså stanna i situation B, C och D – totalt tre situationer."
 },
 {
   id: 287,

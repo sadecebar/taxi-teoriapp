@@ -646,9 +646,9 @@ export const LAGSTIFTNING_2 = [
     "Ja, i båda korsningarna",
     "Nej"
   ],
-  correct: 0,
+  correct: 1,
   image: "https://teori-taxi.com/images/Lagstiftning/98.png",
-  explanation: "I korsning A ser bilen ut att komma från en vanlig väg till höger. Då gäller högerregeln och du har väjningsplikt. I korsning B ser bilen ut att komma från en ägoväg eller liknande utfartsväg från åkermark. Då har fordonet som kör ut därifrån väjningsplikt mot trafiken på vägen. Därför verkar rätt svar vara att du bara har väjningsplikt i korsning A. Om bild B egentligen ska föreställa en vanlig väg är bilden för otydlig och frågan bör bytas ut eller göras tydligare."
+  explanation: "Rätt svar är \"Ja, men endast i korsning B\". I korsning A kommer bilen från en ägoväg, utfart eller liknande mindre väg. Den som kör ut från en sådan väg har väjningsplikt mot trafiken på vägen, så du behöver inte lämna företräde åt bilen där. I korsning B kommer bilen däremot från en vanlig väg på din högra sida. Där gäller högerregeln, vilket innebär att du har väjningsplikt mot bilen från höger. Därför har du endast väjningsplikt i korsning B."
 },
 {
   id: 98,

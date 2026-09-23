@@ -131,9 +131,9 @@ export const LAGSTIFTNING_1 = [
       "Ja, oavsett tidpunkt",
       "Nej"
     ],
-    "correct": 0,
+    "correct": 1,
     "image": "https://teori-taxi.com/images/Lagstiftning/10.png",
-    "explanation": "Rätt svar är \"Ja, men endast under de tiderna som tilläggstavlan anger\". Märket visar ett körfält för fordon i linjetrafik. Tilläggstavlan under säger att även taxi och elbil får använda körfältet, men bara under de tider som anges. Utanför dessa tider gäller inte undantaget för taxi. Tänk så här nästa gång: först läser du huvudmärket, sedan kontrollerar du alltid om en tilläggstavla begränsar vilka fordon som får köra där och när det gäller."
+    "explanation": "Rätt svar är \"Ja, oavsett tidpunkt\". Märket visar ett körfält för fordon i linjetrafik. Under huvudmärket finns två separata tilläggstavlor. Tavlan \"Även taxi och elbil\" innebär att taxi och elbil också får använda körfältet. Tidsangivelsen är en separat tilläggstavla och anger när regleringen för busskörfältet gäller. Under de angivna tiderna får taxi köra där eftersom taxi uttryckligen är tillåten. Utanför dessa tider gäller inte busskörfältsregleringen, vilket innebär att körfältet får användas som ett vanligt körfält. Därför får du köra där med taxi oavsett tidpunkt."
   },
   {
     "id": 11,

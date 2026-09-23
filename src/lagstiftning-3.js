@@ -4,9 +4,9 @@ export const LAGSTIFTNING_3 = [
   delprov: 2,
   question: "Efter 11 timmars ledighet kör du taxi en lördag kl. 18.00–04.00 och har dessutom en viloperiod kl. 20.00–21.00. På söndagen börjar du köra igen kl. 12.00. När måste du senast påbörja ytterligare en viloperiod under söndagen?",
   options: ["Kl. 14.00", "Kl. 15.00", "Kl. 16.00", "Kl. 17.00"],
-  correct: 2,
+  correct: 1,
   image: null,
-  explanation: "Rätt svar är kl. 16.00. Du ska alltid ha haft minst 11 timmars dygnsvila under de föregående 24 timmarna. Vid kl. 16.00 på söndagen räknar du alltså tillbaka till lördag kl. 16.00. Under den perioden finns 2 timmars vila från lördagens längre ledighet (16.00–18.00), 1 timmes vila kl. 20.00–21.00 och 8 timmars vila kl. 04.00–12.00 på söndagen. Det blir totalt 11 timmar. Efter kl. 16.00 faller mer av den äldre vilan bort ur 24-timmarsperioden, och då räcker vilan inte längre. Tänk så här nästa gång: räkna alltid bakåt 24 timmar från den aktuella tidpunkten och summera bara den vila som fortfarande ligger inom den perioden."
+  explanation: "Rätt svar är kl. 15.00. Du ska ha minst 11 timmars dygnsvila under de 24 timmar som föregår varje tidpunkt då du kör. Dygnsvilan får delas upp i högst två perioder, varav den ena måste vara minst 8 timmar. Vid kl. 15.00 på söndagen räknar du tillbaka till lördag kl. 15.00. Då har du 3 timmars vila kl. 15.00–18.00 och 8 timmars vila kl. 04.00–12.00, alltså totalt 11 timmar. Efter kl. 15.00 blir den första viloperioden kortare än 3 timmar och kravet på 11 timmars dygnsvila uppfylls därför inte längre. Viloperioden kl. 20.00–21.00 kan inte läggas till dessa två perioder eftersom dygnsvilan då skulle delas upp i tre separata perioder. Därför måste du senast påbörja ytterligare en viloperiod kl. 15.00."
 },
 {
   id: 102,
@@ -351,9 +351,9 @@ export const LAGSTIFTNING_3 = [
     "Jag ska lämna företräde till mötande trafik om utrymmet inte räcker till för möte",
     "Mötande trafik ska lämna mig företräde om utrymmet inte räcker till för möte"
   ],
-  correct: 3,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/131.png",
-  explanation: "Märket betyder att mötande trafik har väjningsplikt. Det används vid smala vägsträckor, till exempel broar, där två fordon inte säkert kan mötas samtidigt. Du har alltså företräde, och det är den mötande trafiken som ska vänta om utrymmet inte räcker till för möte. Tänk så här nästa gång: röd pil i din riktning betyder att du har företräde, medan den mötande trafiken ska lämna plats."
+  explanation: "Rätt svar är att du ska lämna företräde till mötande trafik om utrymmet inte räcker till för möte. Det inringade märket är B6 – Väjningsplikt mot mötande trafik. Märket används där vägbanan är så smal att två fordon inte kan mötas utan svårighet. När du ser detta märke har du väjningsplikt mot mötande fordon. Du får alltså köra först endast om det finns tillräckligt med utrymme för ett säkert möte. Märket ska inte förväxlas med B7 – Mötande trafik har väjningsplikt, som innebär det motsatta."
 },
 {
   id: 131,
@@ -393,9 +393,9 @@ export const LAGSTIFTNING_3 = [
     "Ja, i båda korsningarna",
     "Nej"
   ],
-  correct: 1,
+  correct: 2,
   image: "https://teori-taxi.com/images/Lagstiftning/134.png",
-  explanation: "Rätt svar är att du har väjningsplikt bara i korsning B. Där ser det ut som en vanlig obevakad korsning, och då gäller högerregeln mot trafik från höger. I korsning A ser anslutningen från höger inte ut som en vanlig likvärdig korsning, utan mer som en utfart eller annan anslutning där högerregeln inte tar över. Tänk så här nästa gång: fråga först om det verkligen är en vanlig korsning mellan två vägar. Om det i stället är en utfart gäller inte högerregeln på samma sätt."
+  explanation: "Rätt svar är \"Ja, i båda korsningarna\". I både korsning A och korsning B ansluter en vanlig väg från höger och det finns inga vägmärken som anger en annan väjningsregel. Därför gäller högerregeln i båda korsningarna. Högerregeln innebär att när två fordons färdvägar skär varandra ska du lämna företräde åt fordon som kommer från höger. Regeln gäller även i trevägskorsningar. I korsning A ska vägen från höger inte förväxlas med en utfart – bilden visar en vanlig anslutande väg. Därför har du väjningsplikt mot trafik från höger i både A och B."
 },
 {
   id: 134,

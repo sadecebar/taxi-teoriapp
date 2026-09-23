@@ -209,12 +209,12 @@ export const DP2B_EN = {
   175: {
     question: "You are off on Monday and Tuesday and start driving a taxi on Wednesday at 07:00. You take a break between 11:00 and 15:00. According to the rest period regulations, when must you finish driving at the latest if you do not take another break?",
     options: ["At 22:00", "At 23:00", "At 24:00", "At 01:00"],
-    explanation: "The correct answer is 24:00. A taxi driver must have had at least 11 hours of daily rest during the preceding 24 hours, and the rest may be split into two periods. In this example you have rest from 00:00 to 07:00 and from 11:00 to 15:00, totalling 11 hours up to 24:00. If you continue past midnight part of the rest period falls outside the 24-hour window and the requirement is no longer met. Always think in terms of a rolling 24-hour period, not just from the start of today.",
+    explanation: "The correct answer is 23:00. A taxi driver must have at least 11 hours of daily rest during the 24-hour period preceding every moment when the driver performs transport. Daily rest may be divided into two periods, but at least one of the periods must be at least 8 hours. At 23:00, you count back 24 hours to Tuesday at 23:00. You then have 8 hours of rest from 23:00 to 07:00 and 4 hours of rest from 11:00 to 15:00. The requirement is therefore met. At 24:00, however, only 7 hours of rest remain between 00:00 and 07:00, plus 4 hours between 11:00 and 15:00. Although this totals 11 hours, neither period is at least 8 hours. Therefore, you must stop driving no later than 23:00 unless you take another break.",
   },
   176: {
     question: "After 11 hours of rest you start driving a taxi at 07:00. You have breaks from 11:00 to 12:00 and from 18:00 to 19:00. When must you finish this shift at the latest according to the rest period regulations?",
     options: ["At 20:00", "At 21:00", "At 22:00", "At 23:00"],
-    explanation: "The correct answer is 22:00. A driver must have had at least 11 hours of daily rest during the preceding 24 hours, and the rest may be split into two periods. If the initial 11-hour rest period immediately preceded the shift, at 22:00 there are still 11 hours of rest within the 24-hour window. At 23:00 one hour of the earlier rest would have fallen outside the window, leaving only 10 hours. You must therefore finish at the latest at 22:00.",
+    explanation: "The correct answer is 21:00. A taxi driver must have at least 11 hours of daily rest during the 24-hour period preceding every moment when the driver performs transport. Daily rest may be divided into at most two periods, one of which must be at least 8 hours. Since you had 11 hours of rest immediately before starting to drive at 07:00, that rest ran from 20:00 on the previous day to 07:00. At 21:00, 10 hours of this rest remain within the preceding 24 hours. Together with one of the one-hour breaks, this gives 11 hours of rest divided into two periods, which is permitted. At 22:00, only 9 hours of the original rest remain. To reach 11 hours, both one-hour breaks would have to be counted, creating three separate rest periods. Daily rest may only be divided into two periods. Therefore, you must stop driving no later than 21:00.",
   },
   177: {
     question: "You are driving a taxi with the car shown on the registration certificate. The customers' luggage weighs 320 kg. How many passengers may you carry if they each weigh an average of 70 kg?",
@@ -367,7 +367,7 @@ export const DP2B_EN = {
   193: {
     question: "After 11 hours of rest, you drive a taxi on Saturday from 18:00 to 04:00 with a rest period from 20:00 to 21:00. On Sunday you start driving again at 12:00. According to the rest period regulations, when must you begin a further rest period during Sunday at the latest?",
     options: ["At 14:00", "At 15:00", "At 16:00", "At 17:00"],
-    explanation: "The correct answer is 16:00. A taxi driver must have had at least 11 hours of daily rest during the preceding 24 hours, and the rest may be split into two periods. In this example the rest before the Saturday shift, the rest from 20:00 to 21:00, and the rest between 04:00 and 12:00 are all counted. At 16:00 there are still 11 hours of rest within the 24-hour window, but at 17:00 the rest is no longer sufficient. Always think in terms of a rolling 24-hour period.",
+    explanation: "The correct answer is 15:00. You must have at least 11 hours of daily rest during the 24 hours preceding every moment when you drive. Daily rest may be divided into at most two periods, one of which must be at least 8 hours. At 15:00 on Sunday, you count back to 15:00 on Saturday. You then have 3 hours of rest from 15:00 to 18:00 and 8 hours of rest from 04:00 to 12:00, making a total of 11 hours. After 15:00, the first rest period becomes shorter than 3 hours, so the requirement for 11 hours of daily rest is no longer met. The rest period from 20:00 to 21:00 cannot be added to these two periods because daily rest would then be divided into three separate periods. Therefore, you must begin a further rest period no later than 15:00.",
   },
   194: {
     question: "You are turning left. In which of the situations in the images do you have a duty to give way to oncoming vehicles?",
@@ -1260,7 +1260,7 @@ export const DP2B_EN = {
       "In two of the situations",
       "In all of the situations",
     ],
-    explanation: "You must always stop where a stop obligation applies, even if no other traffic is coming. In this question situations A and B show a stop obligation. The correct answer is therefore that you must stop in two of the situations.",
+    explanation: "The correct answer is \"In three of the situations\". In situation B, a stop obligation applies, so you must always stop even if no other traffic is coming. In situations C and D, the traffic signal shows red, which also means that you must stop. In situation A, however, the traffic signal shows green. An instruction given by a steady traffic signal takes precedence over a stop or give-way sign. Therefore, you do not need to stop at the stop sign in situation A when the signal shows green. You must therefore stop in situations B, C and D – three situations in total.",
   },
   287: {
     question: "Which of the following transport activities is covered by the rest period provisions for certain domestic road transport?",

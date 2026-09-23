@@ -306,18 +306,18 @@ export const LAGSTIFTNING_4 = [
   delprov: 2,
   question: "Du är ledig måndag och tisdag och börjar köra taxi onsdag kl. 07.00. Du gör ett uppehåll i arbetet mellan 11.00 och 15.00. När måste du senast sluta köra enligt vilotidsförordningen om du inte gör ett nytt uppehåll?",
   options: ["kl. 22.00", "kl. 23.00", "kl. 24.00", "kl. 01.00"],
-  correct: 2,
+  correct: 1,
   image: null,
-  explanation: "Rätt svar är kl. 24.00. En taxiförare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. I den här uppgiften har du vila mellan kl. 00.00 och 07.00 samt mellan 11.00 och 15.00. Det blir tillsammans 11 timmars vila fram till kl. 24.00. Om du fortsätter efter midnatt faller en del av vilan ut ur 24-timmarsfönstret, och då uppfyller du inte längre kravet. Tänk därför alltid i rullande 24 timmar, inte bara från dagens start."
+  explanation: "Rätt svar är kl. 23.00. En taxiförare ska ha minst 11 timmars dygnsvila under den 24-timmarsperiod som föregår varje tidpunkt då föraren utför transporter. Dygnsvilan får delas upp i två perioder, men minst en av perioderna måste vara minst 8 timmar. Vid kl. 23.00 räknar du 24 timmar bakåt till tisdag kl. 23.00. Då har du 8 timmars vila från kl. 23.00 till 07.00 och 4 timmars vila från kl. 11.00 till 15.00. Kravet är därför uppfyllt. Vid kl. 24.00 återstår däremot bara 7 timmars vila mellan kl. 00.00 och 07.00 samt 4 timmar mellan kl. 11.00 och 15.00. Det blir visserligen 11 timmar totalt, men ingen av perioderna är minst 8 timmar. Därför måste du senast sluta köra kl. 23.00 om du inte tar ett nytt uppehåll."
 },
 {
   id: 176,
   delprov: 2,
   question: "Efter 11 timmars vila börjar du köra taxi kl. 07.00. Du har uppehåll i arbetet kl. 11.00-12.00 och kl. 18.00-19.00. När måste du senast sluta detta körpass enligt vilotidsförordningen?",
   options: ["kl. 20.00", "kl. 21.00", "kl. 22.00", "kl. 23.00"],
-  correct: 2,
+  correct: 1,
   image: null,
-  explanation: "Rätt svar är kl. 22.00. En förare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. Om den första 11-timmarsvilan låg direkt före körpasset finns det vid kl. 22.00 fortfarande sammanlagt 11 timmars vila i 24-timmarsfönstret. Vid kl. 23.00 har en timme av den tidigare vilan fallit ut ur fönstret, och då återstår bara 10 timmars vila. Därför måste du senast sluta kl. 22.00."
+  explanation: "Rätt svar är kl. 21.00. En taxiförare ska ha minst 11 timmars dygnsvila under den 24-timmarsperiod som föregår varje tidpunkt då föraren utför transporter. Dygnsvilan får delas upp i högst två perioder, varav den ena ska vara minst 8 timmar. Eftersom du hade 11 timmars vila direkt före körningen kl. 07.00 låg den vilan mellan kl. 20.00 föregående dag och kl. 07.00. Vid kl. 21.00 återstår 10 timmar av denna vila inom de senaste 24 timmarna. Tillsammans med ett av uppehållen på 1 timme blir det 11 timmars vila fördelat på två perioder, vilket är tillåtet. Vid kl. 22.00 återstår bara 9 timmar av den ursprungliga vilan. För att komma upp i 11 timmar skulle båda entimmesuppehållen behöva räknas, vilket skulle innebära tre separata viloperioder. Dygnsvilan får endast delas upp i två perioder. Därför måste du senast sluta köra kl. 21.00."
 },
 {
   id: 177,
@@ -536,9 +536,9 @@ export const LAGSTIFTNING_4 = [
   delprov: 2,
   question: "Efter 11 timmars ledighet kör du taxi en lördag kl. 18.00–04.00 med en viloperiod kl. 20.00–21.00. På söndagen börjar du köra igen kl. 12.00. När måste du senast påbörja ytterligare en viloperiod under söndagen enligt vilotidsförordningen?",
   options: ["kl. 14.00", "kl. 15.00", "kl. 16.00", "kl. 17.00"],
-  correct: 2,
+  correct: 1,
   image: null,
-  explanation: "Rätt svar är kl. 16.00. En taxiförare ska ha haft minst 11 timmars dygnsvila under de senaste 24 timmarna, och vilan får delas upp i två perioder. I den här uppgiften finns vilan före lördagspasset, vilan kl. 20.00–21.00 och vilan mellan kl. 04.00 och 12.00. Vid kl. 16.00 finns fortfarande sammanlagt 11 timmars vila kvar i 24-timmarsfönstret, men vid kl. 17.00 räcker vilan inte längre. Tänk därför alltid i rullande 24 timmar."
+  explanation: "Rätt svar är kl. 15.00. Du ska ha minst 11 timmars dygnsvila under de 24 timmar som föregår varje tidpunkt då du kör. Dygnsvilan får delas upp i högst två perioder, varav den ena måste vara minst 8 timmar. Vid kl. 15.00 på söndagen räknar du tillbaka till lördag kl. 15.00. Då har du 3 timmars vila kl. 15.00–18.00 och 8 timmars vila kl. 04.00–12.00, alltså totalt 11 timmar. Efter kl. 15.00 blir den första viloperioden kortare än 3 timmar och kravet på 11 timmars dygnsvila uppfylls därför inte längre. Viloperioden kl. 20.00–21.00 kan inte läggas till dessa två perioder eftersom dygnsvilan då skulle delas upp i tre separata perioder. Därför måste du senast påbörja ytterligare en viloperiod kl. 15.00."
 },
 {
   id: 194,

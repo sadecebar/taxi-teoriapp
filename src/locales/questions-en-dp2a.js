@@ -102,7 +102,7 @@ export const DP2A_EN = {
       "No",
     ],
     explanation:
-      "The correct answer is \"Yes, but only during the times stated on the supplementary plate\". The sign shows a lane reserved for scheduled service vehicles. The supplementary plate below states that taxis and electric vehicles may also use the lane, but only during the times shown. Outside those times the exemption for taxis does not apply. Remember: first read the main sign, then always check whether a supplementary plate restricts which vehicles may use the lane and when.",
+      "The correct answer is \"Yes, at any time\". The sign shows a lane for scheduled service vehicles. Below the main sign are two separate supplementary plates. The plate \"Also taxis and electric cars\" means that taxis and electric cars may also use the lane. The times are shown on a separate supplementary plate and indicate when the bus lane restriction applies. During the stated times, taxis may use the lane because they are explicitly permitted. Outside those times, the bus lane restriction does not apply, so the lane may be used as an ordinary lane. Therefore, you may drive there with your taxi regardless of the time.",
   },
   11: {
     question:
@@ -1029,7 +1029,7 @@ export const DP2A_EN = {
       "No",
     ],
     explanation:
-      "In junction A the car appears to be approaching from an ordinary road on the right. The right-hand rule applies and you have a duty to give way. In junction B the car appears to be coming from a private track or similar access from agricultural land. A vehicle exiting from there has a duty to give way to traffic on the road. The correct answer therefore appears to be that you only have a duty to give way in junction A. If image B is actually intended to show an ordinary road, the image is too unclear and the question should be replaced or clarified.",
+      "The correct answer is \"Yes, but only in junction B\". In junction A, the car is coming from a private track, an exit or a similar minor road. A driver emerging from such a road must give way to traffic on the road, so you do not need to give way to the car there. In junction B, however, the car is coming from an ordinary road on your right. The right-hand rule applies there, which means that you must give way to the car from the right. Therefore, you only have a duty to give way in junction B.",
   },
   98: {
     question:
@@ -1069,7 +1069,7 @@ export const DP2A_EN = {
       "After 11 hours of rest you drive a taxi on Saturday from 18:00 to 04:00 and also take a rest period from 20:00 to 21:00. On Sunday you start driving again at 12:00. When must you begin a further rest period on Sunday at the latest?",
     options: ["14:00", "15:00", "16:00", "17:00"],
     explanation:
-      "The correct answer is 16:00. You must always have had at least 11 hours of daily rest during the preceding 24 hours. At 16:00 on Sunday you count back to Saturday at 16:00. Within that period there are 2 hours of rest from the earlier Saturday break (16:00–18:00), 1 hour from 20:00–21:00 on Saturday, and 8 hours from 04:00–12:00 on Sunday — a total of 11 hours. After 16:00 more of the earlier rest falls outside the 24-hour window and the rest is no longer sufficient. Remember: always count back 24 hours from the current point in time and add up only the rest that still falls within that period.",
+      "The correct answer is 15:00. You must have at least 11 hours of daily rest during the 24 hours preceding every moment when you drive. Daily rest may be divided into at most two periods, one of which must be at least 8 hours. At 15:00 on Sunday, you count back to 15:00 on Saturday. You then have 3 hours of rest from 15:00 to 18:00 and 8 hours of rest from 04:00 to 12:00, making a total of 11 hours. After 15:00, the first rest period becomes shorter than 3 hours, so the requirement for 11 hours of daily rest is no longer met. The rest period from 20:00 to 21:00 cannot be added to these two periods because daily rest would then be divided into three separate periods. Therefore, you must begin a further rest period no later than 15:00.",
   },
   102: {
     question:
@@ -1365,7 +1365,7 @@ export const DP2A_EN = {
       "Oncoming traffic must give way to me if there is not enough room for both vehicles to pass",
     ],
     explanation:
-      "The sign means that oncoming traffic has the duty to give way. It is used at narrow sections of road — such as bridges — where two vehicles cannot safely pass at the same time. You therefore have priority, and it is oncoming traffic that must wait if there is not enough room. Remember: a red arrow in your direction means you have priority, while oncoming traffic must make way.",
+      "The correct answer is that you must give way to oncoming traffic if there is not enough room for both vehicles to pass. The circled sign is B6 – Give way to oncoming traffic. The sign is used where the carriageway is so narrow that two vehicles cannot pass each other without difficulty. When you see this sign, you must give way to oncoming vehicles. You may therefore proceed first only if there is enough room for the vehicles to pass safely. The sign must not be confused with B7 – Oncoming traffic must give way, which means the opposite.",
   },
   131: {
     question:
@@ -1401,7 +1401,7 @@ export const DP2A_EN = {
       "No",
     ],
     explanation:
-      "The correct answer is that you have a duty to give way only in junction B. There it looks like an ordinary uncontrolled junction, and the right-hand rule applies for traffic from the right. In junction A the connection from the right does not resemble an ordinary equivalent junction but more like a driveway or other access point where the right-hand rule does not take precedence. Remember: first ask whether it is genuinely an ordinary junction between two roads. If it is instead an exit or driveway, the right-hand rule does not apply in the same way.",
+      "The correct answer is \"Yes, in both junctions\". In both junction A and junction B, an ordinary road joins from the right and there are no road signs indicating a different give-way rule. Therefore, the right-hand rule applies in both junctions. The right-hand rule means that when the paths of two vehicles cross, you must give way to vehicles approaching from the right. The rule also applies at three-way junctions. In junction A, the road from the right must not be confused with an exit or driveway – the image shows an ordinary connecting road. Therefore, you must give way to traffic from the right in both A and B.",
   },
   134: {
     question: "At which of these times does the parking prohibition apply?",
