@@ -11,7 +11,8 @@ import { getInstallationId } from "./installation.js";
 // ─── Stable per-device ID (resolved once at module load) ──────────────────────
 const INSTALL_ID = getInstallationId();
 import { supabase } from "./supabase.js";
-import { loadLocalStats, saveAllStats, clearLocalStats, hasMigrated, markMigrated } from "./progress.js";
+import { loadLocalStats, saveAllStats, clearLocalStats, hasMigrated, markMigrated, loadRecentQuestions, clearRecentQuestions, commitPracticeAnswer } from "./progress.js";
+import { getQuestionStatus as questionStatus, shuffle, selectFocusQuestions, commitQuizAnswer, advanceQuiz } from "./practice.js";
 import { QUESTIONS as importedQuestions } from "./questions.js";
 import { sv } from "./locales/sv.js";
 import { en } from "./locales/en.js";
@@ -1016,6 +1017,8 @@ export default function App() {
   const [view,          setView]          = useState("home");
   const [mode,          setMode]          = useState(null);
   const [quiz,          setQuiz]          = useState(null);
+  // Updated synchronously in event handlers so rapid clicks/timeout see committed answers.
+  const quizRef = useRef(null);
   const [timeLeft,      setTimeLeft]      = useState(null);
   const [flashIdx,      setFlashIdx]      = useState(0);
   const [flipped,       setFlipped]       = useState(false);
@@ -1034,6 +1037,8 @@ export default function App() {
     }
     return base;
   });
+  const statsRef = useRef(stats);
+  const getQuestionStatus = (q) => questionStatus(q, stats);
   const [shakeBtn,      setShakeBtn]      = useState(null);
   const [popupQ,        setPopupQ]        = useState(null);
   const [statsQuestion,    setStatsQuestion]    = useState(null);
@@ -1120,13 +1125,16 @@ export default function App() {
     migrate();
   }, []);
 
-  // ── Persist a single question stat ───────────────────────────────────────
-  const saveStat = (questionId, correct, wrong) => {
-    setStats(prev => ({ ...prev, [questionId]: { c: correct, w: wrong } }));
+  // ── Commit counters and recent history before showing answer feedback ───
+  const saveAnswer = (questionId, correct) => {
+    const updated = commitPracticeAnswer(statsRef.current, questionId, correct);
+    statsRef.current = updated;
+    setStats(updated);
   };
 
   // ── Sync stats to localStorage whenever they change ───────────────────────
   useEffect(() => {
+    statsRef.current = stats;
     saveAllStats(stats);
   }, [stats]);
 
@@ -1140,6 +1148,7 @@ export default function App() {
   // ── Reset all progress ────────────────────────────────────────────────────
   const resetAllProgress = () => {
     clearLocalStats();
+    clearRecentQuestions();
     setStats(Object.fromEntries(QUESTIONS.map(q => [q.id, { c: 0, w: 0 }])));
     setQuizHistory([]);
     try { localStorage.removeItem(`taxi-teori-history-${INSTALL_ID}`); } catch {}
@@ -1184,8 +1193,7 @@ export default function App() {
     const newData    = { ...dailyData, answered: true, chosenIdx, correct, streak: newStreak, bestStreak: newBest };
     setDailyData(newData);
     try { localStorage.setItem(DAILY_KEY, JSON.stringify(newData)); } catch {}
-    const cur = stats[q.id] || { c: 0, w: 0 };
-    saveStat(q.id, cur.c + (correct ? 1 : 0), cur.w + (correct ? 0 : 1));
+    saveAnswer(q.id, correct);
   };
 
   // ── Checklist step toggle ─────────────────────────────────────────────────
@@ -1258,7 +1266,7 @@ export default function App() {
   // ── Countdown timer ───────────────────────────────────────────────────────
   useEffect(() => {
     if (view === "quiz" && timeLeft !== null) {
-      if (timeLeft <= 0) { endQuiz(quiz.answers); return; }
+      if (timeLeft <= 0) { endQuiz(); return; }
       timer.current = setTimeout(() => setTimeLeft(t => t - 1), 1000);
     }
     return () => clearTimeout(timer.current);
@@ -1267,10 +1275,6 @@ export default function App() {
   // ── Quiz logic ────────────────────────────────────────────────────────────
   const getQs = (m) => {
     if (m === "all" || m === "quick" || m === "rir") return QUESTIONS;
-    if (m === "focus") return QUESTIONS.filter(q => {
-      const s = stats[q.id] || { c: 0, w: 0 };
-      return s.w > 0 && s.c === 0; // wrong pool: has wrongs AND never answered correctly
-    });
     if (m === "bilder") return QUESTIONS.filter(q => q.image);
     return QUESTIONS.filter(q => q.delprov === m);
   };
@@ -1320,43 +1324,54 @@ export default function App() {
     if (m === "quick") {
       // Use recency-weighted selection so recently-seen questions are less likely to reappear.
       qs = weightedPickQuestions(QUESTIONS, quickTestHistory, 15);
+    } else if (m === "focus") {
+      qs = selectFocusQuestions(QUESTIONS, statsRef.current, loadRecentQuestions());
     } else {
-      qs = [...getQs(baseMode)].sort(() => Math.random() - 0.5);
+      qs = shuffle(getQs(baseMode));
     }
     if (qs.length === 0) return;
-    if (m === "focus" || m === "bilder") qs = qs.slice(0, 15);
+    if (m === "bilder") qs = qs.slice(0, 15);
     if (m === 1)       qs = qs.slice(0, 70);
     if (m === 2)       qs = qs.slice(0, 50);
     if (m === "rir")   qs = qs.slice(0, 200);
     if (m === 10 || m === 20 || m === 30) qs = qs.slice(0, m);
     const timeLimit = (m === 1 || m === 2) ? DELPROV_CONFIG[m].time * 60 : null;
     setMode(m);
-    setQuiz({ questions: qs, current: 0, answers: [], answered: null });
+    quizRef.current = { questions: qs, current: 0, answers: [], answered: null, finished: false };
+    setQuiz(quizRef.current);
     setTimeLeft(timeLimit);
     setResult(null);
     setView("quiz");
   };
 
   const answer = (i) => {
-    if (quiz.answered !== null) return;
-    if (i === quiz.questions[quiz.current].correct) { playPling(); }
+    if (timeLeft !== null && timeLeft <= 0) return;
+    const current = quizRef.current;
+    const committed = commitQuizAnswer(current, i);
+    if (committed === current) return;
+    quizRef.current = committed;
+    const attempt = committed.answers[committed.answers.length - 1];
+    saveAnswer(attempt.id, attempt.correct);
+    setQuiz(committed);
+    if (attempt.correct) { playPling(); }
     else { playBuzz(); setShakeBtn(i); setTimeout(() => setShakeBtn(null), 500); }
-    setQuiz(q => ({ ...q, answered: i }));
   };
 
   const next = () => {
-    const q    = quiz.questions[quiz.current];
-    const ok   = quiz.answered === q.correct;
-    const ans  = [...quiz.answers, { id: q.id, correct: ok, chosen: quiz.answered, q }];
-    const newC = stats[q.id].c + (ok ? 1 : 0);
-    const newW = stats[q.id].w + (ok ? 0 : 1);
-    saveStat(q.id, newC, newW);
-    if (mode === "rir" && !ok) { endQuiz(ans); return; }
-    if (quiz.current + 1 >= quiz.questions.length) endQuiz(ans);
-    else setQuiz(s => ({ ...s, current: s.current + 1, answers: ans, answered: null }));
+    const current = quizRef.current;
+    const advanced = advanceQuiz(current, mode);
+    if (advanced === current) return;
+    if (advanced.finished) { endQuiz(); return; }
+    quizRef.current = advanced;
+    setQuiz(advanced);
   };
 
-  const endQuiz = (answers) => {
+  const endQuiz = () => {
+    const current = quizRef.current;
+    if (!current || current.finished) return;
+    quizRef.current = { ...current, finished: true };
+    setQuiz(quizRef.current);
+    const answers = current.answers;
     clearTimeout(timer.current);
     const score = answers.filter(a => a.correct).length;
     const total = answers.length;
@@ -1387,36 +1402,24 @@ export default function App() {
   const tot      = QUESTIONS.reduce((a, q) => { const s = stats[q.id] || { c: 0, w: 0 }; return a + s.c + s.w; }, 0);
   const corr     = QUESTIONS.reduce((a, q) => { const s = stats[q.id] || { c: 0, w: 0 }; return a + s.c; }, 0);
   const acc      = tot > 0 ? Math.round(corr / tot * 100) : 0;
-  const mastered = QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.c >= 2 && s.c > s.w; }).length;
+  const mastered = QUESTIONS.filter(q => getQuestionStatus(q) === "behärskad").length;
 
   const dpProgress = [1, 2].map(dp => {
     const qs        = QUESTIONS.filter(q => q.delprov === dp);
     const dpS       = qs.map(q => stats[q.id] || { c: 0, w: 0 });
     const dpTot     = dpS.reduce((a, b) => a + b.c + b.w, 0);
     const dpCorr    = dpS.reduce((a, b) => a + b.c, 0);
-    const dpMastered = dpS.filter(s => s.c >= 2 && s.c > s.w).length;
+    const dpMastered = qs.filter(q => getQuestionStatus(q) === "behärskad").length;
     const dpAcc     = dpTot > 0 ? Math.round(dpCorr / dpTot * 100) : 0;
     const dpPct     = Math.round(dpMastered / qs.length * 100);
     return { dp, cfg: DELPROV_CONFIG[dp], total: qs.length, mastered: dpMastered, acc: dpAcc, pct: dpPct, tried: dpTot > 0 };
   });
 
-  const wrongCount = QUESTIONS.filter(q => {
-    const s = stats[q.id] || { c: 0, w: 0 };
-    return s.w > 0 && s.c === 0;
-  }).length;
+  const wrongCount = QUESTIONS.filter(q => getQuestionStatus(q) === "öva mer").length;
 
   const masterPct     = QUESTIONS.length > 0 ? Math.round(mastered / QUESTIONS.length * 100) : 0;
   const overallStatus = masterPct >= 80 ? t("overall_ready") : masterPct >= 50 ? t("overall_almost") : masterPct >= 20 ? t("overall_going") : t("overall_start");
   const overallColor  = masterPct >= 80 ? C.greenLight   : masterPct >= 50 ? C.gold         : masterPct >= 20 ? C.gold  : C.muted;
-
-  const getQuestionStatus = (q) => {
-    const s   = stats[q.id] || { c: 0, w: 0 };
-    const att = s.c + s.w;
-    if (att === 0)              return "ej övad";
-    if (s.c >= 2 && s.c > s.w) return "behärskad";
-    if (s.c > s.w)              return "på väg";
-    return "öva mer";
-  };
 
   const filteredQuestions = statusFilter === "alla"
     ? QUESTIONS
@@ -1424,7 +1427,7 @@ export default function App() {
 
   // ── Helpers ───────────────────────────────────────────────────────────────
   const openFlashcards = () => {
-    const random = [...QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 5);
+    const random = shuffle(QUESTIONS).slice(0, 5);
     setFlashcards(random);
     setFlashIdx(0);
     setFlipped(false);
@@ -3166,7 +3169,7 @@ export default function App() {
           // ── Browse pool ──────────────────────────────────────────────────
           const browseQs = (() => {
             if (!fragorFilter) return [];
-            if (fragorFilter === "felaktiga")    return QUESTIONS.filter(q => { const s = stats[q.id] || { c: 0, w: 0 }; return s.w > 0 && s.c === 0; });
+            if (fragorFilter === "felaktiga")    return QUESTIONS.filter(q => getQuestionStatus(q) === "öva mer");
             if (fragorFilter === "sparade")      return QUESTIONS.filter(q => savedIds.includes(q.id));
             if (fragorFilter === "fordon")       return QUESTIONS.filter(q => q.delprov === 1 && !isNavigeringQuestion(q));
             if (fragorFilter === "trafikregler") return QUESTIONS.filter(q => q.delprov === 2 && !isTaxiregelQuestion(q) && !isVilotidQuestion(q));
@@ -3482,7 +3485,7 @@ export default function App() {
                           { key: "behärskad", color: C.green },
                           { key: "på väg",    color: C.gold },
                           { key: "öva mer",   color: C.red },
-                          { key: "ej övad",   color: "rgba(255,255,255,0.08)" },
+                          { key: "ej övad",   color: C.textSoft },
                         ].map(({ key, color }) => {
                           const w = QUESTIONS.length > 0 ? (statusCounts[key] / QUESTIONS.length) * 100 : 0;
                           return w > 0
@@ -3495,7 +3498,7 @@ export default function App() {
                         { key: "behärskad", label: t("status_mastered"),      color: C.greenLight },
                         { key: "på väg",    label: t("status_progressing"),   color: C.gold },
                         { key: "öva mer",   label: t("status_practice_more"), color: C.redLight },
-                        { key: "ej övad",   label: t("status_untried"),       color: "rgba(255,255,255,0.35)" },
+                        { key: "ej övad",   label: t("status_untried"),       color: C.textSoft },
                       ].map(({ key, label, color }, i, arr) => {
                         const count = statusCounts[key];
                         const pct   = QUESTIONS.length > 0 ? Math.round(count / QUESTIONS.length * 100) : 0;
@@ -3591,8 +3594,7 @@ export default function App() {
                     onSelectOption={(i) => {
                       if (statsAnswered) return;
                       const ok  = i === statsQuestion.correct;
-                      const cur = stats[statsQuestion.id] || { c: 0, w: 0 };
-                      saveStat(statsQuestion.id, cur.c + (ok ? 1 : 0), cur.w + (ok ? 0 : 1));
+                      saveAnswer(statsQuestion.id, ok);
                       setStatsSelected(i);
                       setStatsAnswered(true);
                     }}
@@ -4333,7 +4335,7 @@ export default function App() {
         />
       )}
 
-      {/* ── BOTTOM NAV (mobile only) ─────────────────────────────────────── */}
+      {/* ── BOTTOM NAV (all screen sizes) ────────────────────────────────── */}
       {showBottomNav && (
         <nav className="bottom-nav">
           <div className="bottom-nav-inner">

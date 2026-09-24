@@ -9,6 +9,7 @@
  */
 
 import { useState, useEffect, useRef } from "react";
+import { shuffle } from "./practice.js";
 import {
   fireNotification, getStudyCopy, getMoodCopy, getProgressCopy, getFarewellCopy, getReactivationCopy,
   simulateInactivity, resetNotifState, loadNotifState,
@@ -268,7 +269,7 @@ export default function DevPanel({
 
   function setMixed() {
     // Quarter each: ej övad / öva mer / på väg / behärskad
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    const shuffled = shuffle(questions);
     const chunk = Math.floor(shuffled.length / 4);
     const statuses = ["ej övad", "öva mer", "på väg", "behärskad"];
     const s = {};
@@ -283,7 +284,7 @@ export default function DevPanel({
   function setWrongPool() {
     const pct = Math.max(1, Math.min(100, parseInt(wrongPct) || 30));
     const count = Math.round(questions.length * pct / 100);
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    const shuffled = shuffle(questions);
     const s = { ...stats };
     shuffled.slice(0, count).forEach(q => { s[q.id] = { c: 0, w: 2 }; });
     persistStats(s);

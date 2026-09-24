@@ -15,6 +15,49 @@ import { getInstallationId } from "./installation.js";
 const ID           = getInstallationId();
 const STATS_KEY    = `taxi-teori-stats-${ID}`;
 const MIGRATED_KEY = `taxi-teori-migrated-${ID}`;
+const RECENT_KEY   = `taxi-teori-recent-questions-${ID}`;
+export const RECENT_QUESTION_LIMIT = 40;
+
+export function loadRecentQuestions() {
+  try {
+    const ids = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+    return Array.isArray(ids)
+      ? ids.filter(id => Number.isInteger(id) && id > 0).slice(0, RECENT_QUESTION_LIMIT)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+export function recordRecentQuestion(questionId) {
+  // Keep committed attempts, including repeats, newest first.
+  const ids = [questionId, ...loadRecentQuestions()].slice(0, RECENT_QUESTION_LIMIT);
+  try {
+    localStorage.setItem(RECENT_KEY, JSON.stringify(ids));
+  } catch (e) {
+    console.error("Could not save recent questions:", e);
+  }
+  return ids;
+}
+
+export function clearRecentQuestions() {
+  localStorage.removeItem(RECENT_KEY);
+}
+
+// Called synchronously by answer handlers, never from a React state updater.
+export function commitPracticeAnswer(stats, questionId, correct) {
+  const current = stats[questionId] || { c: 0, w: 0 };
+  const updated = {
+    ...stats,
+    [questionId]: {
+      c: current.c + (correct ? 1 : 0),
+      w: current.w + (correct ? 0 : 1),
+    },
+  };
+  saveAllStats(updated);
+  recordRecentQuestion(questionId);
+  return updated;
+}
 
 // ── Read ──────────────────────────────────────────────────────────────────────
 
