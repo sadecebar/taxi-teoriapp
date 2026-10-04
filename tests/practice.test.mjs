@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { readFileSync } from 'node:fs';
-import { getQuestionStatus, shuffle, buildStatusBuckets, selectFocusQuestions } from '../src/practice.js';
+import { getQuestionStatus, shuffle, buildStatusBuckets, selectFocusQuestions, weightedPickQuestions } from '../src/practice.js';
 
 const statuses = ['ej övad', 'öva mer', 'på väg', 'behärskad'];
 const counters = [{ c: 0, w: 0 }, { c: 1, w: 4 }, { c: 1, w: 0 }, { c: 3, w: 1 }];
@@ -92,6 +92,19 @@ test('unseen coverage overrides inconsistent recent history', () => {
   assert.deepEqual(composition(session, stats), [6,5,2,2]);
 });
 
+test('quick tests never repeat a question ID, even if the input contains duplicate IDs', () => {
+  const pool = Array.from({ length: 20 }, (_, i) => ({ id: i + 1 }));
+  const withDuplicates = [pool[0], pool[1], ...pool, { ...pool[0] }, { ...pool[1] }];
+  for (let seed = 0; seed < 100; seed++) {
+    const selected = weightedPickQuestions(withDuplicates, [[1, 2]], 15, [0.05, 0.2], seeded(seed));
+    assert.equal(selected.length, 15);
+    unique(selected);
+  }
+  const tiny = weightedPickQuestions([pool[0], { ...pool[0] }, pool[1]], [], 15, [], seeded());
+  assert.equal(tiny.length, 2);
+  unique(tiny);
+});
+
 test('J: Fisher–Yates preserves input and reaches each small permutation equally', () => {
   const original = [1,2,3], permutations = new Set();
   for (let first = 0; first < 3; first++) for (let second = 0; second < 2; second++) {
@@ -118,6 +131,20 @@ test('real 460-question bank: ten completed focus sessions introduce 60 unseen q
   const { QUESTIONS } = await import('../src/questions.js');
   hooks.deregister();
   assert.equal(QUESTIONS.length, 460);
+  assert.equal(new Set(QUESTIONS.map(q => q.id)).size, QUESTIONS.length);
+  const towing = QUESTIONS.find(q => q.id === 118);
+  assert.deepEqual(towing.options, ['20 km/h', '30 km/h', '40 km/h', '50 km/h', '70 km/h']);
+  assert.equal(towing.correct, 1);
+  assert.match(towing.explanation, /30 km\/h/);
+  assert.equal(QUESTIONS.find(q => q.id === 72).correct, 2);
+  assert.equal(QUESTIONS.find(q => q.id === 430).correct, 1);
+  assert.match(QUESTIONS.find(q => q.id === 72).explanation, /750 kg/);
+  assert.doesNotMatch(QUESTIONS.find(q => q.id === 430).explanation, /Frågan är omskriven/);
+  const { QUESTIONS_EN } = await import('../src/locales/questions-en.js');
+  assert.equal(QUESTIONS_EN[118].options.length, towing.options.length);
+  assert.deepEqual(QUESTIONS_EN[118].options, towing.options);
+  assert.match(QUESTIONS_EN[72].explanation, /750 kg/);
+  assert.doesNotMatch(QUESTIONS_EN[430].explanation, /reworded|original answer/);
   const { stats: initialStats } = fixture([197,84,116,63]);
   // Assign by bank order; do not change any question data or IDs.
   const stats = Object.fromEntries(QUESTIONS.map((q,i) => [q.id, initialStats[i+1]]));

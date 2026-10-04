@@ -194,7 +194,7 @@ export const LAGSTIFTNING_3 = [
   id: 118,
   delprov: 2,
   question: "Du ska bogsera en personbil som fått motorstopp. Vilken högsta tillåtna hastighet gäller?",
-  options: ["20 km/h", "30 km/h", "40 km/h", "50 km/h", "70 km/h", "80 km/h"],
+  options: ["20 km/h", "30 km/h", "40 km/h", "50 km/h", "70 km/h"],
   correct: 1,
   image: null,
   explanation: "Rätt svar är 30 km/h. Vid bogsering gäller en låg högsta hastighet eftersom situationen kräver extra försiktighet och fordonet som bogseras inte kan framföras på vanligt sätt. Tänk så här nästa gång: när ett fordon bogseras gäller inte vanliga hastigheter för personbil, utan en särskilt låg maxhastighet."

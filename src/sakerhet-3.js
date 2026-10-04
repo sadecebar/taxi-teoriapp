@@ -415,6 +415,6 @@ export const SAKERHET_3 = [
   ],
   "correct": 1,
   "image": null,
-  "explanation": "Om en kraftigt alkoholpåverkad kund gör att du bedömer situationen som osäker bör du följa företagets säkerhetsrutiner och vid behov kontakta beställningscentral eller arbetsledning. Frågan är omskriven eftersom det gamla facit såg ut att bygga på en äldre eller lokal rutin snarare än en tydlig allmän regel."
+  "explanation": "Om situationen känns osäker ska du följa företagets säkerhetsrutiner och vid behov ta hjälp av beställningscentralen eller arbetsledningen."
 },
 ]

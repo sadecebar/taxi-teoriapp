@@ -775,7 +775,7 @@ export const DP2A_EN = {
       "A passenger car with a trailer where the combined gross weight of the car and trailer exceeds 3.5 tonnes",
     ],
     explanation:
-      "The correct answer is a passenger car with a gross vehicle weight of 3.2 tonnes. With a category B licence you may drive a passenger car or light goods vehicle with a gross vehicle weight of no more than 3.5 tonnes. You may not drive a lorry of 3.7 tonnes with a B licence, and a vehicle designed for 12 persons is classified as a bus. You also may not drive a vehicle combination where the combined gross weight of the car and trailer exceeds 3.5 tonnes without a higher or extended licence. Remember: start with the basic rule — B = passenger car or light goods vehicle up to 3.5 tonnes.",
+      "The correct answer is a passenger car with a maximum authorised mass of 3.2 tonnes. A category B licence allows a passenger car or light goods vehicle with a maximum authorised mass of up to 3.5 tonnes. The 3.7-tonne lorry requires another licence category, and a vehicle designed for 12 persons is a bus. For a car and trailer, the usual combined limit with B is 3,500 kg when the trailer exceeds 750 kg. A trailer with a maximum authorised mass of up to 750 kg may, however, be attached to a car of up to 3,500 kg, giving a combination of up to 4,250 kg on a B licence. The combined weight alone therefore does not settle the trailer option.",
   },
   73: {
     question:
@@ -1230,7 +1230,7 @@ export const DP2A_EN = {
   118: {
     question:
       "You are towing a passenger car that has broken down. What is the maximum permitted speed?",
-    options: ["20 km/h", "30 km/h", "40 km/h", "50 km/h", "70 km/h", "80 km/h"],
+    options: ["20 km/h", "30 km/h", "40 km/h", "50 km/h", "70 km/h"],
     explanation:
       "The correct answer is 30 km/h. When towing, a low maximum speed applies because the situation requires extra caution and the vehicle being towed cannot be operated in the normal manner. Remember: when a vehicle is being towed, normal passenger car speeds do not apply — a particularly low maximum speed is in force.",
   },

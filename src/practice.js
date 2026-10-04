@@ -16,6 +16,44 @@ export function shuffle(array, random = Math.random) {
   return result;
 }
 
+// Recency-weighted selection without repeating an ID within one test.
+export function weightedPickQuestions(pool, history, n, recencyWeights, random = Math.random) {
+  const recencyIndex = new Map();
+  history.forEach((ids, slotIdx) => {
+    ids.forEach(id => {
+      if (!recencyIndex.has(id) || recencyIndex.get(id) > slotIdx) {
+        recencyIndex.set(id, slotIdx);
+      }
+    });
+  });
+
+  const seen = new Set();
+  const items = pool.filter(q => {
+    if (seen.has(q.id)) return false;
+    seen.add(q.id);
+    return true;
+  }).map(q => ({
+    q,
+    w: recencyIndex.has(q.id)
+      ? (recencyWeights[recencyIndex.get(q.id)] ?? 1.0)
+      : 1.0,
+  }));
+
+  const result = [];
+  while (result.length < n && items.length > 0) {
+    const total = items.reduce((sum, it) => sum + it.w, 0);
+    let r = random() * total;
+    let chosen = items.length - 1;
+    for (let i = 0; i < items.length; i++) {
+      r -= items[i].w;
+      if (r <= 0) { chosen = i; break; }
+    }
+    result.push(items[chosen].q);
+    items.splice(chosen, 1);
+  }
+  return result;
+}
+
 const FOCUS_QUOTAS = { "ej övad": 6, "öva mer": 5, "på väg": 2, "behärskad": 2 };
 const BACKFILL_ORDER = ["öva mer", "på väg", "ej övad", "behärskad"];
 

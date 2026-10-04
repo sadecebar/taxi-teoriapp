@@ -1434,7 +1434,7 @@ export const DP1_EN = {
       "I ask the customer to bring a sober person along and then drive directly",
     ],
     explanation:
-      "If a heavily intoxicated customer makes you assess the situation as potentially unsafe, you should follow the company's safety procedures and contact the dispatch centre or management if necessary. This question has been reworded as the original answer appeared to be based on an older or locally specific procedure rather than a clear general rule.",
+      "If the situation feels unsafe, follow your company's safety procedures and ask the dispatch centre or management for help if needed.",
   },
 
   // ── NAVIGERING 1 (IDs 431–460) ───────────────────────────────────────────

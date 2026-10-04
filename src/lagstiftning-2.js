@@ -303,7 +303,7 @@ export const LAGSTIFTNING_2 = [
   ],
   correct: 2,
   image: null,
-  explanation: "Rätt svar är personbil med totalvikt på 3,2 ton. Med behörighet B får du köra personbil och lätt lastbil med totalvikt på högst 3,5 ton. Du får inte köra en lastbil på 3,7 ton med B-behörighet, och en bil som är inrättad för 12 personer räknas som buss. Du får inte heller köra en fordonskombination där bilens och släpets sammanlagda totalvikt överstiger 3,5 ton utan högre eller utökad behörighet. Tänk därför först på huvudregeln: B = personbil eller lätt lastbil upp till 3,5 ton."
+  explanation: "Rätt svar är personbil med totalvikt på 3,2 ton. Med B-behörighet får du köra personbil och lätt lastbil med totalvikt på högst 3,5 ton. Lastbilen på 3,7 ton kräver annan behörighet, och en bil inrättad för 12 personer räknas som buss. För bil med släp gäller normalt högst 3 500 kg sammanlagd totalvikt med B, om släpet väger mer än 750 kg. Ett släp med totalvikt på högst 750 kg får däremot kopplas till en bil på högst 3 500 kg, så kombinationen kan väga upp till 4 250 kg med B-körkort. Därför räcker inte kombinationens totalvikt ensam för att avgöra släpalternativet."
 },
 {
   id: 73,

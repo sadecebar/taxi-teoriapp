@@ -1,6 +1,8 @@
 import test, { beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { commitQuizAnswer, advanceQuiz } from '../src/practice.js';
+import { optionStyles } from '../src/quiz-options.js';
+import { readFileSync } from 'node:fs';
 
 const storage = new Map();
 globalThis.localStorage = {
@@ -95,6 +97,35 @@ test('Rätt i rad ends on wrong committed answer; ordinary sessions advance', ()
   assert.equal(app.quiz.current, 0);
   assert.equal(app.quiz.answers.length, 1);
   assert.deepEqual(loadLocalStats()[1], { c: 0, w: 1 });
+});
+
+test('the next unanswered question has no inherited correct or wrong colors', () => {
+  const colors = {
+    greenBg: 'green-bg', greenBorder: 'green-border', greenLight: 'green-text', green: 'green',
+    redBg: 'red-bg', redBorder: 'red-border', redLight: 'red-text', red: 'red',
+    borderSoft: 'soft', muted: 'muted', faint: 'faint',
+    goldBg: 'gold-bg', gold: 'gold', goldLight: 'gold-text',
+    surface: 'neutral-bg', border: 'neutral-border', textSoft: 'neutral-text', surfaceAlt: 'neutral-badge',
+  };
+  const first = { id: 1, options: ['A', 'B', 'C'], correct: 2 };
+  const second = { id: 2, options: ['A', 'B', 'C'], correct: 0 };
+  for (const choice of [2, 1]) {
+    const answered = commitQuizAnswer({ questions: [first, second], current: 0, answered: null, answers: [], finished: false }, choice);
+    assert.equal(optionStyles(colors, 2, first.correct, answered.answered, true).bg, colors.greenBg);
+    if (choice === 1) assert.equal(optionStyles(colors, 1, first.correct, answered.answered, true).bg, colors.redBg);
+    const next = advanceQuiz(answered, 'quick');
+    assert.equal(next.current, 1);
+    assert.equal(next.answered, null);
+    for (let i = 0; i < second.options.length; i++) {
+      const style = optionStyles(colors, i, second.correct, next.answered, next.answered !== null);
+      assert.equal(style.bg, colors.surface);
+      assert.equal(style.brd, colors.border);
+      assert.equal(style.indicator, null);
+    }
+  }
+  // React must replace the old option buttons so their reveal animation and transitions cannot persist.
+  const appSource = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8');
+  assert.match(appSource, /<div key=\{`\$\{quiz\.current\}-\$\{q\.id\}`\}[^>]*>\s*\{q\.options\.map/);
 });
 
 test('invalid option indices and unanswered Next cannot create attempts', () => {

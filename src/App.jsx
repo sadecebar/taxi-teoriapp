@@ -12,7 +12,8 @@ import { getInstallationId } from "./installation.js";
 const INSTALL_ID = getInstallationId();
 import { supabase } from "./supabase.js";
 import { loadLocalStats, saveAllStats, clearLocalStats, hasMigrated, markMigrated, loadRecentQuestions, clearRecentQuestions, commitPracticeAnswer } from "./progress.js";
-import { getQuestionStatus as questionStatus, shuffle, selectFocusQuestions, commitQuizAnswer, advanceQuiz } from "./practice.js";
+import { getQuestionStatus as questionStatus, shuffle, selectFocusQuestions, weightedPickQuestions, commitQuizAnswer, advanceQuiz } from "./practice.js";
+import { optionStyles } from "./quiz-options.js";
 import { QUESTIONS as importedQuestions } from "./questions.js";
 import { sv } from "./locales/sv.js";
 import { en } from "./locales/en.js";
@@ -222,46 +223,6 @@ function initDailyData(installId) {
     const today = todayStr();
     return { date: today, questionId: QUESTIONS[dailyQIdx(today)]?.id ?? QUESTIONS[0].id, answered: false, chosenIdx: null, correct: null, streak: 0, bestStreak: 0 };
   }
-}
-
-/**
- * Returns styling properties for a quiz / practice option button
- * based on whether it's correct, chosen, and whether the answer has been revealed.
- */
-function optionStyles(C, i, correctIdx, chosenIdx, revealed) {
-  const isCorrect = i === correctIdx;
-  const isChosen  = i === chosenIdx;
-
-  if (revealed) {
-    if (isCorrect) return {
-      bg: C.greenBg, brd: C.greenBorder, col: C.greenLight,
-      badgeBg: "rgba(79,168,112,0.22)", badgeCol: C.greenLight, badgeBrd: C.green,
-      indicator: "✓",
-    };
-    if (isChosen) return {
-      bg: C.redBg,   brd: C.redBorder,   col: C.redLight,
-      badgeBg: "rgba(184,80,88,0.22)",   badgeCol: C.redLight,  badgeBrd: C.red,
-      indicator: "✗",
-    };
-    // Other options — dimmed
-    return {
-      bg: "transparent", brd: C.borderSoft, col: C.muted,
-      badgeBg: "transparent",             badgeCol: C.faint,     badgeBrd: C.faint,
-      indicator: null,
-    };
-  }
-
-  if (isChosen) return {
-    bg: C.goldBg, brd: C.gold, col: C.goldLight,
-    badgeBg: "rgba(201,168,76,0.20)", badgeCol: C.goldLight, badgeBrd: C.gold,
-    indicator: null,
-  };
-
-  return {
-    bg: C.surface, brd: C.border, col: C.textSoft,
-    badgeBg: C.surfaceAlt, badgeCol: C.muted, badgeBrd: C.border,
-    indicator: null,
-  };
 }
 
 // ─── Image lightbox ───────────────────────────────────────────────────────────
@@ -1279,43 +1240,6 @@ export default function App() {
     return QUESTIONS.filter(q => q.delprov === m);
   };
 
-  // Weighted random selection without replacement.
-  // `pool` is the candidate question array; `history` is [[id,…], [id,…], …]
-  // with index 0 being the most recently played quick test.
-  const weightedPickQuestions = (pool, history, n) => {
-    // Build a lookup: questionId → best (lowest) recency index across all history slots.
-    const recencyIndex = new Map();
-    history.forEach((ids, slotIdx) => {
-      ids.forEach(id => {
-        if (!recencyIndex.has(id) || recencyIndex.get(id) > slotIdx) {
-          recencyIndex.set(id, slotIdx);
-        }
-      });
-    });
-
-    // Assign weights — items not in history get 1.0 (full weight).
-    const items = pool.map(q => ({
-      q,
-      w: recencyIndex.has(q.id)
-        ? (QUICK_RECENCY_WEIGHTS[recencyIndex.get(q.id)] ?? 1.0)
-        : 1.0,
-    }));
-
-    const result = [];
-    while (result.length < n && items.length > 0) {
-      const total = items.reduce((sum, it) => sum + it.w, 0);
-      let r = Math.random() * total;
-      let chosen = items.length - 1; // fallback to last item
-      for (let i = 0; i < items.length; i++) {
-        r -= items[i].w;
-        if (r <= 0) { chosen = i; break; }
-      }
-      result.push(items[chosen].q);
-      items.splice(chosen, 1);
-    }
-    return result;
-  };
-
   const startQuiz = (m) => {
     clearTimeout(timer.current);
     if (QUESTIONS.length === 0) return;
@@ -1323,7 +1247,7 @@ export default function App() {
     let qs;
     if (m === "quick") {
       // Use recency-weighted selection so recently-seen questions are less likely to reappear.
-      qs = weightedPickQuestions(QUESTIONS, quickTestHistory, 15);
+      qs = weightedPickQuestions(QUESTIONS, quickTestHistory, 15, QUICK_RECENCY_WEIGHTS);
     } else if (m === "focus") {
       qs = selectFocusQuestions(QUESTIONS, statsRef.current, loadRecentQuestions());
     } else {
@@ -2739,7 +2663,7 @@ export default function App() {
               </p>
 
               {/* Options */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <div key={`${quiz.current}-${q.id}`} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 {q.options.map((opt, i) => {
                   const s = optionStyles(C, i, q.correct, quiz.answered, quiz.answered !== null);
                   return (
