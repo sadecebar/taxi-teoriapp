@@ -1,3 +1,4 @@
+import { storage } from './storage.js';
 /**
  * notifications.js — Notification logic for Taxi Teori
  *
@@ -67,7 +68,7 @@ export const NOTIF_STATE_KEY    = 'taxi-teori-notif-state';
 // ── Defaults ──────────────────────────────────────────────────────────────────
 
 export const DEFAULT_NOTIF_SETTINGS = {
-  enabled:   true,       // master on/off for study reminders
+  enabled:   false,      // enabled after the user grants notification permission
   timing:    'evening',  // "day" (08:00) | "lunch" (12:00) | "evening" (18:00)
   vibration: true,       // haptic feedback on quiz answers
   sound:     true,       // audio feedback on quiz answers
@@ -172,7 +173,7 @@ export const NOTIF_COPY = {
 
 export function loadNotifSettings() {
   try {
-    const raw = localStorage.getItem(NOTIF_SETTINGS_KEY);
+    const raw = storage.getItem(NOTIF_SETTINGS_KEY);
     return raw ? { ...DEFAULT_NOTIF_SETTINGS, ...JSON.parse(raw) } : { ...DEFAULT_NOTIF_SETTINGS };
   } catch {
     return { ...DEFAULT_NOTIF_SETTINGS };
@@ -180,14 +181,14 @@ export function loadNotifSettings() {
 }
 
 export function saveNotifSettings(settings) {
-  try { localStorage.setItem(NOTIF_SETTINGS_KEY, JSON.stringify(settings)); } catch {}
+  try { storage.setItem(NOTIF_SETTINGS_KEY, JSON.stringify(settings)); } catch {}
 }
 
 // ── Notification state helpers ────────────────────────────────────────────────
 
 export function loadNotifState() {
   try {
-    const raw = localStorage.getItem(NOTIF_STATE_KEY);
+    const raw = storage.getItem(NOTIF_STATE_KEY);
     return raw ? { ...DEFAULT_NOTIF_STATE, ...JSON.parse(raw) } : { ...DEFAULT_NOTIF_STATE };
   } catch {
     return { ...DEFAULT_NOTIF_STATE };
@@ -195,7 +196,7 @@ export function loadNotifState() {
 }
 
 export function saveNotifState(state) {
-  try { localStorage.setItem(NOTIF_STATE_KEY, JSON.stringify(state)); } catch {}
+  try { storage.setItem(NOTIF_STATE_KEY, JSON.stringify(state)); } catch {}
 }
 
 // ── Permission (re-exported via bridge) ───────────────────────────────────────

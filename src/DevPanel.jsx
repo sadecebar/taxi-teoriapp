@@ -1,3 +1,4 @@
+import { storage } from './storage.js';
 /**
  * DevPanel — internal developer/debug tool
  *
@@ -303,13 +304,13 @@ export default function DevPanel({
     const sample = questions.slice(0, 10).map(q => q.id);
     const merged = [...new Set([...savedIds, ...sample])];
     setSavedIds(merged);
-    try { localStorage.setItem(SAVED_KEY, JSON.stringify(merged)); } catch {}
+    try { storage.setItem(SAVED_KEY, JSON.stringify(merged)); } catch {}
     flash(`${sample.length} questions saved`);
   }
 
   function clearSaved() {
     setSavedIds([]);
-    try { localStorage.removeItem(SAVED_KEY); } catch {}
+    try { storage.removeItem(SAVED_KEY); } catch {}
     flash("Saved questions cleared");
   }
 
@@ -329,7 +330,7 @@ export default function DevPanel({
     ];
     const next = [...entries, ...quizHistory].slice(0, 10);
     setQuizHistory(next);
-    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
     flash("Strong history injected (5 entries)");
   }
 
@@ -343,7 +344,7 @@ export default function DevPanel({
     ];
     const next = [...entries, ...quizHistory].slice(0, 10);
     setQuizHistory(next);
-    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
     flash("Weak history injected (5 entries)");
   }
 
@@ -358,13 +359,13 @@ export default function DevPanel({
     ];
     const next = [...entries, ...quizHistory].slice(0, 10);
     setQuizHistory(next);
-    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(HISTORY_KEY, JSON.stringify(next)); } catch {}
     flash("Mixed history injected (6 entries)");
   }
 
   function clearHistory() {
     setQuizHistory([]);
-    try { localStorage.removeItem(HISTORY_KEY); } catch {}
+    try { storage.removeItem(HISTORY_KEY); } catch {}
     flash("Quiz history cleared");
   }
 
@@ -377,7 +378,7 @@ export default function DevPanel({
     const dateStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
     const next = { ...dailyData, streak: s, bestStreak: best };
     setDailyData(next);
-    try { localStorage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
     flash(`Streak set to ${s}, best ${best}`);
   }
 
@@ -387,27 +388,27 @@ export default function DevPanel({
     else next.streak = 0;
     next.bestStreak = Math.max(dailyData.bestStreak || 0, next.streak);
     setDailyData(next);
-    try { localStorage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
     flash(correct ? "Daily marked correct" : "Daily marked wrong");
   }
 
   function resetDailyAnswered() {
     const next = { ...dailyData, answered: false, correct: null, chosenIdx: null };
     setDailyData(next);
-    try { localStorage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
+    try { storage.setItem(DAILY_KEY, JSON.stringify(next)); } catch {}
     flash("Daily answer reset (unanswered)");
   }
 
   function setRirRecord() {
     const val = parseInt(rirVal) || 0;
     setRirBest(val);
-    try { localStorage.setItem(RIR_KEY, String(val)); } catch {}
+    try { storage.setItem(RIR_KEY, String(val)); } catch {}
     flash(`Rätt i rad best → ${val}`);
   }
 
   function clearRir() {
     setRirBest(0);
-    try { localStorage.removeItem(RIR_KEY); } catch {}
+    try { storage.removeItem(RIR_KEY); } catch {}
     flash("Rätt i rad record cleared");
   }
 
@@ -416,25 +417,25 @@ export default function DevPanel({
   function completeChecklist() {
     const all = new Set(checklistSteps.map((_, i) => i));
     setChecklistDone(all);
-    try { localStorage.setItem(CHECKLIST_KEY, JSON.stringify([...all])); } catch {}
+    try { storage.setItem(CHECKLIST_KEY, JSON.stringify([...all])); } catch {}
     flash(`All ${checklistSteps.length} checklist steps completed`);
   }
 
   function clearChecklist() {
     setChecklistDone(new Set());
-    try { localStorage.removeItem(CHECKLIST_KEY); } catch {}
+    try { storage.removeItem(CHECKLIST_KEY); } catch {}
     flash("Checklist cleared");
   }
 
   function restartOnboarding() {
-    try { localStorage.removeItem(OB_KEY); } catch {}
+    try { storage.removeItem(OB_KEY); } catch {}
     setShowOnboarding(true);
     setOpen(false);
     flash("Onboarding restarted");
   }
 
   function skipOnboarding() {
-    try { localStorage.setItem(OB_KEY, "1"); } catch {}
+    try { storage.setItem(OB_KEY, "1"); } catch {}
     setShowOnboarding(false);
     flash("Onboarding marked done");
   }

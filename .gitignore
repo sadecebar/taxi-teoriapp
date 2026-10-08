@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# This repository snapshot contains the web app only.
+android/
+ios/
+artifacts/
+node_modules/
+dist/
+capacitor.config.*
+*.apk
+*.aab
+*.ipa
+*.zip
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example

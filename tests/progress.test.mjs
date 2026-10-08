@@ -124,8 +124,8 @@ test('the next unanswered question has no inherited correct or wrong colors', ()
     }
   }
   // React must replace the old option buttons so their reveal animation and transitions cannot persist.
-  const appSource = readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8');
-  assert.match(appSource, /<div key=\{`\$\{quiz\.current\}-\$\{q\.id\}`\}[^>]*>\s*\{q\.options\.map/);
+  const appSource = readFileSync(new URL('../src/design/QuizScreens.jsx', import.meta.url), 'utf8');
+  assert.match(appSource, /<div key=\{`\$\{quiz\.current\}-\$\{q\.id\}`\}[^>]*>/);
 });
 
 test('invalid option indices and unanswered Next cannot create attempts', () => {

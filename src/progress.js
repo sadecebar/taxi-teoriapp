@@ -1,3 +1,4 @@
+import { storage } from './storage.js';
 // ─── Local progress storage ───────────────────────────────────────────────────
 // All question stats are stored as a single JSON blob per installation.
 // Key schema:  taxi-teori-stats-<installId>
@@ -20,7 +21,7 @@ export const RECENT_QUESTION_LIMIT = 40;
 
 export function loadRecentQuestions() {
   try {
-    const ids = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+    const ids = JSON.parse(storage.getItem(RECENT_KEY) || "[]");
     return Array.isArray(ids)
       ? ids.filter(id => Number.isInteger(id) && id > 0).slice(0, RECENT_QUESTION_LIMIT)
       : [];
@@ -33,7 +34,7 @@ export function recordRecentQuestion(questionId) {
   // Keep committed attempts, including repeats, newest first.
   const ids = [questionId, ...loadRecentQuestions()].slice(0, RECENT_QUESTION_LIMIT);
   try {
-    localStorage.setItem(RECENT_KEY, JSON.stringify(ids));
+    storage.setItem(RECENT_KEY, JSON.stringify(ids));
   } catch (e) {
     console.error("Could not save recent questions:", e);
   }
@@ -41,7 +42,7 @@ export function recordRecentQuestion(questionId) {
 }
 
 export function clearRecentQuestions() {
-  localStorage.removeItem(RECENT_KEY);
+  storage.removeItem(RECENT_KEY);
 }
 
 // Called synchronously by answer handlers, never from a React state updater.
@@ -67,7 +68,7 @@ export function commitPracticeAnswer(stats, questionId, correct) {
  */
 export function loadLocalStats() {
   try {
-    const raw = localStorage.getItem(STATS_KEY);
+    const raw = storage.getItem(STATS_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -82,9 +83,9 @@ export function loadLocalStats() {
  */
 export function saveAllStats(stats) {
   try {
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    storage.setItem(STATS_KEY, JSON.stringify(stats));
   } catch (e) {
-    console.error("Could not save progress to localStorage:", e);
+    console.error("Could not save progress to storage:", e);
   }
 }
 
@@ -92,16 +93,16 @@ export function saveAllStats(stats) {
 
 /** Remove all stored stats for this installation. */
 export function clearLocalStats() {
-  localStorage.removeItem(STATS_KEY);
+  storage.removeItem(STATS_KEY);
 }
 
 // ── Migration flag ────────────────────────────────────────────────────────────
 
-/** True once the one-time Supabase → localStorage migration has been attempted. */
+/** True once the one-time Supabase → storage migration has been attempted. */
 export function hasMigrated() {
-  return localStorage.getItem(MIGRATED_KEY) === "1";
+  return storage.getItem(MIGRATED_KEY) === "1";
 }
 
 export function markMigrated() {
-  localStorage.setItem(MIGRATED_KEY, "1");
+  storage.setItem(MIGRATED_KEY, "1");
 }

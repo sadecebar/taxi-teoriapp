@@ -1,27 +1,6 @@
-/**
- * notif-platform.js — Delivery bridge: Web Notifications API vs Capacitor Local Notifications
- *
- * All notification delivery goes through this module.
- * notifications.js owns logic, copy, and state — this module owns sending.
- *
- * Capacitor plugin access:
- *   We do NOT import @capacitor/local-notifications via ES module / dynamic import.
- *   Reason: bare-specifier dynamic imports (import('@capacitor/...')) fail in the
- *   Android WebView's module parser even inside try/catch, causing a white screen.
- *
- *   Instead, we access the plugin via the Capacitor bridge global:
- *     window.Capacitor.Plugins.LocalNotifications
- *   When the package is installed and `npx cap sync android` is run, the plugin
- *   self-registers on the bridge and is available there with the same API.
- *
- * Install when ready:
- *   npm install @capacitor/local-notifications
- *   npx cap sync android
- *
- * Until then, getLocalNotif() returns null and all native paths silently no-op.
- */
-
+/** Native notifications are bundled by Vite and registered by Capacitor sync. */
 import { Capacitor } from '@capacitor/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 // ── Platform detection ────────────────────────────────────────────────────────
 
@@ -41,7 +20,7 @@ export function isNative() {
  */
 function getLocalNotif() {
   try {
-    return window?.Capacitor?.Plugins?.LocalNotifications ?? null;
+    return Capacitor.isNativePlatform() ? LocalNotifications : null;
   } catch {
     return null;
   }
@@ -141,7 +120,7 @@ export function getPlatformPermission() {
  * No-op if not on native or plugin is not installed.
  */
 export async function ensureNotifChannel() {
-  if (!isNative()) return;
+  if (Capacitor.getPlatform() !== 'android') return;
   const LN = getLocalNotif();
   if (!LN) return;
   try {
@@ -198,11 +177,13 @@ export async function scheduleAt(id, title, body, at, opts = {}) {
     const LN = getLocalNotif();
     if (!LN) return { ok: false, reason: 'plugin_unavailable' };
     try {
+      if ((await LN.checkPermissions()).display !== 'granted') return { ok: false, reason: 'permission_denied' };
       await LN.schedule({
         notifications: [{
           id,
           title,
           body,
+          isExactNotification: false,
           schedule:  { at, allowWhileIdle: true },
           channelId: opts.channelId ?? CHANNEL_ID,  // always use the v2 IMPORTANCE_HIGH channel
           iconColor: '#FFBE2E',
