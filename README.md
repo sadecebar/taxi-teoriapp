@@ -1,13 +1,13 @@
-# Taxi Teori · webbversion 2.4.0
+# Taxi Teori · webbversion 2.4.1
 
 Webbappen för övning inför svensk taxiförarlegitimation, byggd med React och Vite. Ingen inloggning och ingen reklam. Framsteg sparas lokalt i webbläsaren.
 
 ## Nytt i denna version
 
-- Miniprov med tio lagstiftningsfrågor, fem från vardera lagstiftningsområdet. Facit efter varje svar, sparat pass och nästa omgång direkt från resultatet.
-- 40 egna, källbelagda textfrågor: 20 om på-/avstigning och stoppregler, 6 om svårare dygnsvila, 10 om tariffer och 4 om särskild utrustning för taxifordon.
+- Miniprov med tio lagstiftningsfrågor, fem från vardera lagstiftningsområdet. Återkommande träning av legitimation, vila, utrustning, tariffer, stoppregler och skyltar. Facit efter varje svar, sparat pass och nästa omgång direkt från resultatet.
+- 52 egna, källbelagda textfrågor: 20 om på-/avstigning och stoppregler, 6 om svårare dygnsvila, 10 om tariffer 4 om särskild utrustning för taxifordon, 8 om legitimation/påföljder och 4 om skyltar/trafikanvisningar.
 - 200 godkända innehållsversioner från granskningsomgång 1–20. Omgång 21 är fortfarande väntande. Ursprungliga frågefiler bevaras; godkända versioner läggs på vid sammanställning.
-- Miniprovet använder 119 godkända lagstiftningsfrågor och de 40 nytillskotten. Övriga delar av appen innehåller fortfarande äldre ogranskat material. Totalt 500 frågor.
+- Miniprovet använder 119 godkända lagstiftningsfrågor och de 52 nytillskotten (totalt 171 i miniprovet). Övriga delar av appen innehåller fortfarande äldre ogranskat material. Totalt 512 frågor.
 - Förklaringar med länkar till officiella källor. Ändrade frågor visas på svenska tills deras engelska översättningar har uppdaterats.
 - Export och återställning av lokala framsteg från version 2.3, samt befintlig statistik, mörkt/ljust läge och tillgänglighetsinställningar.
 - 68 automatiska tester, inklusive urval, återupptagning, säkerhetskopiering och rullande vilotidsberäkningar.

@@ -1,5 +1,12 @@
 import { getQuestionStatus, shuffle, weightedPickQuestions } from './practice.js';
 
+const licenceIds = new Set([16,32,34,43,48,83,103,119,146,157,187,211,221,231]);
+const restIds = new Set([2,21,35,39,58,60,67,80,100,101,102,108,127,136,137,145,158,160,165,175,176,179,183]);
+const signIds = new Set([99,125,263]);
+export const isLicencePractice = q => licenceIds.has(q.id) || ['licence','sanctions'].includes(q.topic);
+export const isRestPractice = q => restIds.has(q.id) || q.topic === 'rest';
+export const isSignPractice = q => signIds.has(q.id) || q.topic === 'signs';
+
 // Five questions from each official legislation subject. No DP1 content.
 // Include new scenarios while keeping the rest of the legislation bank in use.
 export function selectLegislationQuestions(bank, stats = {}, recentIds = [], random = Math.random) {
@@ -19,7 +26,16 @@ export function selectLegislationQuestions(bank, stats = {}, recentIds = [], ran
   for (const subject of ['taxi', 'traffic']) {
     const pool = unique.filter(q => q.examSubject === subject);
     const start = chosen.length;
-    pick(pool.filter(q => q.original), Math.min(2, pool.filter(q => q.original).length));
+    if (subject === 'taxi') {
+      // Keep all feedback areas in one mixed mini test, without extra modes.
+      pick(pool.filter(isLicencePractice), 1);
+      pick(pool.filter(isRestPractice), 1);
+      pick(pool.filter(q => q.topic === 'equipment'), 1);
+      pick(pool.filter(q => q.topic === 'tariffs'), 1);
+    } else {
+      pick(pool.filter(q => q.topic === 'stops'), 2);
+      pick(pool.filter(isSignPractice), 1);
+    }
     pick(pool, Math.max(0, 5 - (chosen.length - start)));
   }
   pick(unique, Math.max(0, 10 - chosen.length));

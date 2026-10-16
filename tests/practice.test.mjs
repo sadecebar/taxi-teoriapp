@@ -122,7 +122,7 @@ test('J: Fisher–Yates preserves input and reaches each small permutation equal
   }
 });
 
-test('real 500-question bank: ten completed focus sessions introduce 60 unseen questions', async () => {
+test('real 512-question bank: ten completed focus sessions introduce 60 unseen questions', async () => {
   // Node needs only an asset URL to load the untouched Vite question bank.
   const hooks = registerHooks({ load(url, context, nextLoad) {
     if (url.endsWith('.png')) return { format: 'module', source: `export default ${JSON.stringify(url)}`, shortCircuit: true };
@@ -130,7 +130,7 @@ test('real 500-question bank: ten completed focus sessions introduce 60 unseen q
   } });
   const { QUESTIONS } = await import('../src/questions.js');
   hooks.deregister();
-  assert.equal(QUESTIONS.length, 500);
+  assert.equal(QUESTIONS.length, 512);
   assert.equal(new Set(QUESTIONS.map(q => q.id)).size, QUESTIONS.length);
   const towing = QUESTIONS.find(q => q.id === 118);
   assert.deepEqual(towing.options, ['20 km/h', '30 km/h', '40 km/h', '50 km/h', '70 km/h']);
@@ -145,10 +145,10 @@ test('real 500-question bank: ten completed focus sessions introduce 60 unseen q
   assert.deepEqual(QUESTIONS_EN[118].options, towing.options);
   assert.match(QUESTIONS_EN[72].explanation, /750 kg/);
   assert.doesNotMatch(QUESTIONS_EN[430].explanation, /reworded|original answer/);
-  const { stats: initialStats } = fixture([237,84,116,63]);
+  const { stats: initialStats } = fixture([249,84,116,63]);
   // Assign by bank order; do not change any question data or IDs.
   const stats = Object.fromEntries(QUESTIONS.map((q,i) => [q.id, initialStats[i+1]]));
-  assert.deepEqual(composition(QUESTIONS, stats), [237,84,116,63]);
+  assert.deepEqual(composition(QUESTIONS, stats), [249,84,116,63]);
   let recent = [];
   const introduced = new Set(), random = seeded();
   for (let round = 0; round < 10; round++) {
@@ -163,5 +163,5 @@ test('real 500-question bank: ten completed focus sessions introduce 60 unseen q
     }
   }
   assert.equal(introduced.size, 60);
-  assert.equal(composition(QUESTIONS, stats)[0], 177);
+  assert.equal(composition(QUESTIONS, stats)[0], 189);
 });

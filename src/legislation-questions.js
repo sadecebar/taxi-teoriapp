@@ -1,3 +1,4 @@
+import { LEGISLATION_FOLLOWUP } from './legislation-followup.js';
 // Original text scenarios, checked against primary sources on 2026-10-15.
 // Independent practice material, not recalled or official exam questions.
 const law = 'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/';
@@ -182,4 +183,4 @@ const items = [
 export const LEGISLATION_QUESTIONS = items.map(([id, examSubject, topic, question, options, correct, explanation, sources]) => ({
   id, delprov:2, examSubject, topic, question, options, correct, explanation, sources,
   image:null, original:true, translationPending:true, contentRevision:'2026-10-15',
-}));
+})).concat(LEGISLATION_FOLLOWUP);
