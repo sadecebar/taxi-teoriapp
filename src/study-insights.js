@@ -2,7 +2,7 @@ import { getQuestionStatus } from './practice.js';
 import { DELPROV_CONFIG, isExamMode } from './exam.js';
 
 export const PRACTICE_GOAL = 70;
-export const TEST_MODES = new Set(['quick', 10, 20, 30, 1, 2]);
+export const TEST_MODES = new Set(['legislation', 'quick', 10, 20, 30, 1, 2]);
 // Keep incomplete coverage below 100%, including when only one question remains.
 export function coveragePercent(count, total) {
   if (!total) return 0;

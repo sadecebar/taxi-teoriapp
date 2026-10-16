@@ -42,7 +42,7 @@ export function ResultsChart() {
   const a=useStudy(),{l}=a;
   const [filter,setFilter]=useState('all'),[selected,setSelected]=useState(null);
   const entries=recentTestResults(a.quizHistory,filter), summary=resultSummary(entries);
-  const modeName=m=>m===1?'DP1':m===2?'DP2':m==='quick'?l('Snabb','Quick'):String(m);
+  const modeName=m=>m===1?'DP1':m===2?'DP2':m==='quick'?l('Snabb','Quick'):m==='legislation'?l('Lag 10','Law 10'):String(m);
   const detail=selected===null?entries.at(-1):entries.find(e=>e.ts===selected)??entries.at(-1);
   return <section className="mb-7" aria-label={l('Senaste resultat','Recent results')}><SectionTitle>{l('Senaste resultat','Recent results')}</SectionTitle><div className="rounded-[24px] border border-line bg-paper p-5">
     <p className="mb-3 text-xs text-muted">{l('Dina senaste 10 test · äldst till vänster','Your last 10 tests · oldest on the left')}</p><div className="mb-5 flex gap-2">{[['all',l('Alla test','All tests')],[1,'DP1'],[2,'DP2']].map(([value,label])=><button key={value} aria-pressed={filter===value} className={`min-h-11 flex-1 rounded-xl border px-2 text-xs ${filter===value?'border-accent bg-tint text-accent':'border-line text-muted'}`} onClick={()=>{setFilter(value);setSelected(null);}}>{label}</button>)}</div>

@@ -114,6 +114,7 @@ function isVilotidQuestion(q) {
 // Matches questions specifically about taxi-business regulations:
 // taxiförarlegitimation, taxameter, trafiktillstånd, pricing rules, inspection.
 function isTaxiregelQuestion(q) {
+  if (q.examSubject === 'taxi') return true;
   const text = [q.question, ...(q.options || []), q.explanation || ""].join(" ").toLowerCase();
   return /taxiförarlegitimation|taxameter|trafiktillstånd|prisinformation|taxetabell|jämförpris|summatariff|plombering|kontrollrapport|yrkesmässig taxitrafik|förarbevis/.test(text);
 }

@@ -2,7 +2,7 @@ import { storage as appStorage } from './storage.js';
 import { DELPROV_CONFIG, isExamMode } from './exam.js';
 
 export const SESSION_KEY = 'taxi-teori-active-session-v1';
-const modes = new Set(['review', 'all', 'quick', 'focus', 'rir', 'bilder', 1, 2, 10, 20, 30]);
+const modes = new Set(['legislation', 'review', 'all', 'quick', 'focus', 'rir', 'bilder', 1, 2, 10, 20, 30]);
 // Ignore an old session if content changes under the same IDs.
 const fingerprint = q => JSON.stringify([q.question, q.options, q.correct, q.explanation, q.image]);
 

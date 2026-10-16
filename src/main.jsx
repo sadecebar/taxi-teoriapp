@@ -12,7 +12,7 @@ import '@fontsource/dm-mono/500.css'
 import { Capacitor } from '@capacitor/core'
 import { Preferences } from '@capacitor/preferences'
 import { SplashScreen } from '@capacitor/splash-screen'
-import { initializeNativeStorage } from './storage.js'
+import { initializeNativeStorage, recoverWebRestore } from './storage.js'
 
 const root = createRoot(document.getElementById('root'));
 let starting = false;
@@ -21,6 +21,7 @@ async function start() {
   starting = true;
   try {
     if (Capacitor.isNativePlatform()) await initializeNativeStorage(Preferences);
+    else recoverWebRestore(localStorage);
     // Installation ID and progress must only load after native state is ready.
     const { default: App } = await import('./App.jsx');
     root.render(<StrictMode><App /></StrictMode>);

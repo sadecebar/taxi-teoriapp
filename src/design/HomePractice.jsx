@@ -1,3 +1,4 @@
+import { LegislationPractice } from './LegislationPractice.jsx';
 import { useState } from 'react';
 import { ArrowRight, BookmarkSimple, CaretRight, Check, Compass, Flame, Images, Lightning, MagnifyingGlass, Moon, Path, RoadHorizon, ShieldCheck, SteeringWheel, Sun, Target, Timer, Trophy, Stack, X } from '@phosphor-icons/react';
 import { QUESTIONS, isNavigeringQuestion, isTaxiregelQuestion, isVilotidQuestion } from '../study-data.js';
@@ -22,6 +23,7 @@ export function Home() {
     <div className="mb-7 flex items-center justify-between"><span className="flex items-center gap-2.5 text-sm font-medium"><span className="grid size-9 place-items-center rounded-xl bg-ink text-canvas"><SteeringWheel size={22}/></span>taxi teori<span className="ml-1 rounded-md bg-soft px-1.5 py-1 text-[calc(0.75rem*var(--text-scale))] font-medium tracking-wider">OFFLINE</span></span><span className="flex gap-2"><IconButton icon={a.theme==='dark'?Sun:Moon} label={l(a.theme==='dark'?'Byt till ljust läge':'Byt till mörkt läge',a.theme==='dark'?'Switch to light mode':'Switch to dark mode')} onClick={()=>a.setTheme(a.theme==='dark'?'light':'dark')}/></span></div>
     <div className="mb-6"><p className="mb-2 text-sm text-muted">{l('En liten stund. Ett steg närmare.','A little practice. One step closer.')}</p><h1 className="text-[calc(2.1875rem*var(--text-scale))] leading-[1.1] font-medium tracking-[-.04em]">{l('Nästa stopp:','Next stop:')}<br/><span className="text-accent">{l('taxilegitimation.','your taxi licence.')}</span></h1></div>
     {active && <button onClick={a.resumeQuiz} className="mb-4 flex w-full items-center gap-3 rounded-2xl border border-accent bg-tint px-4 py-3 text-left"><span className="grid size-9 place-items-center rounded-full bg-accent text-canvas"><ArrowRight size={20}/></span><span className="flex-1"><span className="block font-medium">{l('Fortsätt där du var','Pick up where you left off')}</span><span className="text-xs text-muted">{a.quiz.answers.length}/{a.quiz.questions.length} {l('besvarade','answered')}{[1,2].includes(a.mode)?l(' · Provtiden fortsätter',' · Exam timer keeps running'):''}</span></span><CaretRight size={18}/></button>}
+    <LegislationPractice/>
     <section className="relative mb-5 overflow-hidden rounded-[28px] bg-[var(--hero-bg)] px-6 pt-6 pb-5 text-[var(--hero-text)]">
       <div className="focus-art absolute -right-5 top-5 opacity-90"><RouteArt/></div>
       <div className="focus-copy relative w-[64%]"><p className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[var(--hero-line)] px-2.5 py-1 text-[calc(0.75rem*var(--text-scale))] font-medium uppercase tracking-[.12em]"><Target size={13}/>{l('Ditt fokuspass','Your focus session')}</p><h2 className="text-[calc(1.8125rem*var(--text-scale))] leading-[1.08] font-medium tracking-tight">{l('Lite bättre.','A little better.')}<br/>{l('Varje dag.','Every day.')}</h2><p className="mt-3 text-xs text-[var(--hero-muted)]">15 {l('frågor anpassade efter dig','questions picked for you')}</p></div>
@@ -42,6 +44,7 @@ export function Practice() {
   if (a.fragorFilter) return <QuestionLibrary key={a.fragorFilter}/>;
   return <>
     <ScreenTitle eyebrow={l('Din träningsplats','Your practice space')} title={l('Öva på ditt sätt','Your way to learn')} action={<IconButton icon={MagnifyingGlass} label={l('Sök bland alla frågor','Search all questions')} onClick={()=>a.setFragorFilter('all')}/>}/>
+    <LegislationPractice/>
     <button onClick={()=>a.startQuiz('focus')} className="mb-7 flex w-full items-center gap-4 rounded-[24px] bg-tint p-5 text-left"><Target size={38} className="shrink-0 text-accent"/><span className="flex-1"><span className="block text-lg font-medium">{l('Fokuspass','Focus session')}</span><span className="mt-1 block text-sm text-muted">{l('15 frågor utifrån dina framsteg','15 questions based on your progress')}</span></span><ArrowRight size={22}/></button>
     <SectionTitle action={l('Alla frågor','All questions')} onClick={()=>a.setFragorFilter('all')}>{l('Ämnen','Topics')}</SectionTitle>
     <div className="mb-7 divide-y divide-line">{topics.map(({id,sv,en,icon:Icon,test})=> {

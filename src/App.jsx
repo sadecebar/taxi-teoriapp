@@ -1,3 +1,4 @@
+import { selectLegislationQuestions } from './legislation-practice.js';
 import { storage } from './storage.js';
 import { useState, useEffect, useRef } from "react";
 import { getInstallationId } from "./installation.js";
@@ -66,7 +67,7 @@ export default function App() {
   // Translate a question object's user-facing text fields for the current language.
   // IDs, correct index, delprov, and image are never modified.
   const tq = (q) => {
-    if (lang === 'sv' || !q) return q;
+    if (lang === 'sv' || !q || q.translationPending) return q;
     const en = QUESTIONS_EN[q.id];
     if (!en) return q;
     return { ...q, question: en.question, options: en.options, explanation: en.explanation };
@@ -428,6 +429,8 @@ export default function App() {
     } else if (m === "quick") {
       // Use recency-weighted selection so recently-seen questions are less likely to reappear.
       qs = weightedPickQuestions(QUESTIONS, quickTestHistory, 15, QUICK_RECENCY_WEIGHTS);
+    } else if (m === "legislation") {
+      qs = selectLegislationQuestions(QUESTIONS, statsRef.current, loadRecentQuestions());
     } else if (m === "focus") {
       qs = selectFocusQuestions(QUESTIONS, statsRef.current, loadRecentQuestions());
     } else {
